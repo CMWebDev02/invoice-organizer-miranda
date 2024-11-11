@@ -1,6 +1,6 @@
-import { NavBar } from "./Pages/NavBar.jsx"
-import { InvoiceArea } from "./Pages/InvoiceArea.jsx"
-import { Footer } from "./Pages/Footer.jsx"
+import { NavBar } from "./ui/NavBar";
+import { InvoiceArea } from "./pages/InvoiceArea";
+import {Footer} from "./ui/Footer";
 
 export function App() {
 
