@@ -1,42 +1,25 @@
-import { FilterInputs } from "../containers/InvoiceArea/FilterInputs"
+import { UserInputs } from "../containers/InvoiceArea/UserInputs"
+import { DirectoryList } from "../containers/InvoiceArea/DirectoryList"
+import { ChangeLog } from "../containers/ChangeLog"
+import { InvoiceViewer } from "../containers/InvoiceArea/InvoiceViewer"
+
+import Button from 'react-bootstrap/Button';
 
 export function InvoiceArea() {
 
     return (
-        <main>
-          <FilterInputs />
-          
-        <div>
-          <div>
-            <div>
-              <h2>Various customer Names</h2>
-              <button>Quick Transfer</button>
-            </div>
-            <div>
-              <h2>Various customer Names</h2>
-              <button>Quick Transfer</button>
-            </div>
-            <div>
-              <h2>Various customer Names</h2>
-              <button>Quick Transfer</button>
-            </div>
-          </div>
+      <main>
+        <Button variant="danger">Click Me</Button>
 
-          <div>
-            <div>
-              <h2>Various changes</h2>
-              <h2>Various changes</h2>
-              <h2>Various changes</h2>
-              <h2>Various changes</h2>
-              <h2>Various changes</h2>
-              <h2>Various changes</h2>
-            </div>
-          </div>
+        <UserInputs />
+        
+        <div>
+          <DirectoryList />
+
+          <ChangeLog />
         </div>
 
-        <div>
-          <h1>Invoice Viewer</h1>
-        </div>
+        <InvoiceViewer />
       </main>
     )
 }
