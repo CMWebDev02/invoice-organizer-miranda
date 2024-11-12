@@ -1,9 +1,11 @@
 import { UserInputs } from "../containers/InvoiceArea/UserInputs"
-import { DirectoryList } from "../containers/InvoiceArea/DirectoryList"
+import { FolderDisplay } from "../containers/InvoiceArea/FolderDisplay"
 import { ChangeLog } from "../containers/ChangeLog"
 import { InvoiceViewer } from "../containers/InvoiceArea/InvoiceViewer"
 
+
 import Button from 'react-bootstrap/Button';
+import { useState } from "react";
 
 /*  Send two get request to the server
     One to get the current state of the customer folder directory.
@@ -28,27 +30,15 @@ import Button from 'react-bootstrap/Button';
     Finally, remake the git request only for the next invoice since the customer directories should not be changed. */
 
 export function InvoiceArea() {
-
-
-    async function practiceCall() {
-      try {
-        let response = await fetch('http://localhost:3000/getDirectories');
-        if (!response.ok) throw new Error('Fetch Call Failed');
-        let {customerArray} = await response.json();
-        console.log(customerArray);
-      } catch (error) {
-        console.error(error)
-      }
-    }
+    const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
+    const [ nameFilter, setNameFilter ] = useState('');
 
     return (
       <main>
-        <UserInputs />
-
-        <Button variant="info" onClick={practiceCall}>Click Me</Button>
+        <UserInputs filter={[nameFilter, setNameFilter]} isDisabled={isUserInteractionDisabled} />
         
         <div>
-          <DirectoryList />
+          <FolderDisplay enableInteraction={setIsUserInteractionDisabled} nameFilter={nameFilter} />
 
           <ChangeLog />
         </div>

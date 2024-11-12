@@ -1,9 +1,10 @@
-export function CustomerFilter() {
+export function CustomerFilter({filterControls}) {
+    const [ filterValue, setFilterValue ] = filterControls;
 
     return (
         <div>
-            <label>Find:</label>
-            <input type='text' placeholder='Enter Customer Name...' />
+            <label htmlFor="customerFilter">Find:</label>
+            <input id="customerFilter" type='text' placeholder='Enter Customer Name...' value={filterValue} onChange={(e) => setFilterValue(e.target.value)} />
         </div>
     )
 }

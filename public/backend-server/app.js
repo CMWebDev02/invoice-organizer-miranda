@@ -14,7 +14,7 @@ backEnd.use(cors({
 backEnd.get('/getDirectories', async (req, res) => {
     try {
         let data = await fileAccess.getAllCustomerFolders();
-        res.send({customerArray: JSON.stringify(data)});
+        res.send({customersArray: data});
     } catch (error) {
         console.error(`Error: ${error}`);
         res.status(500).send('Server Error');
