@@ -1,7 +1,7 @@
-import { UserInputs } from "./containers/InvoiceArea/UserInputs"
-import { DirectoryList } from "./containers/InvoiceArea/DirectoryList"
-import { ChangeLog } from "./containers/ChangeLog"
-import { InvoiceViewer } from "./containers/InvoiceArea/InvoiceViewer"
+import { UserInputs } from "../containers/InvoiceArea/UserInputs"
+import { DirectoryList } from "../containers/InvoiceArea/DirectoryList"
+import { ChangeLog } from "../containers/ChangeLog"
+import { InvoiceViewer } from "../containers/InvoiceArea/InvoiceViewer"
 
 import Button from 'react-bootstrap/Button';
 
