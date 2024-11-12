@@ -1,4 +1,4 @@
-import * as fs from 'node:fs/promises';
+import * as fs from 'fs/promises';
 
 const invoiceDirPath = './Invoices'
 const customerDirPath = './Customers'
@@ -6,12 +6,12 @@ const customerDirPath = './Customers'
 export async function getAllCustomerFolders() {
     try {
         //? First gathers the various letter folders within the customer folder directory
-        let customerDir = await fs.opendir(customerDirPath);
+        let alphabetFolders = await fs.readdir(customerDirPath);
         let customerFolders = [];
         //? Iterates through all of the letter folders
-        for await (const alphabet of customerDir) {
+        for await (const letter of alphabetFolders) {
             //? Appends an array of all customer folder names within the current letter folder
-            let customers = await fs.readdir(`${alphabet.parentPath}/${alphabet.name}`, {recursive: true});
+            let customers = await fs.readdir(`${customerDirPath}/${letter}`);
             customerFolders.push(customers);
         }
         
