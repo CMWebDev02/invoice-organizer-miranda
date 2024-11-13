@@ -13,8 +13,18 @@ backEnd.use(cors({
 
 backEnd.get('/getDirectories', async (req, res) => {
     try {
-        let data = await fileAccess.getAllCustomerFolders();
-        res.send({customersArray: data});
+        let customers = await fileAccess.getAllCustomerFolders();
+        res.send({customersArray: customers});
+    } catch (error) {
+        console.error(`Error: ${error}`);
+        res.status(500).send('Server Error');
+    }
+})
+
+backEnd.get('/getInvoice', async (req, res) => {
+    try {
+        let invoice = await fileAccess.getFirstInvoice();
+        res.sendFile(invoice);
     } catch (error) {
         console.error(`Error: ${error}`);
         res.status(500).send('Server Error');

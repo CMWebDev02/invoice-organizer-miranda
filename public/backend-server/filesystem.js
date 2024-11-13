@@ -21,3 +21,14 @@ export async function getAllCustomerFolders() {
         console.error(error);
     }
 }
+
+export async function getFirstInvoice() {
+    try {
+        let invoiceFolder = await fs.readdir(invoiceDirPath);
+        let invoicePath = fs.realpath(`${invoiceDirPath}/${invoiceFolder[0]}`);
+
+        return invoicePath;
+    } catch (error) {
+        console.error(error);
+    }
+}

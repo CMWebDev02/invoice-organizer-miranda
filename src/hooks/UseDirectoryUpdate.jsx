@@ -26,7 +26,7 @@ export function UseDirectoryUpdate() {
 
         fetchDirectories();
         return () => {
-            abortFetchCall.abort;
+            // abortFetchCall.abort();
         }
     }, [])
 
