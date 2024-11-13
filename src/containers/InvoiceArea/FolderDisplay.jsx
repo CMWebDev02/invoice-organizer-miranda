@@ -9,18 +9,6 @@ export function FolderDisplay({ nameFilter }) {
         <div>
             {isCustomerFoldersLoading && <h2>Gathering Customer Folders</h2>}
             {customerFoldersError ? <h2>{customerFoldersError}</h2> : <FolderList customers={customerFolders} nameFilter={nameFilter} />}
-            {/* <div>
-                <h2>Various customer Names</h2>
-                <button>Quick Transfer</button>
-            </div>
-            <div>
-                <h2>Various customer Names</h2>
-                <button>Quick Transfer</button>
-            </div>
-            <div>
-                <h2>Various customer Names</h2>
-                <button>Quick Transfer</button>
-            </div> */}
         </div>
     )
 }

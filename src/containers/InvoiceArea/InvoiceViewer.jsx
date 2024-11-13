@@ -1,5 +1,3 @@
-// Links to temporary invoice to test display.
-import pdfInvoice from '../../assets/TempInvoice.pdf'
 import { UseInvoiceUpdate } from '../../hooks/UseInvoiceUpdate'
 
 export function InvoiceViewer() {

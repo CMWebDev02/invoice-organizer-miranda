@@ -32,10 +32,11 @@ import { useState } from "react";
 export function InvoiceArea() {
     const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
     const [ nameFilter, setNameFilter ] = useState('');
+    const [ selectedYear, setSelectedYear ] = useState(0);
 
     return (
       <main>
-        <UserInputs filter={[nameFilter, setNameFilter]} isDisabled={isUserInteractionDisabled} />
+        <UserInputs filter={[nameFilter, setNameFilter]} year={[ selectedYear, setSelectedYear ]} isDisabled={isUserInteractionDisabled} />
         
         <div>
           <FolderDisplay enableInteraction={setIsUserInteractionDisabled} nameFilter={nameFilter} />
