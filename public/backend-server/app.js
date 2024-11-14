@@ -9,8 +9,11 @@ const port = 3000;
 
 backEnd.use(cors({
     origin: 'http://localhost:5173/',
+    /* 
+        !I am no longer using this method to send the file path!
     // This header needs to be exposed to the user to provide the relative path that will be used for moving the invoice
-    exposedHeaders: 'x-invoice-organizer-file-path',
+    exposedHeaders: 'x-invoice-organizer-file-path', 
+    */
 }))
 
 backEnd.get('/getDirectories', async (req, res) => {
@@ -25,9 +28,15 @@ backEnd.get('/getDirectories', async (req, res) => {
 
 backEnd.get('/getInvoice', async (req, res) => {
     try {
-        let [ invoiceRelativePath, invoiceAbsolutePath ] = await fileAccess.getFirstInvoice();
+        let [ invoiceRelativePath, invoicePDF ] = await fileAccess.getFirstInvoice();
 
-        res.header({'x-invoice-organizer-file-path': invoiceRelativePath}).sendFile(invoiceAbsolutePath);
+        //? A response body is used to store the relative file path and the file's encoded string before being sent to the user.
+        let responseBody = {
+            filePath: invoiceRelativePath,
+            file: invoicePDF 
+        }
+
+        res.json(responseBody)
     } catch (error) {
         console.error(`Error: ${error}`);
         res.status(500).send('Server Error');

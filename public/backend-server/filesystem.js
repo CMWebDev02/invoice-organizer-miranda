@@ -24,11 +24,18 @@ export async function getAllCustomerFolders() {
 
 export async function getFirstInvoice() {
     try {
+        //? Reads the folder where all the invoice are located and for the first invoice in the list and saves it relative path.
         let invoiceFolder = await fs.readdir(invoiceDirPath);
         let invoiceRelativePath = `${invoiceDirPath}/${invoiceFolder[0]}`
-        let invoiceAbsolutePath = await fs.realpath(invoiceRelativePath);
 
-        return [invoiceRelativePath, invoiceAbsolutePath];
+        //* Reads the file and saves it output and encodes it to base64 to convert the binary data to readable text
+        //* that the webpages can handle,
+            //! skipping this step resulted in the binary data becoming corrupted once it was received by the client.
+        let fileStream = await fs.readFile(invoiceRelativePath)
+
+        let encodedFileStream = fileStream.toString('base64')
+
+        return [invoiceRelativePath, encodedFileStream];
     } catch (error) {
         console.error(error);
     }

@@ -33,6 +33,7 @@ export function InvoiceArea() {
     const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
     const [ nameFilter, setNameFilter ] = useState('');
     const [ selectedYear, setSelectedYear ] = useState(0);
+    const [ currentInvoice, setCurrentInvoice ] = useState('');
 
     return (
       <main>
@@ -44,7 +45,7 @@ export function InvoiceArea() {
           <ChangeLog />
         </div>
 
-        <InvoiceViewer />
+        <InvoiceViewer setCurrentInvoice={setCurrentInvoice} />
       </main>
     )
 }

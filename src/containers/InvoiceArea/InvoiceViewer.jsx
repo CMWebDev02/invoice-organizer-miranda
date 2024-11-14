@@ -1,7 +1,14 @@
+import { useEffect } from 'react';
 import { UseInvoiceUpdate } from '../../hooks/UseInvoiceUpdate'
 
-export function InvoiceViewer() {
-    const { isLoading: isInvoiceLoading, errorOcurred: invoiceError, invoicePDF } = UseInvoiceUpdate();
+export function InvoiceViewer({setCurrentInvoice}) {
+    const { isLoading: isInvoiceLoading, errorOcurred: invoiceError, invoicePDF, invoicePath } = UseInvoiceUpdate();
+
+    useEffect(() => {
+        if (invoicePath != '') {
+            setCurrentInvoice(invoicePath)
+        }
+    }, [invoicePath, setCurrentInvoice])
 
     return (
         <div>
