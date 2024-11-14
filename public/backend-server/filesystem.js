@@ -25,9 +25,10 @@ export async function getAllCustomerFolders() {
 export async function getFirstInvoice() {
     try {
         let invoiceFolder = await fs.readdir(invoiceDirPath);
-        let invoicePath = fs.realpath(`${invoiceDirPath}/${invoiceFolder[0]}`);
+        let invoiceRelativePath = `${invoiceDirPath}/${invoiceFolder[0]}`
+        let invoiceAbsolutePath = await fs.realpath(invoiceRelativePath);
 
-        return invoicePath;
+        return [invoiceRelativePath, invoiceAbsolutePath];
     } catch (error) {
         console.error(error);
     }
