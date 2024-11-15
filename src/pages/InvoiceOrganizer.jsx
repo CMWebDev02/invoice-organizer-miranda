@@ -48,7 +48,7 @@ export function InvoiceOrganizer() {
     const { isTransferring, errorOcurred: fileTransferError, transferResult } = UseFileSort({ fileTransfer });
 
     function createFileInfo() {
-      if (selectedCustomer == '' && currentInvoice == '') return;
+      if (selectedCustomer == '' || currentInvoice == '') return;
 
       // Temporary
       function convertString(name) {

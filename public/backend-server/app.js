@@ -2,10 +2,12 @@ import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
 
-import * as fileAccess from './filesystem.js'
+import { FileSystem } from './filesystem.js'
 
 const backEnd = express();
 const port = 3000;
+
+const fileAccess = new FileSystem();
 
 backEnd.use(cors({
     origin: 'http://localhost:5173/',
@@ -47,14 +49,9 @@ backEnd.post('/sortFile', async (req, res) => {
     try {
         let requestQueryParameters = req.query;
 
-        let isSuccessful = fileAccess.sortFile(requestQueryParameters)
-
-        if (isSuccessful) {
-            res.send({transfer: 'Successful'})
-        } else {
-            res.send({transfer: 'Failed'})
-        }
-
+        let [isSuccessful, transferMessage] = await fileAccess.sortFile(requestQueryParameters);
+        
+        res.send({transfer: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage});
     } catch (error) {
         console.error(`Error: ${error}`);
         res.status(500).send('Server Error');
@@ -70,6 +67,7 @@ backEnd.get('/test', async (req, res) => {
     }
 })
 
+// Have the fileAccess class run a check to see that the customer folder and invoice directories have valid paths before opening up the server.
 backEnd.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 })
