@@ -1,6 +1,6 @@
 import * as fs from 'fs/promises';
 
-const invoiceDirPath = './Invoices'
+const invoiceDirPath = 'D:\\Invoices'
 const customerDirPath = './Customers'
 
 export async function getAllCustomerFolders() {
@@ -38,5 +38,25 @@ export async function getFirstInvoice() {
         return [invoiceRelativePath, encodedFileStream];
     } catch (error) {
         console.error(error);
+    }
+}
+
+export async function sortFile(queries) {
+    try {
+        const {customerFolder, letterFolder, filePath, fileName} = queries;
+        console.log(customerFolder, letterFolder, filePath, fileName)
+
+        const toCustomerFolder = `${customerDirPath}/${letterFolder}/${customerFolder}/${fileName}`
+
+        let copyTransfer = await fs.copyFile(filePath, toCustomerFolder)
+        let removeFile;
+
+        if (!copyTransfer) {
+            removeFile = await fs.rm(filePath)
+        }
+
+        return !removeFile;
+    } catch (error) {
+        console.error(error)
     }
 }

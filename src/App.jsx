@@ -1,16 +1,10 @@
-import { NavBar } from "./ui/NavBar";
-import { InvoiceArea } from "./pages/InvoiceArea";
-import {Footer} from "./ui/Footer";
+import { InvoiceOrganizer } from "./pages/InvoiceOrganizer";
 
 export function App() {
 
   return (
     <>
-      <NavBar />
-
-      <InvoiceArea />
-
-      <Footer />
+      <InvoiceOrganizer />
     </>
   )
 }

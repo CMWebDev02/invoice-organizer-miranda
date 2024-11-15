@@ -43,6 +43,24 @@ backEnd.get('/getInvoice', async (req, res) => {
     }
 })
 
+backEnd.post('/sortFile', async (req, res) => {
+    try {
+        let requestQueryParameters = req.query;
+
+        let isSuccessful = fileAccess.sortFile(requestQueryParameters)
+
+        if (isSuccessful) {
+            res.send({transfer: 'Successful'})
+        } else {
+            res.send({transfer: 'Failed'})
+        }
+
+    } catch (error) {
+        console.error(`Error: ${error}`);
+        res.status(500).send('Server Error');
+    }
+})
+
 backEnd.get('/test', async (req, res) => {
     try {
         res.send({data: 'Successfully connected.'});

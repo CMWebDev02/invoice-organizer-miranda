@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export function FolderList({ customers, nameFilter }) {
+export function FolderList({ customers, nameFilter, setCustomer }) {
     const [ filteredNames, setFilteredNames ] = useState([]);
 
     useEffect(() => {
@@ -23,9 +23,16 @@ export function FolderList({ customers, nameFilter }) {
         }
     }, [nameFilter, customers])
 
+    function signalSelectedCustomer(e, name) {
+        // Temp to show selected user
+        e.target.style.color = 'red'
+
+        setCustomer(name)
+    }
+
     return (
         <div>
-            {filteredNames == 0 ? <h2>No Matching Users</h2> : filteredNames.map(name => <div key={`folder-${name}`}>{name} <button>Quick Transfer</button></div>)}
+            {filteredNames == 0 ? <h2>No Matching Users</h2> : filteredNames.map(name => <div key={`folder-${name}`} onClick={(e) => signalSelectedCustomer(e, name)} className="">{name} <button>Quick Transfer</button></div>)}
         </div>
     )
 }
