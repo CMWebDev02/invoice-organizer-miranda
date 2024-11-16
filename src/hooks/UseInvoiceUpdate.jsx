@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export function UseInvoiceUpdate() {
+export function UseInvoiceUpdate({ transferOccurred }) {
     const [ isLoading, setIsLoading ] = useState(true);
     const [ errorOcurred, setErrorOcurred ] = useState(false);
     const [ invoicePDF, setInvoicePDF ] = useState('');
@@ -22,7 +22,7 @@ export function UseInvoiceUpdate() {
             //* A new array is constructed to create an array buffer.
             const arrayBuffer = new Uint8Array(fileBinary.length);
             
-            // The binary is iterated through and the associated index in the array buffer converts the binary value to an equivalent Unicode value.
+            //? The binary is iterated through and the associated index in the array buffer converts the binary value to an equivalent Unicode value.
             for (const index in fileBinary) {
                 arrayBuffer[index] = fileBinary.charCodeAt(index);
             } 
@@ -36,7 +36,6 @@ export function UseInvoiceUpdate() {
                 if (!response.ok) throw new Error('Failed to fetch invoice.');
                 //? The invoice is retrieved as a blob and is temporarily stored by the browser.
                 let data = await response.json();
-                
 
                 // A new blob is created using the decoded Base64 string and the resulting array buffer is passed into the blob constructor to recreate the pdf file.
                 let pdfBlob = new Blob([decodePDF(data.file)], {type: 'application/pdf'});
@@ -58,7 +57,7 @@ export function UseInvoiceUpdate() {
         return () => {
             // abortController.abort();
         }
-    }, [])
+    }, [transferOccurred])
 
     return { isLoading, errorOcurred, invoicePDF, invoicePath }
 }

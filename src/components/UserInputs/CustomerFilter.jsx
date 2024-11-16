@@ -1,10 +1,11 @@
-export function CustomerFilter({filterControls}) {
+export function CustomerFilter({filterControls, isDisabled}) {
     const [ filterValue, setFilterValue ] = filterControls;
 
     return (
         <div>
             <label htmlFor="customerFilter">Find:</label>
-            <input id="customerFilter" type='text' placeholder='Enter Customer Name...' value={filterValue} onChange={(e) => setFilterValue(e.target.value)} />
+            <input id="customerFilter" type='text' placeholder='Enter Customer Name...' value={filterValue} onChange={(e) => setFilterValue(e.target.value)} 
+                disabled={isDisabled} />
         </div>
     )
 }

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { UseDirectoryUpdate } from "../../hooks/UseDirectoryUpdate"
 import { FolderList } from "../../components/InvoiceArea/FoldersList";
 
-export function FolderDisplay({ enableInteraction, sortFile, nameFilter, setCustomer }) {
-    const {isLoading: isCustomerFoldersLoading, customerFolders, errorOcurred: customerFoldersError} = UseDirectoryUpdate();
+export function FolderDisplay({ disableUserInteraction, sortFile, nameFilter, setCustomer }) {
+    const {isLoading: isCustomerFoldersLoading, customerFolders, errorOcurred: customerFoldersError} = UseDirectoryUpdate({disableUserInteraction});
 
     return (
         <div>

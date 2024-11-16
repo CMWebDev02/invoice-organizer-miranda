@@ -16,10 +16,10 @@ export function FolderList({ customers, nameFilter, setCustomer }) {
                     if (name.toUpperCase().startsWith(capitalizedFilter)) return true
                 }))
             } else {
-                setFilteredNames([])
+                setFilteredNames([]);
             }
         } else {
-            setFilteredNames([])
+            setFilteredNames([]);
         }
     }, [nameFilter, customers])
 

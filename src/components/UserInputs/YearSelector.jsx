@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 
-export function YearSelector({yearControls}) {
+export function YearSelector({yearControls, isDisabled}) {
     const [ selectedYear, setSelectedYear ] = yearControls;
     const [ currentYear, setCurrentYear ] = useState(0);
     
@@ -20,7 +20,7 @@ export function YearSelector({yearControls}) {
             <input type='number'
                 min={currentYear - 10} max={currentYear + 10}
                     onChange={(e) => {setSelectedYear(e.target.value)}}
-                        value={selectedYear} />
+                        value={selectedYear} disabled={isDisabled} />
         </div>
     )
 }
