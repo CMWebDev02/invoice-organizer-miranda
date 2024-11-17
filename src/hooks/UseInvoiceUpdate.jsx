@@ -4,7 +4,7 @@ export function UseInvoiceUpdate({ transferOccurred }) {
     const [ isLoading, setIsLoading ] = useState(true);
     const [ errorOcurred, setErrorOcurred ] = useState(false);
     const [ invoicePDF, setInvoicePDF ] = useState('');
-    const [ invoicePath, setInvoicePath ] = useState('');
+    const [ invoiceFileName, setInvoiceFileName ] = useState('');
 
     useEffect(() => {
         const abortController = new AbortController;
@@ -43,7 +43,7 @@ export function UseInvoiceUpdate({ transferOccurred }) {
                 // //? The createObjectURL method is used to provide a link to the pdf file's temporary location, and with this location when set to link to an elements src to display the pdf.
                 let url = URL.createObjectURL(pdfBlob)
                 setInvoicePDF(url)
-                setInvoicePath(data.filePath)
+                setInvoiceFileName(data.fileName)
             } catch (error) {
                 console.error(error);
                 setErrorOcurred(error.message);
@@ -59,5 +59,5 @@ export function UseInvoiceUpdate({ transferOccurred }) {
         }
     }, [transferOccurred])
 
-    return { isLoading, errorOcurred, invoicePDF, invoicePath }
+    return { isLoading, errorOcurred, invoicePDF, invoiceFileName }
 }

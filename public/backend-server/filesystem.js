@@ -33,6 +33,20 @@ export class FileSystem {
         }
     } 
 
+    async _validatePaths(pathArray) {
+        try {
+            for (const path of pathArray) {
+                if (!(await this._checkPath(path))) {
+                    throw new Error(`Transfer Failed - ${path} does not exist!`);
+                }
+            }
+
+            return [true, null];
+        } catch (error) {
+            return [false, error.message]
+        }
+    }
+
     async getAllCustomerFolders() {
         try {
             //? First gathers the various letter folders within the customer folder directory
@@ -62,10 +76,12 @@ export class FileSystem {
             
             let offset = 0;
             let invoicePath = '';
+            let invoiceName = '';
             let invoiceStat;
             do {
                 if (invoiceFolder.length <= offset) throw new Error('No Valid Files Within Invoice Directory.');
                 invoicePath = `${this._invoiceDirPath}/${invoiceFolder[offset]}`;
+                invoiceName = invoiceFolder[offset]
                 offset++;
                 invoiceStat = await fs.stat(invoicePath)
             } while (!invoiceStat.isFile());
@@ -77,33 +93,64 @@ export class FileSystem {
     
             let encodedFileStream = fileStream.toString('base64')
     
-            return [invoicePath, encodedFileStream];
+            return [invoiceName, encodedFileStream];
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    async _checkForYearFolder(customerFolderPath, year) {
+        try {
+            let customerYearPath = `${customerFolderPath}/${year}`
+            if (!(await this._checkPath(customerYearPath))) {
+                let hasCreationFailed = await fs.mkdir(customerYearPath);
+                if (hasCreationFailed) throw new Error(`Failed to make a ${year} year directory within ${customerFolderPath}.`)
+            }
+
+            return [true, customerYearPath];
+        } catch (error) {
+            console.error(error)
+            return [false, error.message];
         }
     }
     
     async sortFile(queries) {
         try {
-            const {customerFolder, letterFolder, filePath, fileName} = queries;
+            //? Separates the query parameters that were passed with the fetch call.
+            let {customerFolderPath, customerName, invoiceName, year} = queries;
     
-            const customerFolderPath = `${this._customerDirPath}/${letterFolder}/${customerFolder}`
-
-            if (!(await this._checkPath(customerFolderPath))) {
-                throw new Error(`Transfer Failed - ${customerFolder} does not exist!`);
-            }
+            //? Construct the paths for the customer folder and the invoice using the base paths specified.
+            let invoiceFilePath = `${this._invoiceDirPath}/${invoiceName}`;
+            customerFolderPath = `${this._customerDirPath}/${customerFolderPath}`;
             
-            let copyTransfer = await fs.copyFile(filePath, `${customerFolderPath}/${fileName}`)
-            let removeFile;
+            //? Validate the invoice and customer folder path constructed above.
+            let arePathsValid = await this._validatePaths([customerFolderPath, invoiceFilePath])
+            if (!arePathsValid[0]) throw new Error(arePathsValid[1]);
+            
+            //? Validate that a year folder already exist within the customer folder, and if not one is created.
+            //! If any error results from attempting to create one the error is thrown to stop all proceeding code.
+            let [isYearFolderCreated, yearFolderCheckResult] = await this._checkForYearFolder(customerFolderPath, year);
+            if (!isYearFolderCreated) throw new Error(yearFolderCheckResult);
+            
+            //? Attempts to copy the file over since this allows the invoice and customer folder directory to be housed on separate drive without issue.
+            let hasFileCopyFailed = await fs.copyFile(invoiceFilePath, `${yearFolderCheckResult}/${invoiceName}`)
+            //? Initializes a new variable that will be used to store the result of deleting the invoice from its original location since it is copied, 
+            //! and this should be done only if the transfer succeeded.
+            let hasFileDeletionFailed;
     
-            if (!copyTransfer) {
-                removeFile = await fs.rm(filePath)
+            //? Checks if the copy was successful and if so delete the file from the original location and return true and a successful transfer message.
+            if (!hasFileCopyFailed) {
+                hasFileDeletionFailed = await fs.rm(invoiceFilePath)
+                //* One final check to determine if the file deletion succeeded.
+                if (hasFileDeletionFailed) throw new Error('Failed to remove invoice from original location!')
+
+                return [true, `Transfer Successful - ${invoiceName} moved to ${customerName}.`];
+            } else {
+                throw new Error('Failed to copy invoice to new location!')
             }
-    
-            return [!removeFile, `Transfer Successful - ${fileName} moved to ${customerFolder}.`];
         } catch (error) {
             console.error(error)
-            return [false, error.message];
+            return [false, `Transfer Failed - ${invoiceName} failed to transfer to ${customerName}.`];
         }
     }
 }

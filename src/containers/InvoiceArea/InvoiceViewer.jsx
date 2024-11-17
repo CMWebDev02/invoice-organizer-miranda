@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { UseInvoiceUpdate } from '../../hooks/UseInvoiceUpdate'
 
 export function InvoiceViewer({setCurrentInvoice, transferOccurred}) {
-    const { isLoading: isInvoiceLoading, errorOcurred: invoiceError, invoicePDF, invoicePath } = UseInvoiceUpdate({ transferOccurred });
+    const { isLoading: isInvoiceLoading, errorOcurred: invoiceError, invoicePDF, invoiceFileName } = UseInvoiceUpdate({ transferOccurred });
 
     useEffect(() => {
-        if (invoicePath != '') {
-            setCurrentInvoice(invoicePath)
+        if (invoiceFileName != '') {
+            setCurrentInvoice(invoiceFileName)
         }
-    }, [invoicePath, setCurrentInvoice])
+    }, [invoiceFileName, setCurrentInvoice])
 
     return (
         <div>

@@ -12,7 +12,7 @@ export function UseFileSort({ fileTransfer, setIsUserInteractionDisabled }) {
                     setIsTransferring(true);
 
                     const baseURL = 'http://localhost:3000/sortFile'
-                    let postURL = `${baseURL}?customerFolder=${fileTransfer.customerFolder}&letterFolder=${fileTransfer.letterFolder}&filePath=${fileTransfer.invoicePath}&fileName=${fileTransfer.invoiceName}`
+                    let postURL = `${baseURL}?customerFolderPath=${fileTransfer.customerFolderPath}&customerName=${fileTransfer.customerName}&invoiceName=${fileTransfer.invoiceName}&year=${fileTransfer.year}`
 
                     let response = await fetch(postURL, {
                         method: 'POST',
