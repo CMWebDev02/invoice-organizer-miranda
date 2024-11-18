@@ -2,24 +2,66 @@ import * as fs from 'fs/promises';
 
 export class FileSystem {
     constructor() {
-        this._invoiceDirPath = 'D:\\Invoices';
-        this._customerDirPath = './Customers';
-
-        // Have the paths for these directories be read out of a file that the user will initialize upon first launching the application.
+        this._invoiceDirPath;
+        this._customerDirPath;
     }
 
-    async validateMainDirectories() {
+    async loadDirectoryPaths(pathSettingsFile) {
+        try {
+            let doesPathSettingsFileExist = await this._checkPath(pathSettingsFile);
+            if (!doesPathSettingsFileExist) throw new Error('Unable to access settings file.')
+
+            let {invoicePath, customerFolderPath} = JSON.parse(await fs.readFile(pathSettingsFile));
+
+            this._invoiceDirPath = invoicePath;
+            this._customerDirPath = customerFolderPath;
+
+            let [areMainDirectoriesValid, mainPathValidatorMessage] = await this._validateMainDirectories();
+            if (!areMainDirectoriesValid) throw new Error(mainPathValidatorMessage);
+            
+            let [areLetterFoldersInitialized, letterFoldersValidatorMessage] = await this._validateLetterFolders();
+            if (!areLetterFoldersInitialized) throw new Error(letterFoldersValidatorMessage);
+
+            return {valid: true, message: `${mainPathValidatorMessage}\n${letterFoldersValidatorMessage}`}
+        } catch (error) {
+            console.error(error)
+            return {valid: false, message: error.message}
+        }
+    }
+
+    async _validateMainDirectories() {
         let isCustomerFoldersPathValid = await this._checkPath(this._customerDirPath);
         let isInvoiceDirectoryValid = await this._checkPath(this._invoiceDirPath);
-        if (isCustomerFoldersPathValid && isInvoiceDirectoryValid) return {valid: true, message: 'All Directory Paths are valid.'};
+        if (isCustomerFoldersPathValid && isInvoiceDirectoryValid) return [true, 'All Main Directory Paths are valid.'];
 
         let errorMessage = 'Invalid Paths:\n';
         
         //? Checks that the two main directories exist within at their specified path else an error for them is thrown.
-        if (!isInvoiceDirectoryValid) errorMessage += `Invoice Directory does not exist - ${this.invoiceDirPath}\n`;
+        if (!isInvoiceDirectoryValid) errorMessage += `Invoice Directory does not exist - ${this._invoiceDirPath}\n`;
         if (!isCustomerFoldersPathValid) errorMessage += `Customer Folders Directory does not exist - ${this._customerDirPath}\n`;
+        
+        return [false, errorMessage];
+    }
 
-        return {valid: false, message: errorMessage};
+    async _validateLetterFolders() {
+        try {
+            let alphabetArray = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+            let letterFoldersPathArray = alphabetArray.map(letter => `${this._customerDirPath}/${letter}`);
+            
+            let pathValidatorResult;
+            let invalidLetterFolder;
+            do {
+                [pathValidatorResult, invalidLetterFolder] = await this._validatePaths(letterFoldersPathArray);
+                if (!pathValidatorResult) {
+                    let hasFolderCreationFailed = await fs.mkdir(invalidLetterFolder);
+                    if (hasFolderCreationFailed) throw new Error(`Failed to initialize missing letter folders.`)
+                }
+            } while (!pathValidatorResult);
+
+            return [true, `All Letter Folders are initialized.`]
+        } catch (error) {
+            return [false, error.message]
+        }
     }
 
     async _checkPath(path) {
@@ -37,13 +79,13 @@ export class FileSystem {
         try {
             for (const path of pathArray) {
                 if (!(await this._checkPath(path))) {
-                    throw new Error(`Transfer Failed - ${path} does not exist!`);
+                    throw new Error(path);
                 }
             }
 
             return [true, null];
-        } catch (error) {
-            return [false, error.message]
+        } catch ({message: invalidPath}) {
+            return [false, invalidPath]
         }
     }
 
@@ -124,8 +166,8 @@ export class FileSystem {
             customerFolderPath = `${this._customerDirPath}/${customerFolderPath}`;
             
             //? Validate the invoice and customer folder path constructed above.
-            let arePathsValid = await this._validatePaths([customerFolderPath, invoiceFilePath])
-            if (!arePathsValid[0]) throw new Error(arePathsValid[1]);
+            let [arePathsValid, invalidPath] = await this._validatePaths([customerFolderPath, invoiceFilePath])
+            if (!arePathsValid) throw new Error(`Transfer Failed - ${invalidPath} does not exist!`);
             
             //? Validate that a year folder already exist within the customer folder, and if not one is created.
             //! If any error results from attempting to create one the error is thrown to stop all proceeding code.

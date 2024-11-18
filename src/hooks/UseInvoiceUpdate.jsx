@@ -27,7 +27,7 @@ export function UseInvoiceUpdate({ transferOccurred }) {
                 arrayBuffer[index] = fileBinary.charCodeAt(index);
             } 
             
-            return arrayBuffer
+            return arrayBuffer;
         }
 
         async function fetchInvoice() {

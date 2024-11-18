@@ -67,7 +67,20 @@ backEnd.get('/test', async (req, res) => {
     }
 })
 
-// Have the fileAccess class run a check to see that the customer folder and invoice directories have valid paths before opening up the server.
-backEnd.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-})
+async function startBackend() {
+    try {
+        // Checks that the fileAccess class's customer folder and invoice directories string attributes are valid paths before opening up the server.
+        // Along with checking the letter folders within the customer folders directory, and if a letter folder is missing, one is created.
+
+        let validationResult = await fileAccess.loadDirectoryPaths('./DirectoryPaths.json');
+        if (!validationResult.valid) throw new Error(validationResult.message)
+            
+        backEnd.listen(port, () => {
+            console.log(`Server running at http://localhost:${port}\n${validationResult.message}`);
+        }) 
+    } catch (error) {
+        console.error(error);   
+    }
+}
+
+startBackend();

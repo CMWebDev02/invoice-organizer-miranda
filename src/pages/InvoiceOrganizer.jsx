@@ -67,7 +67,9 @@ export function InvoiceOrganizer() {
 
     return (
       <>
-        <NavBar sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled} />
+        <NavBar 
+          sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled}
+             />
 
         <main>
           <UserInputs filter={[nameFilter, setNameFilter]} year={[ selectedYear, setSelectedYear ]} isInteractionDisabled={isUserInteractionDisabled} />
