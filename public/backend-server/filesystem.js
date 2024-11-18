@@ -155,11 +155,45 @@ export class FileSystem {
             return [false, error.message];
         }
     }
+
+    async _checkInvoiceFileName(customerFolderPath, invoiceName) {
+        try {
+            //? Concatenates the new path for the invoice. 
+            let newInvoicePath = `${customerFolderPath}/${invoiceName}`;
+
+            //? Checks that said path does not already exists, and if not, the new path string is returned.
+            if (!(await this._checkPath(newInvoicePath))) return newInvoicePath;
+
+            //* Creates the regex pattern for find the copy indicator for a file.
+            let copyPattern = /\((\d+)\)/ // Searches for () and captures the numbers between them.
+
+            do {
+                //? Checks if the file already has the copy indicator, and if not it appends it right before the file extension, and the value starts at 2.
+                if (!copyPattern.test(invoiceName)) {
+                    invoiceName = `${invoiceName.substring(0, invoiceName.lastIndexOf('.'))} (2).pdf`
+                } else {
+                    //? If the copy pattern is already appended to the file, then increment its count by one.
+                    invoiceName = invoiceName.replace(copyPattern, (_, copyNumber) => `(${parseInt(copyNumber) + 1})`)
+                }
+                //? Concatenates the new path.
+                newInvoicePath = `${customerFolderPath}/${invoiceName}`;
+                //* Runs the while loop so long as the new path string already points to a file.
+            } while ((await this._checkPath(newInvoicePath)));
+            
+
+            //? Once the while loop stops running, the new path string should be unique and can be returned to allow the storing of said invoice without overwriting another one.
+            return [newInvoicePath, invoiceName];
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
     
     async sortFile(queries) {
+        //? Separates the query parameters that were passed with the fetch call. These are declared in the function's body to allow access to these values from the catch statement in case of an error occuring.
+        let {customerFolderPath, customerName, invoiceName, year} = queries;
+        //? Initializes the newInvoiceName variable in the function's body for the same reason listed above to better determine when in the process an error is occurring.
+        let newInvoiceName = null;
         try {
-            //? Separates the query parameters that were passed with the fetch call.
-            let {customerFolderPath, customerName, invoiceName, year} = queries;
     
             //? Construct the paths for the customer folder and the invoice using the base paths specified.
             let invoiceFilePath = `${this._invoiceDirPath}/${invoiceName}`;
@@ -173,9 +207,14 @@ export class FileSystem {
             //! If any error results from attempting to create one the error is thrown to stop all proceeding code.
             let [isYearFolderCreated, yearFolderCheckResult] = await this._checkForYearFolder(customerFolderPath, year);
             if (!isYearFolderCreated) throw new Error(yearFolderCheckResult);
+
+            //? Cycles through the customer's folder to check if the current invoice name is already in use, and if so, cycles through copy numbers until and unused file name is found.
+            //* Once the new path is found, deconstruction is used to assign the new path and the new invoice name to variables.
+            let invoiceToCustomerFolder;
+            [invoiceToCustomerFolder, newInvoiceName] = await this._checkInvoiceFileName(yearFolderCheckResult, invoiceName);
             
-            //? Attempts to copy the file over since this allows the invoice and customer folder directory to be housed on separate drive without issue.
-            let hasFileCopyFailed = await fs.copyFile(invoiceFilePath, `${yearFolderCheckResult}/${invoiceName}`)
+            //? Attempts to copy the file over since this allows the invoice and customer folder directory to be housed on separate drives without issue.
+            let hasFileCopyFailed = await fs.copyFile(invoiceFilePath, invoiceToCustomerFolder)
             //? Initializes a new variable that will be used to store the result of deleting the invoice from its original location since it is copied, 
             //! and this should be done only if the transfer succeeded.
             let hasFileDeletionFailed;
@@ -186,13 +225,16 @@ export class FileSystem {
                 //* One final check to determine if the file deletion succeeded.
                 if (hasFileDeletionFailed) throw new Error('Failed to remove invoice from original location!')
 
-                return [true, `Transfer Successful - ${invoiceName} moved to ${customerName}.`];
+                return [true, `Transfer Successful - ${newInvoiceName} moved to ${customerName}.`];
             } else {
                 throw new Error('Failed to copy invoice to new location!')
             }
         } catch (error) {
             console.error(error)
-            return [false, `Transfer Failed - ${invoiceName} failed to transfer to ${customerName}.`];
+            let transferFailedMessage = `Transfer Failed - ${invoiceName} failed to transfer to ${customerName}.`
+            if (newInvoiceName) transferFailedMessage += `\nAttempted to rename ${invoiceName} to ${newInvoiceName}`
+            console.log(transferFailedMessage)
+            return [false, transferFailedMessage];
         }
     }
 }
