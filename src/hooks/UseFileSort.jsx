@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function UseFileSort({ fileTransfer, setIsUserInteractionDisabled }) {
+export function UseFileSort({ fileTransfer }) {
     const [ isTransferring, setIsTransferring ] = useState(false);
     const [ errorOcurred, setErrorOcurred ] = useState(false);
     const [ transferResult, setTransferResult ] = useState({});
@@ -10,30 +10,29 @@ export function UseFileSort({ fileTransfer, setIsUserInteractionDisabled }) {
             async function triggerFileTransfer() {
                 try { 
                     setIsTransferring(true);
-
+                    
                     const baseURL = 'http://localhost:3000/sortFile'
                     let postURL = `${baseURL}?customerFolderPath=${fileTransfer.customerFolderPath}&customerName=${fileTransfer.customerName}&invoiceName=${fileTransfer.invoiceName}&year=${fileTransfer.year}`
-
+                    
                     let response = await fetch(postURL, {
                         method: 'POST',
                     })
-
+                    
                     if (!response.ok) throw new Error('Failed To Make File Sort Request');
                     let transferResponse = await response.json();
-
+                    
                     setTransferResult(transferResponse);
                 } catch (error) {
                     console.error(error);
                     setErrorOcurred(error.message);
                 } finally {
-                    setIsUserInteractionDisabled(false)
+                    setIsTransferring(false);
                 }
             }
             
-            setIsUserInteractionDisabled(true);
             triggerFileTransfer()
         }
-    }, [fileTransfer, setIsUserInteractionDisabled])
+    }, [fileTransfer])
 
     return {isTransferring, errorOcurred, transferResult}
 }

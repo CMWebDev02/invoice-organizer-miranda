@@ -44,7 +44,11 @@ export function InvoiceOrganizer() {
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
 
-    const { isTransferring, errorOcurred: fileTransferError, transferResult } = UseFileSort({ fileTransfer, setIsUserInteractionDisabled });
+    const { isTransferring, errorOcurred: fileTransferError, transferResult } = UseFileSort({ fileTransfer });
+
+    useEffect(() => {
+      setIsUserInteractionDisabled(isTransferring)
+    }, [isTransferring])
 
     function createFileInfo() {
       if (selectedCustomer == '' || currentInvoice == '') return;
@@ -69,7 +73,7 @@ export function InvoiceOrganizer() {
       <>
         <NavBar 
           sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled}
-             />
+             isTransferring={isTransferring} transferResult={transferResult} />
 
         <main>
           <UserInputs filter={[nameFilter, setNameFilter]} year={[ selectedYear, setSelectedYear ]} isInteractionDisabled={isUserInteractionDisabled} />
