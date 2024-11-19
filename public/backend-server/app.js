@@ -51,7 +51,17 @@ backEnd.post('/sortFile', async (req, res) => {
 
         let [isSuccessful, transferMessage] = await fileAccess.sortFile(requestQueryParameters);
         
-        res.send({transfer: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage});
+        res.send({result: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage});
+    } catch (error) {
+        console.error(`Error: ${error}`);
+        res.status(500).send('Server Error');
+    }
+})
+
+backEnd.post('/createNewFolder', async (req, res) => {
+    try {
+        let requestQueryParameters = req.query;
+        console.log(requestQueryParameters)
     } catch (error) {
         console.error(`Error: ${error}`);
         res.status(500).send('Server Error');

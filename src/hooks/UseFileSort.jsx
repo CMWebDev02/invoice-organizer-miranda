@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export function UseFileSort({ fileTransfer }) {
     const [ isTransferring, setIsTransferring ] = useState(false);
-    const [ errorOcurred, setErrorOcurred ] = useState(false);
+    const [ errorOccurred, setErrorOccurred ] = useState(false);
     const [ transferResult, setTransferResult ] = useState({});
 
     useEffect(() => {
@@ -24,7 +24,7 @@ export function UseFileSort({ fileTransfer }) {
                     setTransferResult(transferResponse);
                 } catch (error) {
                     console.error(error);
-                    setErrorOcurred(error.message);
+                    setErrorOccurred(error.message);
                 } finally {
                     setIsTransferring(false);
                 }
@@ -34,5 +34,5 @@ export function UseFileSort({ fileTransfer }) {
         }
     }, [fileTransfer])
 
-    return {isTransferring, errorOcurred, transferResult}
+    return {isTransferring, errorOccurred, transferResult}
 }

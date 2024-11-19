@@ -1,12 +1,13 @@
-import { TransferIcon } from "../containers/NavBar/TransferIcon"
+import { ChangeLogIcon } from "../containers/NavBar/ChangeLogIcon"
 
-export function NavBar({ sortFile, isInteractionDisabled, isTransferring, transferResult }) {
+export function NavBar({ sortFile, isInteractionDisabled, isChanging, changeResult, toggleNewFolderModal }) {
     return (
         <nav>
         <h1>Invoice Organizer</h1>
-        <TransferIcon isTransferring={isTransferring} transferResult={transferResult} />
+        <ChangeLogIcon isChanging={isChanging} changeResult={changeResult} />
 
         <button onClick={sortFile} disabled={isInteractionDisabled}>Sort</button>
+        <button onClick={toggleNewFolderModal}>Create Folder</button>
         <button>Menu</button>
       </nav>
     )
