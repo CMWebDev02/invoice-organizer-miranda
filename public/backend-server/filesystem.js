@@ -233,8 +233,17 @@ export class FileSystem {
             console.error(error)
             let transferFailedMessage = `Transfer Failed - ${invoiceName} failed to transfer to ${customerName}.`
             if (newInvoiceName && invoiceName != newInvoiceName) transferFailedMessage += `\nAttempted to rename ${invoiceName} to ${newInvoiceName}`
-            console.log(transferFailedMessage)
             return [false, transferFailedMessage];
+        }
+    }
+
+    async createNewFolder(requestQueryParameters) {
+        let {customerFolderName, letterFolder} = requestQueryParameters;
+        try {
+            
+        } catch (error) {
+            console.error(error)
+            return [false, `Initialization Failed - Failed to create ${customerFolderName} folder.`]
         }
     }
 }

@@ -62,6 +62,8 @@ backEnd.post('/createNewFolder', async (req, res) => {
     try {
         let requestQueryParameters = req.query;
         console.log(requestQueryParameters)
+        
+        let [isSuccessful, transferMessage] = await fileAccess.createNewFolder(requestQueryParameters)
     } catch (error) {
         console.error(`Error: ${error}`);
         res.status(500).send('Server Error');

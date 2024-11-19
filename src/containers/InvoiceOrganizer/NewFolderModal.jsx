@@ -8,10 +8,16 @@ export function NewFolderModal({ showModal, toggleNewFolderModal, newCustomerFol
     
     const [errorMessage, setErrorMessage] = useState('');
 
+
+
     useEffect(() => {
         setNewCustomerName('');
         setErrorMessage('');
-    }, [showModal])
+
+        //! This currently clears the newCustomerFolderName input once the modal closes but this might cause an error 
+            //* As of now it does not seem to but I should still find a better way to do this.
+        newCustomerFolderName(null);
+    }, [showModal, newCustomerFolderName])
 
     function checkName() {
         setErrorMessage('')
@@ -20,7 +26,7 @@ export function NewFolderModal({ showModal, toggleNewFolderModal, newCustomerFol
         if (nameArr.length != 2) {
             setErrorMessage('Error: Please Enter a Valid Name!')
         } else {
-            let customerFolderQuery = nameArr.join('%20');
+            let customerFolderQuery = nameArr.join('%20').toUpperCase();
             newCustomerFolderName(customerFolderQuery);
             toggleNewFolderModal();
         };

@@ -14,7 +14,7 @@ export function UseCustomerFolderCreation({ newCustomerFolderName }) {
                 try {
                     setIsNewFolderInitializing(true);
                     const backendServerURL = 'http://localhost:3000/createNewFolder'
-                    let fetchUrl = `${backendServerURL}?customerFolderName=${newCustomerFolderName}`;
+                    let fetchUrl = `${backendServerURL}?customerFolderName=${newCustomerFolderName}&letterFolder=${newCustomerFolderName[0]}`;
                     let response = await fetch(fetchUrl, {
                         method: 'POST',
                         signal: abortSignal,
@@ -30,6 +30,10 @@ export function UseCustomerFolderCreation({ newCustomerFolderName }) {
             }
 
             createNewCustomerFolder()
+        }
+
+        return () => {
+            // abortFetchController.abort();
         }
     }, [newCustomerFolderName])
 
