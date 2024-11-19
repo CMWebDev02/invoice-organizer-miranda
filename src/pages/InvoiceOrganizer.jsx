@@ -48,9 +48,7 @@ export function InvoiceOrganizer() {
     const { isNewFolderInitializing, errorOccurred: newFolderError, folderCreationResult } = UseCustomerFolderCreation({ newCustomerFolderName });
 
     useEffect(() => {
-      let disableInput = isNewFolderInitializing || isTransferring;
-
-      if (disableInput) setIsUserInteractionDisabled(disableInput)
+      setIsUserInteractionDisabled(isNewFolderInitializing || isTransferring)
     }, [isTransferring, isNewFolderInitializing])
 
     function createFileInfo() {
@@ -79,10 +77,11 @@ export function InvoiceOrganizer() {
             isChanging={isTransferring} changeResult={transferResult} 
              toggleNewFolderModal={toggleNewFolderModal} />
 
-        <InvoiceArea year={[ selectedYear, setSelectedYear ]} userInteraction={setIsUserInteractionDisabled}
+        <InvoiceArea year={[ selectedYear, setSelectedYear ]}
+          isUserInteractionDisabled={isUserInteractionDisabled} toggleUserInteraction={setIsUserInteractionDisabled}
           sortFile={createFileInfo} setCustomer={setSelectedCustomer} currentInvoice={setCurrentInvoice} 
             transferOccurred={transferResult} showNewFolderModal={showNewFolderModal}
-              toggleNewFolderModal={toggleNewFolderModal} newCustomerFolderName={setNewCustomerFolderName}/>
+              toggleNewFolderModal={toggleNewFolderModal} newCustomerFolderName={setNewCustomerFolderName} />
 
         {fileTransferError && <h2>{fileTransferError}</h2>}
 

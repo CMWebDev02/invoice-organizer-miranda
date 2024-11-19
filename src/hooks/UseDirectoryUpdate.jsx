@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-export function UseDirectoryUpdate({ disableUserInteraction }) {
+export function UseDirectoryUpdate({ toggleUserInteraction }) {
     const [ customerFolders, setCustomerFolders ] = useState([]);
     const [ isLoading, setIsLoading ] = useState(true);
-    const [ errorOcurred, setErrorOcurred ] = useState(false);
+    const [ errorOccurred, setErrorOccurred ] = useState(false);
 
     useEffect(() => {
         const abortFetchCall = new AbortController;
@@ -15,10 +15,10 @@ export function UseDirectoryUpdate({ disableUserInteraction }) {
                 if (!response.ok) throw new Error('Failed to fetch customer folders.');
                 let data = await response.json();
                 setCustomerFolders(data.customersArray);
-                disableUserInteraction(false)
+                toggleUserInteraction(false)
             } catch (error) {
                 console.error(error);
-                setErrorOcurred(error.message);
+                setErrorOccurred(error.message);
             } finally {
                 setIsLoading(false)
             }
@@ -29,7 +29,7 @@ export function UseDirectoryUpdate({ disableUserInteraction }) {
         return () => {
             // abortFetchCall.abort();
         }
-    }, [disableUserInteraction])
+    }, [toggleUserInteraction])
 
-    return {customerFolders, isLoading, errorOcurred}
+    return {customerFolders, isLoading, errorOccurred}
 }

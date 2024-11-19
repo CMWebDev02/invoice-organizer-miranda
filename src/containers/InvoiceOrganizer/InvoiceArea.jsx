@@ -6,25 +6,25 @@ import { NewFolderModal } from "./NewFolderModal";
 
 import { useState } from "react";
 
-export function InvoiceArea({ year, userInteraction, sortFile, setCustomer, currentInvoice, transferOccurred, showNewFolderModal, toggleNewFolderModal, newCustomerFolderName }) {
+export function InvoiceArea(props) {
     const [ nameFilter, setNameFilter ] = useState('');
 
     return (
         <main>
-            <UserInputs filter={[nameFilter, setNameFilter]} year={year} isInteractionDisabled={userInteraction} />
+            <UserInputs filter={[nameFilter, setNameFilter]} year={props.year} isInteractionDisabled={props.isUserInteractionDisabled} />
 
             
             <div>
                 <FolderDisplay 
-                    disableUserInteraction={userInteraction} sortFile={sortFile} 
-                        nameFilter={nameFilter} setCustomer={setCustomer} />
+                    toggleUserInteraction={props.toggleUserInteraction} sortFile={props.sortFile} 
+                        nameFilter={nameFilter} setCustomer={props.setCustomer} />
 
                 <ChangeLog />
             </div>
 
-            <InvoiceViewer setCurrentInvoice={currentInvoice} transferOccurred={transferOccurred} />
+            <InvoiceViewer setCurrentInvoice={props.currentInvoice} transferOccurred={props.transferOccurred} />
 
-            <NewFolderModal showModal={showNewFolderModal} toggleNewFolderModal={toggleNewFolderModal} newCustomerFolderName={newCustomerFolderName} />
+            <NewFolderModal showModal={props.showNewFolderModal} toggleNewFolderModal={props.toggleNewFolderModal} newCustomerFolderName={props.newCustomerFolderName} />
         </main>
     )
 }
