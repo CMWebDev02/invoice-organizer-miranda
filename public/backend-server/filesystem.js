@@ -64,6 +64,11 @@ export class FileSystem {
         }
     }
 
+    /**
+    * @method Determines if the passed in path string points to an existing file or directory. 
+    * @param {string} path - String value of the path that will be checked.
+    * @returns a boolean - True is returned if there is an associated file or directory and false if no file or directory exists.
+    */
     async _checkPath(path) {
         try {
             //* Attempts to check the user's permissions for a file or directory, and if it can read the permissions from said file or directory it exists.
@@ -162,7 +167,7 @@ export class FileSystem {
             let newInvoicePath = `${customerFolderPath}/${invoiceName}`;
 
             //? Checks that said path does not already exists, and if not, the new path string is returned.
-            if (!(await this._checkPath(newInvoicePath))) return [newInvoicePath, invoiceName];
+            if (!(await this._checkPath(newInvoicePath))) return [newInvoicePath, null];
             
             //* Creates the regex pattern for find the copy indicator for a file.
             let copyPattern = /\((\d+)\)/ // Searches for () and captures the numbers between them.
@@ -232,17 +237,32 @@ export class FileSystem {
         } catch (error) {
             console.error(error)
             let transferFailedMessage = `Transfer Failed - ${invoiceName} failed to transfer to ${customerName}.`
-            if (newInvoiceName && invoiceName != newInvoiceName) transferFailedMessage += `\nAttempted to rename ${invoiceName} to ${newInvoiceName}`
+            if (newInvoiceName) transferFailedMessage += `\nAttempted to rename ${invoiceName} to ${newInvoiceName}`
             return [false, transferFailedMessage];
         }
     }
 
+    /**
+    * @method Initialized a new customer folder within the customer directory path. The customer folder is initialized based on the passed in query parameters gathered by a fetch request.
+    * A new path string is concatenated and check for potential conflicts.
+    * @param {object} requestQueryParameters - Query parameters used for creating the new customer folder's path string. It includes a customerName and letterFolder property.
+    * @returns an array of two items, a boolean to signify if the initialized was successful and a string describing the outcome.
+    */
     async createNewFolder(requestQueryParameters) {
         let {customerFolderName, letterFolder} = requestQueryParameters;
         try {
+            let newCustomerFolderPath = `${this._customerDirPath}/${letterFolder}/${customerFolderName}`
             
+            if ((await this._checkPath(newCustomerFolderPath))) throw new Error('Customer Folder Already Exists!', {cause: 'conflict'});
+
+            let hasFolderCreationFailed = await fs.mkdir(newCustomerFolderPath);
+
+            if (hasFolderCreationFailed) throw new Error(`Failed to create a directory at path ${newCustomerFolderPath}`);
+
+            return [true, `Initialization Successful - Customer Folder ${customerFolderName} Added to Directory.`]
         } catch (error) {
             console.error(error)
+            if (error.cause == 'conflict') return [false, `Initialization Failed - Customer Folder ${customerFolderName} Already Exists!`]
             return [false, `Initialization Failed - Failed to create ${customerFolderName} folder.`]
         }
     }

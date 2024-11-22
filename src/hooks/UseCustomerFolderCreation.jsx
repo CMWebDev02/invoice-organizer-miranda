@@ -10,6 +10,11 @@ export function UseCustomerFolderCreation({ newCustomerFolderName }) {
             const abortFetchController = new AbortController();
             const abortSignal = abortFetchController.signal;
 
+            /**
+             * @component|function
+             * @param {type} variable - description .
+             * @returns
+             */
             async function createNewCustomerFolder() {
                 try {
                     setIsNewFolderInitializing(true);
@@ -20,7 +25,9 @@ export function UseCustomerFolderCreation({ newCustomerFolderName }) {
                         signal: abortSignal,
                     })
 
-                    console.log(response)
+                    let data = await response.json()
+
+                    setFolderCreationResult(data)
                 } catch (error) {
                     console.error(error);
                     setErrorOccurred(error.message);

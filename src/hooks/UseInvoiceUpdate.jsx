@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 export function UseInvoiceUpdate({ transferOccurred }) {
     const [ isLoading, setIsLoading ] = useState(true);
-    const [ errorOcurred, setErrorOcurred ] = useState(false);
+    const [ errorOccurred, setErrorOccurred ] = useState(false);
     const [ invoicePDF, setInvoicePDF ] = useState('');
     const [ invoiceFileName, setInvoiceFileName ] = useState('');
 
@@ -46,7 +46,7 @@ export function UseInvoiceUpdate({ transferOccurred }) {
                 setInvoiceFileName(data.fileName)
             } catch (error) {
                 console.error(error);
-                setErrorOcurred(error.message);
+                setErrorOccurred(error.message);
             } finally {
                 setIsLoading(false);
             }
@@ -59,5 +59,5 @@ export function UseInvoiceUpdate({ transferOccurred }) {
         }
     }, [transferOccurred])
 
-    return { isLoading, errorOcurred, invoicePDF, invoiceFileName }
+    return { isLoading, errorOccurred, invoicePDF, invoiceFileName }
 }
