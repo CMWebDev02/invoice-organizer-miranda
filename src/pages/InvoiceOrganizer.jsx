@@ -3,8 +3,10 @@ import { Footer } from "../ui/Footer";
 
 
 import { useEffect, useState } from "react";
-import { UseFileSort } from "../hooks/UseFileSort";
 import { InvoiceArea } from "../containers/InvoiceOrganizer/InvoiceArea";
+
+import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
+
 import { UseCustomerFolderCreation } from "../hooks/UseCustomerFolderCreation";
 
 // Pseudo Code
@@ -44,8 +46,8 @@ export function InvoiceOrganizer() {
     const [ showNewFolderModal, setShowNewFolderModal ] = useState(false);
     const toggleNewFolderModal = () => setShowNewFolderModal(!showNewFolderModal);
 
-    const { isTransferring, errorOccurred: fileTransferError, transferResult } = UseFileSort({ fileTransfer });
     const { isNewFolderInitializing, errorOccurred: newFolderError, folderCreationResult } = UseCustomerFolderCreation({ newCustomerFolderName });
+    const { isLoading: isTransferring, errorOccurred: fileTransferError, fetchResponse: transferResult } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/sortFile', queries: fileTransfer})
 
     useEffect(() => {
       setIsUserInteractionDisabled(isNewFolderInitializing || isTransferring)
@@ -77,8 +79,7 @@ export function InvoiceOrganizer() {
             isChanging={isTransferring} changeResult={transferResult} 
              toggleNewFolderModal={toggleNewFolderModal} />
 
-        <InvoiceArea year={[ selectedYear, setSelectedYear ]}
-          isUserInteractionDisabled={isUserInteractionDisabled} toggleUserInteraction={setIsUserInteractionDisabled}
+        <InvoiceArea year={[ selectedYear, setSelectedYear ]} userInteraction={[isUserInteractionDisabled, setIsUserInteractionDisabled]}
           sortFile={createFileInfo} setCustomer={setSelectedCustomer} currentInvoice={setCurrentInvoice} 
             transferOccurred={transferResult} showNewFolderModal={showNewFolderModal}
               toggleNewFolderModal={toggleNewFolderModal} newCustomerFolderName={setNewCustomerFolderName} />

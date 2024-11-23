@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
-import { UseDirectoryUpdate } from "../../hooks/UseDirectoryUpdate"
+import { UseFetchGetRequest } from "../../hooks/UseFetchGetRequest";
 import { FolderList } from "../../components/InvoiceArea/FoldersList";
 
-export function FolderDisplay({ toggleUserInteraction, sortFile, nameFilter, setCustomer }) {
-    const {isLoading: isCustomerFoldersLoading, customerFolders, errorOccurred: customerFoldersError} = UseDirectoryUpdate({toggleUserInteraction});
+export function FolderDisplay({ setIsUserInteractionDisabled, sortFile, nameFilter, setCustomer }) {
+    const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: 'http://localhost:3000/getDirectories', makeRequest: ''})
+    const [ customerFolders, setCustomerFolders ] = useState([]);
+
+    useEffect(() => {
+        if (!fetchData) {
+            setIsUserInteractionDisabled(true);
+        } else {
+            setCustomerFolders(fetchData.customersArray);
+            setIsUserInteractionDisabled(false);
+        }
+
+
+    }, [fetchData, setIsUserInteractionDisabled])
 
     return (
         <div>
-            {isCustomerFoldersLoading && <h2>Gathering Customer Folders</h2>}
-            {customerFoldersError ? <h2>{customerFoldersError}</h2> : <FolderList customers={customerFolders} nameFilter={nameFilter} setCustomer={setCustomer} />}
+            {isLoading && <h2>Gathering Customer Folders</h2>}
+            {errorOccurred ? <h2>{errorOccurred}</h2> : <FolderList customers={customerFolders} nameFilter={nameFilter} setCustomer={setCustomer} />}
         </div>
     )
 }

@@ -27,7 +27,7 @@ export function NewFolderModal({ showModal, toggleNewFolderModal, newCustomerFol
             setErrorMessage('Error: Please Enter a Valid Name!')
         } else {
             let customerFolderQuery = nameArr.join('%20').toUpperCase();
-            newCustomerFolderName(customerFolderQuery);
+            newCustomerFolderName({customerName: customerFolderQuery});
             toggleNewFolderModal();
         };
 

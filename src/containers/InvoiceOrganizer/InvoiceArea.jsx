@@ -7,16 +7,17 @@ import { NewFolderModal } from "./NewFolderModal";
 import { useState } from "react";
 
 export function InvoiceArea(props) {
+    const [isUserInteractionDisabled, setIsUserInteractionDisabled] = props.userInteraction
     const [ nameFilter, setNameFilter ] = useState('');
 
     return (
         <main>
-            <UserInputs filter={[nameFilter, setNameFilter]} year={props.year} isInteractionDisabled={props.isUserInteractionDisabled} />
+            <UserInputs filter={[nameFilter, setNameFilter]} year={props.year} isInteractionDisabled={isUserInteractionDisabled} />
 
             
             <div>
                 <FolderDisplay 
-                    toggleUserInteraction={props.toggleUserInteraction} sortFile={props.sortFile} 
+                    setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={props.sortFile} 
                         nameFilter={nameFilter} setCustomer={props.setCustomer} />
 
                 <ChangeLog />

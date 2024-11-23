@@ -12,13 +12,13 @@ export function ChangeLogIcon({ isChanging, changeResult }) {
     const lastChangeResultTarget = useRef(null)
 
     useEffect(() => {
-        if (changeResult.result) setIconColor(changeResult.result === ' Succeeded' ? 'green' : 'red');
+        if (changeResult?.result) setIconColor(changeResult?.result === ' Succeeded' ? 'green' : 'red');
     }, [changeResult])
 
     return (
         <OverlayTrigger 
             placement='right'
-            overlay={<ChangeLogToolTip lastchangemessage={changeResult.message} />}
+            overlay={<ChangeLogToolTip lastchangemessage={changeResult?.message} />}
             trigger="click"
             target={lastChangeResultTarget}
         >
