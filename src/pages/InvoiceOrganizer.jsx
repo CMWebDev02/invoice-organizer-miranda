@@ -40,6 +40,7 @@ export function InvoiceOrganizer() {
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
+    const [ changeOccurred, setChangeOccurred ] = useState([]);
 
     const [ showNewFolderModal, setShowNewFolderModal ] = useState(false);
     const toggleNewFolderModal = () => setShowNewFolderModal(!showNewFolderModal);
@@ -51,8 +52,29 @@ export function InvoiceOrganizer() {
       setIsUserInteractionDisabled(isNewFolderInitializing || isTransferring)
     }, [isTransferring, isNewFolderInitializing])
 
-    function createFileInfo() {
-      if (selectedCustomer == '' || currentInvoice == '') return;
+    useEffect(() => {
+      //! If an error occurs for either fetch post attempt, clear the object associate with the action so that the user may attempt to recall their request..
+      if (newFolderError) setNewCustomerFolderName(null);
+      if (fileTransferError) setFileTransfer(null);
+    }, [newFolderError, fileTransferError])
+
+    useEffect(() => {
+      //? Checks if either a file sort fetch resolved.
+      if (transferResult) {
+        setChangeOccurred(prevChanges => [transferResult, ...prevChanges]);
+      }
+    }, [transferResult])
+    useEffect(() => {
+      //? Checks if either a folderCreation fetch resolved.
+      if (folderCreationResult) {
+        setChangeOccurred(prevChanges => [folderCreationResult, ...prevChanges]);
+      }
+    }, [folderCreationResult])
+
+    function createFileInfo(quickSortName) {
+      //? Checks if a name parameter was passed in, and if it was, that name is used instead of whats currently saved in state.
+      let customerName = quickSortName ? quickSortName : selectedCustomer;
+      if (customerName == '' || currentInvoice == '') return;
 
       // Temporary
       function convertString(name) {
@@ -74,15 +96,18 @@ export function InvoiceOrganizer() {
       <>
         <NavBar 
           sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled}
-            isChanging={isTransferring} changeResult={transferResult} 
+            isChanging={isNewFolderInitializing || isTransferring} changeResult={changeOccurred[0]} 
              toggleNewFolderModal={toggleNewFolderModal} />
 
         <InvoiceArea year={[ selectedYear, setSelectedYear ]} userInteraction={[isUserInteractionDisabled, setIsUserInteractionDisabled]}
           sortFile={createFileInfo} setCustomer={setSelectedCustomer} currentInvoice={setCurrentInvoice} 
             transferOccurred={transferResult} showNewFolderModal={showNewFolderModal}
-              toggleNewFolderModal={toggleNewFolderModal} newCustomerFolderName={setNewCustomerFolderName} />
+              toggleNewFolderModal={toggleNewFolderModal} newCustomerFolderName={setNewCustomerFolderName} 
+                changeLog={changeOccurred} />
 
+        {/* Turn these into toast Icons for the bottom right of the screen */}
         {fileTransferError && <h2>{fileTransferError}</h2>}
+        {newFolderError && <h2>{newFolderError}</h2>}
 
 
         <Footer sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled}

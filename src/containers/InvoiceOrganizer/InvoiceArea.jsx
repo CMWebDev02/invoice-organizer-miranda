@@ -20,7 +20,7 @@ export function InvoiceArea(props) {
                     setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={props.sortFile} 
                         nameFilter={nameFilter} setCustomer={props.setCustomer} />
 
-                <ChangeLog />
+                <ChangeLog changeLog={props.changeLog} />
             </div>
 
             <InvoiceViewer setCurrentInvoice={props.currentInvoice} transferOccurred={props.transferOccurred} />

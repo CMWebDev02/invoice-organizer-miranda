@@ -1,14 +1,10 @@
-export function ChangeLog() {
+import { ChangeInfo } from "../components/ChangeLog/ChangeInfo";
+
+export function ChangeLog({changeLog}) {
+
     return (
         <div>
-            <div>
-                <h2>Various changes</h2>
-                <h2>Various changes</h2>
-                <h2>Various changes</h2>
-                <h2>Various changes</h2>
-                <h2>Various changes</h2>
-                <h2>Various changes</h2>
-            </div>
+            {changeLog && changeLog.map(change => <ChangeInfo info={change} />)}
         </div>
     )
 }

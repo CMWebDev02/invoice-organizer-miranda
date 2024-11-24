@@ -40,6 +40,10 @@ export function InvoiceViewer({setCurrentInvoice, transferOccurred}) {
         };
     }, [fetchData, setCurrentInvoice])
 
+    useEffect(() => {
+        if (invoiceError) setCurrentInvoice('')
+    }, [invoiceError, setCurrentInvoice])
+
     return (
         <div>
             {isInvoiceLoading && <h2>Retrieving Invoice</h2>}

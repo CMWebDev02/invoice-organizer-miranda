@@ -167,7 +167,7 @@ export class FileSystem {
             let newInvoicePath = `${customerFolderPath}/${invoiceName}`;
 
             //? Checks that said path does not already exists, and if not, the new path string is returned.
-            if (!(await this._checkPath(newInvoicePath))) return [newInvoicePath, null];
+            if (!(await this._checkPath(newInvoicePath))) return [newInvoicePath, invoiceName];
             
             //* Creates the regex pattern for find the copy indicator for a file.
             let copyPattern = /\((\d+)\)/ // Searches for () and captures the numbers between them.
@@ -237,7 +237,7 @@ export class FileSystem {
         } catch (error) {
             console.error(error)
             let transferFailedMessage = `Transfer Failed - ${invoiceName} failed to transfer to ${customerName}.`
-            if (newInvoiceName) transferFailedMessage += `\nAttempted to rename ${invoiceName} to ${newInvoiceName}`
+            if (newInvoiceName && newInvoiceName != invoiceName) transferFailedMessage += `\nAttempted to rename ${invoiceName} to ${newInvoiceName}`
             return [false, transferFailedMessage];
         }
     }
