@@ -49,9 +49,10 @@ backEnd.post('/sortFile', async (req, res) => {
     try {
         let requestQueryParameters = req.query;
 
-        let [isSuccessful, transferMessage] = await fileAccess.sortFile(requestQueryParameters);
+        let [isSuccessful, transferMessage, undoObj] = await fileAccess.sortFile(requestQueryParameters);
+        let actionId = (Date.now() * Math.random()).toString(16)
         
-        res.send({result: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage, undoInfo: ''});
+        res.send({result: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage, undoInfo: undoObj, id: actionId, action: 'File Transfer'});
     } catch (error) {
         console.error(`Error: ${error}`);
         res.status(500).send('Server Error');
@@ -62,9 +63,28 @@ backEnd.post('/createNewFolder', async (req, res) => {
     try {
         let requestQueryParameters = req.query;
         
-        let [isSuccessful, transferMessage] = await fileAccess.createNewFolder(requestQueryParameters)
+        let [isSuccessful, transferMessage, undoObj] = await fileAccess.createNewFolder(requestQueryParameters)
+        let actionId = (Date.now() * Math.random()).toString(16)
 
-        res.send({result: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage, undoInfo: ''})
+        res.send({result: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage, undoInfo: undoObj, id: actionId, action: 'Folder Creation'})
+    } catch (error) {
+        console.error(`Error: ${error}`);
+        res.status(500).send('Server Error');
+    }
+})
+
+backEnd.post('/undoAction', async (req, res) => {
+    try {
+        let requestQueryParameters = req.query;
+
+        // Remember to parse the undoInfo back into an object.
+
+        console.log(requestQueryParameters)
+        
+        // let [isSuccessful, transferMessage] = await fileAccess.undoAction(requestQueryParameters)
+        // let actionId = (Date.now() * Math.random()).toString(16)
+
+        // res.send({result: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage})
     } catch (error) {
         console.error(`Error: ${error}`);
         res.status(500).send('Server Error');

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 export function FolderList({ customers, nameFilter, setCustomer, sortFile }) {
     const [ filteredNames, setFilteredNames ] = useState([]);
+    const [ selectedName, setSelectedName ] = useState(null);
 
     useEffect(() => {
         if (nameFilter != '') {
@@ -21,12 +22,14 @@ export function FolderList({ customers, nameFilter, setCustomer, sortFile }) {
         } else {
             setFilteredNames([]);
         }
-    }, [nameFilter, customers])
+
+        
+        setSelectedName(null)
+        setCustomer('');
+    }, [nameFilter, customers, setCustomer, setSelectedName])
 
     function signalSelectedCustomer(e, name) {
-        // Temp to show selected user
-        e.target.style.color = 'red'
-        e.stopPropagation()
+        setSelectedName(name);
 
         setCustomer(name);
     }
@@ -34,13 +37,13 @@ export function FolderList({ customers, nameFilter, setCustomer, sortFile }) {
     function quickSort(e, name) {
         e.stopPropagation()
         
-        sortFile();
+        sortFile(name);
     }
 
     return (
         <div>
             {filteredNames == 0 ? <h2>No Matching Users</h2> : 
-            filteredNames.map(name => <div key={`folder-${name}`} onClick={(e) => signalSelectedCustomer(e, name)} className="">{name} <button onClick={(e) => quickSort(e, name)}>Quick Transfer</button></div>)}
+            filteredNames.map(name => <div key={`folder-${name}`} onClick={(e) => signalSelectedCustomer(e, name)} style={{color: selectedName == name ? 'red' : 'black'}}>{name} <button onClick={(e) => quickSort(e, name)}>Quick Transfer</button></div>)}
         </div>
     )
 }

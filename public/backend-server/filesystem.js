@@ -230,7 +230,7 @@ export class FileSystem {
                 //* One final check to determine if the file deletion succeeded.
                 if (hasFileDeletionFailed) throw new Error('Failed to remove invoice from original location!')
 
-                return [true, `Transfer Successful - ${newInvoiceName} moved to ${customerName}.`];
+                return [true, `Transfer Successful - ${newInvoiceName} moved to ${customerName}.`, {oldInvoiceName: invoiceName, newInvoiceName, customerFolderPath, customerName, year}];
             } else {
                 throw new Error('Failed to copy invoice to new location!')
             }
@@ -259,7 +259,7 @@ export class FileSystem {
 
             if (hasFolderCreationFailed) throw new Error(`Failed to create a directory at path ${newCustomerFolderPath}`);
 
-            return [true, `Initialization Successful - Customer Folder ${customerFolderName} Added to Directory.`]
+            return [true, `Initialization Successful - Customer Folder ${customerFolderName} Added to Directory.`, {customerFolderName, letterFolder}]
         } catch (error) {
             console.error(error)
             if (error.cause == 'conflict') return [false, `Initialization Failed - Customer Folder ${customerFolderName} Already Exists!`]

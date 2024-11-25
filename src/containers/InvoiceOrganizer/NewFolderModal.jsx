@@ -22,7 +22,8 @@ export function NewFolderModal({ showModal, toggleNewFolderModal, newCustomerFol
     function checkName() {
         setErrorMessage('')
 
-        let nameArr = newCustomerName.split(' ');
+        let nameArr = newCustomerName.trim().split(' ');
+        console.log(nameArr)
         if (nameArr.length != 2) {
             setErrorMessage('Error: Please Enter a Valid Name!')
         } else {

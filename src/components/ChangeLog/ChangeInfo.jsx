@@ -1,4 +1,4 @@
-export function ChangeInfo({ info }) {
+export function ChangeInfo({ info, undoChange }) {
     let isSuccessful = info.result == 'Succeeded' ? true : false;
 
     let tempSuccessfulStyle = {
@@ -9,16 +9,10 @@ export function ChangeInfo({ info }) {
         color: 'red'
     }
 
-    function undoChange() {
-        let userResult = confirm('Are You Sure You Want to Undo This Change?')
-        if (!userResult) return;
-        console.log('not yet')
-    }
-
     return (
         <div style={isSuccessful ? tempSuccessfulStyle : tempFailedStyle}>
             {info.message}
-            <button onClick={undoChange}>Undo</button>
+            {isSuccessful && <button onClick={() => undoChange(info.undoInfo, info.id, info.action)}>Undo</button>}
         </div>
     )
 }

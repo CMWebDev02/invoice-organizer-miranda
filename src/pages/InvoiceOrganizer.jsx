@@ -64,6 +64,7 @@ export function InvoiceOrganizer() {
         setChangeOccurred(prevChanges => [transferResult, ...prevChanges]);
       }
     }, [transferResult])
+
     useEffect(() => {
       //? Checks if either a folderCreation fetch resolved.
       if (folderCreationResult) {
@@ -73,7 +74,7 @@ export function InvoiceOrganizer() {
 
     function createFileInfo(quickSortName) {
       //? Checks if a name parameter was passed in, and if it was, that name is used instead of whats currently saved in state.
-      let customerName = quickSortName ? quickSortName : selectedCustomer;
+      let customerName = typeof quickSortName === 'string' ? quickSortName : selectedCustomer;
       if (customerName == '' || currentInvoice == '') return;
 
       // Temporary
@@ -82,7 +83,7 @@ export function InvoiceOrganizer() {
         return name.replace(regexPattern, '%20')
       }
 
-      let queryString = convertString(selectedCustomer);
+      let queryString = convertString(customerName);
 
       setFileTransfer({
         invoiceName: currentInvoice, 
@@ -103,7 +104,7 @@ export function InvoiceOrganizer() {
           sortFile={createFileInfo} setCustomer={setSelectedCustomer} currentInvoice={setCurrentInvoice} 
             transferOccurred={transferResult} showNewFolderModal={showNewFolderModal}
               toggleNewFolderModal={toggleNewFolderModal} newCustomerFolderName={setNewCustomerFolderName} 
-                changeLog={changeOccurred} />
+                changeLog={changeOccurred} alterChangeLog={setChangeOccurred} />
 
         {/* Turn these into toast Icons for the bottom right of the screen */}
         {fileTransferError && <h2>{fileTransferError}</h2>}
