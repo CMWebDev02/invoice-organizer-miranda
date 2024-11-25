@@ -79,12 +79,11 @@ backEnd.post('/undoAction', async (req, res) => {
 
         // Remember to parse the undoInfo back into an object.
 
-        console.log(requestQueryParameters)
         
-        // let [isSuccessful, transferMessage] = await fileAccess.undoAction(requestQueryParameters)
-        // let actionId = (Date.now() * Math.random()).toString(16)
+        let [isSuccessful, transferMessage, undoneActionId] = await fileAccess.undoPreviousAction(requestQueryParameters)
+        let actionId = (Date.now() * Math.random()).toString(16)
 
-        // res.send({result: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage})
+        res.send({result: isSuccessful ? 'Succeeded' : 'Failed', message: transferMessage, undoneActionId, id: actionId, action: 'Undo Action'})
     } catch (error) {
         console.error(`Error: ${error}`);
         res.status(500).send('Server Error');

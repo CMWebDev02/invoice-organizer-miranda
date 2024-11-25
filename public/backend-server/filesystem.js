@@ -259,11 +259,48 @@ export class FileSystem {
 
             if (hasFolderCreationFailed) throw new Error(`Failed to create a directory at path ${newCustomerFolderPath}`);
 
-            return [true, `Initialization Successful - Customer Folder ${customerFolderName} Added to Directory.`, {customerFolderName, letterFolder}]
+            return [true, `Initialization Successful - Customer Folder ${customerFolderName} Added to Directory.`, {customerName: customerFolderName, letterFolder}]
         } catch (error) {
             console.error(error)
             if (error.cause == 'conflict') return [false, `Initialization Failed - Customer Folder ${customerFolderName} Already Exists!`]
             return [false, `Initialization Failed - Failed to create ${customerFolderName} folder.`]
+        }
+    }
+
+    async undoPreviousAction(requestQueryParameters) {
+        let { action, actionId, undoInfo } = requestQueryParameters;
+        let undoInfoObj = JSON.parse(undoInfo);
+        try {
+            if ( action == 'Folder Creation') {
+                /* 
+                First, check if the folder exists within the system,
+                next, I need to check that the folder is empty and if not stop the undo process and return an error or failure message.
+                If it passes the check, I need to call the remove directory method and pass in the customer folder's path
+                Finally, the returned value from the method can be used to determine if the directory was successfully deleted
+                */
+
+                //? Creates the folder's path with the info from the passed in undoInfo object.
+                let folderToBeRemoved = `${this._customerDirPath}/${undoInfoObj.letterFolder}/${undoInfoObj.customerName}`
+
+                //? Checks that the folder exists via the path and if not, an error is thrown.
+                if (!(await this._checkPath(folderToBeRemoved))) throw new Error(`Folder ${undoInfoObj.customerName} does not exists within the ${undoInfoObj.letterFolder} directory.`, {cause: 'invalidPath'})
+                
+                // //? Reads the contents of the folder with the associated path.
+                // let folderContents = await fs.readdir(folderToBeRemoved); 
+
+                let hasFolderRemovalFailed = await fs.rmdir(folderToBeRemoved);
+
+                if (hasFolderRemovalFailed) throw new Error(`Failed to remove directory at path ./${undoInfoObj.letterFolder}/${undoInfoObj.customerName}.`, {cause: 'removalFailed'})
+
+                return [true, `Undo Action Successful - ${action} has successfully been undone. Folder ${undoInfoObj.customerName} has been successfully removed.`, actionId]
+            }
+        } catch (error) {
+            console.error(error)
+            //* Initializes an error message variable to allow additional info to be appended to the message based on error that has occurred.
+            let errorMessage = `Undo Action Failed - Failed to undo ${action}, for ${undoInfoObj.customerName}.`;
+            if (error.code == "ENOTEMPTY") errorMessage += `\nFolder ${undoInfoObj.customerName} is not empty.`;
+            if (error.cause == 'invalidPath' || error.cause == 'removalFailed') `\n${error.message}`;
+            return [false, errorMessage]
         }
     }
 }
