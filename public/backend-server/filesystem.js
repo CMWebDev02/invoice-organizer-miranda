@@ -1,3 +1,4 @@
+import { error } from 'console';
 import * as fs from 'fs/promises';
 
 export class FileSystem {
@@ -94,6 +95,31 @@ export class FileSystem {
         }
     }
 
+    async _moveFile(sourcePath, destinationPath) {
+        try {
+            //? Checks the source and destination path strings.
+                //* Source path should be a valid path and destination path should not be.
+            if (!(await this._checkPath(sourcePath))) throw new Error(`SourcePathInvalid`);
+            if (await this._checkPath(destinationPath)) throw new Error(`DestinationPathAlreadyInUse`);
+
+            //? Attempts to copy the file from the sourcePath to the destinationPath, if the copy action fails an error is thrown 
+            //? with an appropriate message and cause identifier.
+            let hasFileCopyFailed = await fs.copyFile(sourcePath, destinationPath);
+            if (hasFileCopyFailed) throw new Error(`failedToCopyFile`)
+                
+            //? Attempts to delete the file that the sourcePath points to, if the deletion action fails an error is thrown 
+            //? with an appropriate message and cause identifier.
+            let hasFileDeletionFailed = await fs.rm(sourcePath);
+            if (hasFileDeletionFailed) throw new Error(`failedToDeleteFile`)
+
+            // Returns true if the process successfully executed
+            return [true, null]
+        } catch (error) {
+            // If any error is thrown or occurs, false is returned and the error's message.
+            return [false, error.message]
+        }
+    }
+
     async getAllCustomerFolders() {
         try {
             //? First gathers the various letter folders within the customer folder directory
@@ -161,10 +187,10 @@ export class FileSystem {
         }
     }
 
-    async _checkInvoiceFileName(customerFolderPath, invoiceName) {
+    async _checkInvoiceFileName(folderPath, invoiceName) {
         try {
             //? Concatenates the new path for the invoice. 
-            let newInvoicePath = `${customerFolderPath}/${invoiceName}`;
+            let newInvoicePath = `${folderPath}/${invoiceName}`;
 
             //? Checks that said path does not already exists, and if not, the new path string is returned.
             if (!(await this._checkPath(newInvoicePath))) return [newInvoicePath, invoiceName];
@@ -181,7 +207,7 @@ export class FileSystem {
                     invoiceName = invoiceName.replace(copyPattern, (_, copyNumber) => `(${parseInt(copyNumber) + 1})`)
                 }
                 //? Concatenates the new path.
-                newInvoicePath = `${customerFolderPath}/${invoiceName}`;
+                newInvoicePath = `${folderPath}/${invoiceName}`;
                 //* Runs the while loop so long as the new path string already points to a file.
             } while ((await this._checkPath(newInvoicePath)));
             
@@ -202,15 +228,15 @@ export class FileSystem {
     
             //? Construct the paths for the customer folder and the invoice using the base paths specified.
             let invoiceFilePath = `${this._invoiceDirPath}/${invoiceName}`;
-            customerFolderPath = `${this._customerDirPath}/${customerFolderPath}`;
+            let customerFolderAbsolutePath = `${this._customerDirPath}/${customerFolderPath}`;
             
             //? Validate the invoice and customer folder path constructed above.
-            let [arePathsValid, invalidPath] = await this._validatePaths([customerFolderPath, invoiceFilePath])
+            let [arePathsValid, invalidPath] = await this._validatePaths([customerFolderAbsolutePath, invoiceFilePath])
             if (!arePathsValid) throw new Error(`Transfer Failed - ${invalidPath} does not exist!`);
             
             //? Validate that a year folder already exist within the customer folder, and if not one is created.
             //! If any error results from attempting to create one the error is thrown to stop all proceeding code.
-            let [isYearFolderCreated, yearFolderCheckResult] = await this._checkForYearFolder(customerFolderPath, year);
+            let [isYearFolderCreated, yearFolderCheckResult] = await this._checkForYearFolder(customerFolderAbsolutePath, year);
             if (!isYearFolderCreated) throw new Error(yearFolderCheckResult);
 
             //? Cycles through the customer's folder to check if the current invoice name is already in use, and if so, cycles through copy numbers until and unused file name is found.
@@ -218,26 +244,33 @@ export class FileSystem {
             let invoiceToCustomerFolder;
             [invoiceToCustomerFolder, newInvoiceName] = await this._checkInvoiceFileName(yearFolderCheckResult, invoiceName);
             
-            //? Attempts to copy the file over since this allows the invoice and customer folder directory to be housed on separate drives without issue.
-            let hasFileCopyFailed = await fs.copyFile(invoiceFilePath, invoiceToCustomerFolder)
-            //? Initializes a new variable that will be used to store the result of deleting the invoice from its original location since it is copied, 
-            //! and this should be done only if the transfer succeeded.
-            let hasFileDeletionFailed;
-    
-            //? Checks if the copy was successful and if so delete the file from the original location and return true and a successful transfer message.
-            if (!hasFileCopyFailed) {
-                hasFileDeletionFailed = await fs.rm(invoiceFilePath)
-                //* One final check to determine if the file deletion succeeded.
-                if (hasFileDeletionFailed) throw new Error('Failed to remove invoice from original location!')
-
+            let [isFileMoved, fileMoveErrorCause] = await this._moveFile(invoiceFilePath, invoiceToCustomerFolder);
+            if (isFileMoved) {
                 return [true, `Transfer Successful - ${newInvoiceName} moved to ${customerName}.`, {oldInvoiceName: invoiceName, newInvoiceName, customerFolderPath, customerName, year}];
             } else {
-                throw new Error('Failed to copy invoice to new location!')
+                switch (fileMoveErrorCause) {
+                    case 'SourcePathInvalid': {
+                        throw new Error(`Invoice ${newInvoiceName} was not found in invoice directory.`)
+                        break;
+                    }
+                    case 'DestinationPathAlreadyInUse': {
+                        throw new Error(`Customer ${customerName} folder already contains a ${newInvoiceName} invoice file.`)
+                        break;
+                    }
+                    case 'failedToCopyFile': {
+                        throw new Error('Failed to copy invoice to new location!');
+                        break;
+                    }
+                    case 'failedToDeleteFile': {
+                        throw new Error('Failed to remove invoice from original location!');
+                        break;
+                    }   
+                }
             }
         } catch (error) {
             console.error(error)
             let transferFailedMessage = `Transfer Failed - ${invoiceName} failed to transfer to ${customerName}.`
-            if (newInvoiceName && newInvoiceName != invoiceName) transferFailedMessage += `\nAttempted to rename ${invoiceName} to ${newInvoiceName}`
+            if (newInvoiceName && newInvoiceName != invoiceName) transferFailedMessage += `\nAttempted to rename ${invoiceName} to ${newInvoiceName}.`
             return [false, transferFailedMessage];
         }
     }
@@ -246,7 +279,7 @@ export class FileSystem {
     * @method Initialized a new customer folder within the customer directory path. The customer folder is initialized based on the passed in query parameters gathered by a fetch request.
     * A new path string is concatenated and check for potential conflicts.
     * @param {object} requestQueryParameters - Query parameters used for creating the new customer folder's path string. It includes a customerName and letterFolder property.
-    * @returns an array of two items, a boolean to signify if the initialized was successful and a string describing the outcome.
+    * @returns an array of three items, a boolean to signify if the initialized was successful, a string describing the outcome, and an object containing the information required to undo the action.
     */
     async createNewFolder(requestQueryParameters) {
         let {customerFolderName, letterFolder} = requestQueryParameters;
@@ -270,6 +303,7 @@ export class FileSystem {
     async undoPreviousAction(requestQueryParameters) {
         let { action, actionId, undoInfo } = requestQueryParameters;
         let undoInfoObj = JSON.parse(undoInfo);
+        let finalTransferMessage;
         try {
             if ( action == 'Folder Creation') {
                 /* 
@@ -284,22 +318,62 @@ export class FileSystem {
 
                 //? Checks that the folder exists via the path and if not, an error is thrown.
                 if (!(await this._checkPath(folderToBeRemoved))) throw new Error(`Folder ${undoInfoObj.customerName} does not exists within the ${undoInfoObj.letterFolder} directory.`, {cause: 'invalidPath'})
-                
-                // //? Reads the contents of the folder with the associated path.
-                // let folderContents = await fs.readdir(folderToBeRemoved); 
 
                 let hasFolderRemovalFailed = await fs.rmdir(folderToBeRemoved);
 
                 if (hasFolderRemovalFailed) throw new Error(`Failed to remove directory at path ./${undoInfoObj.letterFolder}/${undoInfoObj.customerName}.`, {cause: 'removalFailed'})
 
-                return [true, `Undo Action Successful - ${action} has successfully been undone. Folder ${undoInfoObj.customerName} has been successfully removed.`, actionId]
+                finalTransferMessage = `Undo Action Successful - ${action} has successfully been undone. Folder ${undoInfoObj.customerName} has been successfully removed.`
+            } else if ( action == 'File Transfer') {
+                /* 
+                First, check if the file exists within the specified customer's directory,
+                next, I need to check if the invoice name would be unique before being transferred to the invoice directory.
+                    And if it is not unique I need to cycle through until I find a name that is,
+                Finally, I can proceed with the copying of said file to the invoice directory
+                and finish with removing the file from the customer's folder.
+                */
+                // {oldInvoiceName, newInvoiceName, customerFolderPath, customerName, year}
+
+                let invoiceToBeRemoved = `${this._customerDirPath}/${undoInfoObj.customerFolderPath}/${undoInfoObj.year}/${undoInfoObj.newInvoiceName}`
+
+                let invoiceFileName = undoInfoObj.newInvoiceName == undoInfoObj.oldInvoiceName ? undoInfoObj.newInvoiceName : undoInfoObj.oldInvoiceName
+
+                let [invoiceReturnPath, uniqueInvoiceName] = await this._checkInvoiceFileName(this._invoiceDirPath, invoiceFileName);
+
+                let [isFileMoved, fileMoveErrorCause] = await this._moveFile(invoiceToBeRemoved, invoiceReturnPath);
+                if (isFileMoved) {
+                    finalTransferMessage = `Undo Action Successful - ${action} has successfully been undone. File ${undoInfoObj.newInvoiceName} has been successfully removed from ${undoInfoObj.customerName}.`;
+                    if (invoiceFileName != uniqueInvoiceName) finalTransferMessage += `\nReturned invoice has been renamed from ${invoiceFileName} to ${uniqueInvoiceName}.`
+                } else {
+                    switch (fileMoveErrorCause) {
+                        case 'SourcePathInvalid': {
+                            throw new Error(`Invoice ${undoInfoObj.newInvoiceName} was not found in customer folder ${undoInfoObj.customerName}.`)
+                            break;
+                        }
+                        case 'DestinationPathAlreadyInUse': {
+                            throw new Error(`Invoice directory already contains a ${undoInfoObj.uniqueInvoiceName} invoice file.`)
+                            break;
+                        }
+                        case 'failedToCopyFile': {
+                            throw new Error(`Failed to transfer invoice ${undoInfoObj.newInvoiceName} back to invoice directory from ${undoInfoObj.customerName}.`);
+                            break;
+                        }
+                        case 'failedToDeleteFile': {
+                            throw new Error(`Failed to delete invoice ${undoInfoObj.newInvoiceName} from ${undoInfoObj.customerName}.`);
+                            break;
+                        }   
+                    }
+                }
             }
+
+            return [true, finalTransferMessage, actionId]
         } catch (error) {
             console.error(error)
             //* Initializes an error message variable to allow additional info to be appended to the message based on error that has occurred.
             let errorMessage = `Undo Action Failed - Failed to undo ${action}, for ${undoInfoObj.customerName}.`;
             if (error.code == "ENOTEMPTY") errorMessage += `\nFolder ${undoInfoObj.customerName} is not empty.`;
-            if (error.cause == 'invalidPath' || error.cause == 'removalFailed') `\n${error.message}`;
+            if (!(error.code)) errorMessage +=`\n${error.message}`;
+            console.log(errorMessage)
             return [false, errorMessage]
         }
     }
