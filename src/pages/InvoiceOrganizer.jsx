@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { InvoiceArea } from "../containers/InvoiceOrganizer/InvoiceArea";
 
 import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
+import { ChangeLogStorage } from "../JavaScript/localStorage";
 
 // Pseudo Code
 /*  Send two get request to the server
@@ -40,7 +41,7 @@ export function InvoiceOrganizer() {
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
-    const [ changeOccurred, setChangeOccurred ] = useState([]);
+    const [ changeLog, setChangeLog ] = useState(ChangeLogStorage.getStorage());
 
     const [ showNewFolderModal, setShowNewFolderModal ] = useState(false);
     const toggleNewFolderModal = () => setShowNewFolderModal(!showNewFolderModal);
@@ -61,16 +62,22 @@ export function InvoiceOrganizer() {
     useEffect(() => {
       //? Checks if either a file sort fetch resolved.
       if (transferResult) {
-        setChangeOccurred(prevChanges => [transferResult, ...prevChanges]);
+        setChangeLog(prevChanges => [transferResult, ...prevChanges]);
       }
     }, [transferResult])
 
     useEffect(() => {
       //? Checks if either a folderCreation fetch resolved.
       if (folderCreationResult) {
-        setChangeOccurred(prevChanges => [folderCreationResult, ...prevChanges]);
+        setChangeLog(prevChanges => [folderCreationResult, ...prevChanges]);
       }
     }, [folderCreationResult])
+
+    useEffect(() => {
+      if (changeLog) {
+        ChangeLogStorage.setStorage(changeLog, 5)
+      }
+    }, [changeLog])
 
     function createFileInfo(quickSortName) {
       //? Checks if a name parameter was passed in, and if it was, that name is used instead of whats currently saved in state.
@@ -97,14 +104,14 @@ export function InvoiceOrganizer() {
       <>
         <NavBar 
           sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled}
-            isChanging={isNewFolderInitializing || isTransferring} changeResult={changeOccurred[0]} 
+            isChanging={isNewFolderInitializing || isTransferring} changeResult={changeLog[0]} 
              toggleNewFolderModal={toggleNewFolderModal} />
 
         <InvoiceArea year={[ selectedYear, setSelectedYear ]} userInteraction={[isUserInteractionDisabled, setIsUserInteractionDisabled]}
           sortFile={createFileInfo} setCustomer={setSelectedCustomer} currentInvoice={setCurrentInvoice} 
             transferOccurred={transferResult} showNewFolderModal={showNewFolderModal}
               toggleNewFolderModal={toggleNewFolderModal} newCustomerFolderName={setNewCustomerFolderName} 
-                changeLog={changeOccurred} alterChangeLog={setChangeOccurred} />
+                changeLog={changeLog} alterChangeLog={setChangeLog} />
 
         {/* Turn these into toast Icons for the bottom right of the screen */}
         {fileTransferError && <h2>{fileTransferError}</h2>}
@@ -112,7 +119,7 @@ export function InvoiceOrganizer() {
 
 
         <Footer sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled}
-          toggleNewFolderModal={toggleNewFolderModal} changeLog={changeOccurred} />
+          toggleNewFolderModal={toggleNewFolderModal} changeLog={changeLog} />
       </>
     )
 }
