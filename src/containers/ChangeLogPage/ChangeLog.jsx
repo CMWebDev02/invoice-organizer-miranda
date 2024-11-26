@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { ChangeInfo } from '../components/ChangeLog/ChangeInfo.jsx'
-import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
-import { FilterOptions } from "../containers/ChangeLog/FilterOptions.jsx";
+import { ChangeInfo } from '../../components/ChangeLog/ChangeInfo.jsx'
+import { UseFetchPostRequest } from "../../hooks/UseFetchPostRequest.jsx";
+import { FilterOptions } from "./FilterOptions.jsx";
 
 export function ChangeLog({ changeLog, alterChangeLog, showFilters }) {
     const [ undoChangeInfo, setUndoChangeInfo ] = useState(null);
@@ -62,8 +62,9 @@ export function ChangeLog({ changeLog, alterChangeLog, showFilters }) {
 
     return (
         <div>
-            {showFilters && <FilterOptions alterDisplayedChanges={setChangesToDisplay} currentFilter={filterBy} />}
+            {showFilters && <FilterOptions alterDisplayedChanges={changeFilter} currentFilter={filterBy} />}
             {undoActionError && <h3>{undoActionError}</h3>}
+            {changesToDisplay.length == 0 && <h2>No Changes To Display</h2>}
             {changesToDisplay && changesToDisplay.map(change => <ChangeInfo key={`changeLog-item-${change.id}`} info={change} undoChange={undoChange} isButtonDisabled={isUndoingAction} />)}
         </div>
     )

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { InvoiceArea } from "../containers/InvoiceOrganizer/InvoiceArea";
 
 import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
+import { useLocation } from "react-router";
 
 // Pseudo Code
 /*  Send two get request to the server
@@ -31,6 +32,8 @@ Also if the user hovers, display the last change within the Changelog.
 Finally, remake the get request only for the next invoice since the customer directories should not be changed. */
 
 export function InvoiceOrganizer() {
+    const { state } = useLocation();
+
     const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
 
     const [ selectedYear, setSelectedYear ] = useState(0);
@@ -40,7 +43,7 @@ export function InvoiceOrganizer() {
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
-    const [ changeOccurred, setChangeOccurred ] = useState([]);
+    const [ changeOccurred, setChangeOccurred ] = useState(state?.changeLog || []);
 
     const [ showNewFolderModal, setShowNewFolderModal ] = useState(false);
     const toggleNewFolderModal = () => setShowNewFolderModal(!showNewFolderModal);
@@ -112,7 +115,7 @@ export function InvoiceOrganizer() {
 
 
         <Footer sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled}
-          toggleNewFolderModal={toggleNewFolderModal} />
+          toggleNewFolderModal={toggleNewFolderModal} changeLog={changeOccurred} />
       </>
     )
 }

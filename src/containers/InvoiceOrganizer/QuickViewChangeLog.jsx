@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChangeLog } from "../../pages/ChangeLog";
+import { ChangeLog } from "../ChangeLogPage/ChangeLog";
 
 export function QuickViewChangeLog({ changeLog, alterChangeLog }) {
     const [ changesToDisplay, setChangesToDisplay ] = useState([]);
