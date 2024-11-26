@@ -1,6 +1,6 @@
 import { UserInputs } from "./UserInputs"
 import { FolderDisplay } from "./FolderDisplay"
-import { ChangeLog } from "../ChangeLog"
+import { QuickViewChangeLog } from "./QuickViewChangeLog"
 import { InvoiceViewer } from "./InvoiceViewer"
 import { NewFolderModal } from "./NewFolderModal";
 
@@ -20,7 +20,7 @@ export function InvoiceArea(props) {
                     setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={props.sortFile} 
                         nameFilter={nameFilter} setCustomer={props.setCustomer} />
 
-                <ChangeLog changeLog={props.changeLog} alterChangeLog={props.alterChangeLog} />
+                <QuickViewChangeLog changeLog={props.changeLog} alterChangeLog={props.alterChangeLog} />
             </div>
 
             <InvoiceViewer setCurrentInvoice={props.currentInvoice} transferOccurred={props.transferOccurred} />
