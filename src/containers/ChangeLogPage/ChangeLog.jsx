@@ -26,7 +26,7 @@ export function ChangeLog({ changeLog, alterChangeLog, showFilters }) {
             }
 
         }
-    }, [filterBy, changesToDisplay, changeLog])
+    }, [filterBy, setChangesToDisplay, changeLog])
 
     useEffect(() => {
         if (undoActionData) {
