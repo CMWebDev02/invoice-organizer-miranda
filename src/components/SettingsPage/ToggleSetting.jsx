@@ -1,9 +1,9 @@
-export function ToggleSetting({ changeCurrentSetting, currentSetting, children }) {
+export function ToggleSetting({ currentSetting, updateSetting, settingName, children }) {
 
     return (
         <div>
             <label>{children}</label>
-            <button onClick={() => changeCurrentSetting(!currentSetting)}>{currentSetting ? 'On' : 'Off'}</button>
+            <button onClick={() => updateSetting(settingName, !currentSetting)}>{currentSetting ? 'On' : 'Off'}</button>
         </div>
     )
 }
