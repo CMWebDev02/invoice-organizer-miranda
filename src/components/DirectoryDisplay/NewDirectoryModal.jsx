@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 
-import { NewCustomerNameInput } from '../../components/NewFolderModal/NewCustomerNameInput';
+import { NewDirectoryNameInput } from './NewDirectoryNameInput';
 
-export function NewFolderModal({ showModal, toggleNewFolderModal, newCustomerFolderName}) {
+export function NewDirectoryModal({ showModal, toggleNewFolderModal, newCustomerFolderName}) {
     const [ newCustomerName, setNewCustomerName ] = useState('');
     
     const [errorMessage, setErrorMessage] = useState('');
@@ -40,7 +40,7 @@ export function NewFolderModal({ showModal, toggleNewFolderModal, newCustomerFol
             </Modal.Header>
             <Modal.Body>
                 {errorMessage && <h3>{errorMessage}</h3>}
-                <NewCustomerNameInput customerNameControls={[ newCustomerName, setNewCustomerName ] } />
+                <NewDirectoryNameInput customerNameControls={[ newCustomerName, setNewCustomerName ] } />
 
             </Modal.Body>
             <Modal.Footer>

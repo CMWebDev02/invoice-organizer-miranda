@@ -1,12 +1,14 @@
-import { NavBar } from "../ui/NavBar";
-import { Footer } from "../ui/Footer";
+import { NavBar } from "../components/ui/NavBar";
+import { ChangeLogIcon } from "../components/ChangeLog/ChangeLogIcon";
 
+import { Footer } from "../components/ui/Footer";
 
 import { useEffect, useState } from "react";
-import { InvoiceArea } from "../containers/InvoiceOrganizer/InvoiceArea";
-
+import { InvoiceArea } from '../components/DirectoryDisplay/InvoiceArea'
 import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
-import { ChangeLogStorage } from "../JavaScript/localStorage";
+
+import { ChangeLogStorage } from "../utilities/localStorage";
+import { UserSettingsStorage } from "../utilities/localStorage";
 
 // Pseudo Code
 /*  Send two get request to the server
@@ -75,6 +77,7 @@ export function InvoiceOrganizer() {
 
     useEffect(() => {
       if (changeLog) {
+        // Potential change (UserSettingsStorage.getStorage()).changeLogActions to use the userSettings instead
         ChangeLogStorage.setStorage(changeLog, 5)
       }
     }, [changeLog])
@@ -102,10 +105,12 @@ export function InvoiceOrganizer() {
 
     return (
       <>
-        <NavBar 
-          sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled}
-            isChanging={isNewFolderInitializing || isTransferring} changeResult={changeLog[0]} 
-             toggleNewFolderModal={toggleNewFolderModal} />
+        <NavBar PageName={'Invoice Organizer'}>
+          <ChangeLogIcon isChanging={isNewFolderInitializing || isTransferring} changeResult={changeLog[0]} />
+
+          <button onClick={createFileInfo} disabled={isUserInteractionDisabled}>Sort</button>
+          <button onClick={toggleNewFolderModal}>Create Folder</button>
+        </NavBar>
 
         <InvoiceArea year={[ selectedYear, setSelectedYear ]} userInteraction={[isUserInteractionDisabled, setIsUserInteractionDisabled]}
           sortFile={createFileInfo} setCustomer={setSelectedCustomer} currentInvoice={setCurrentInvoice} 
@@ -118,8 +123,10 @@ export function InvoiceOrganizer() {
         {newFolderError && <h2>{newFolderError}</h2>}
 
 
-        <Footer sortFile={createFileInfo} isInteractionDisabled={isUserInteractionDisabled}
-          toggleNewFolderModal={toggleNewFolderModal} changeLog={changeLog} />
+        <Footer>
+            <button onClick={createFileInfo} disabled={isUserInteractionDisabled} >Sort</button>
+            <button onClick={toggleNewFolderModal} >Create Folder</button>
+        </Footer>
       </>
     )
 }

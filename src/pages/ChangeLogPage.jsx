@@ -1,10 +1,10 @@
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
 
-import { ChangeLogStorage } from "../JavaScript/localStorage";
+import { ChangeLogStorage } from "../utilities/localStorage";
 
-import { ChangeLog } from "../containers/ChangeLogPage/ChangeLog";
-import { FilterOptions } from '../components/ChangeLogPage/FilterOptions'
+import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
+import { FilterOptions } from '../components/ChangeLog/FilterOptions'
 
 export function ChangeLogPage() {
     //* This changeLog is the main one, it will store all of the data without being affected by the filter, it will only remove actions when their undo process executed successfully.
@@ -50,7 +50,7 @@ export function ChangeLogPage() {
         <>
             <FilterOptions alterDisplayedChanges={changeFilter} currentFilter={filterBy} />
 
-            <ChangeLog changeLog={displayChangeLog} alterChangeLog={setChangeLog} />
+            <ChangeLogDisplay changeLog={displayChangeLog} alterChangeLog={setChangeLog} />
 
             <div>
                 <button onClick={resetChangeLog}>Clear</button>

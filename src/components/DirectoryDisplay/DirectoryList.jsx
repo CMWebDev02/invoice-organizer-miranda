@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export function FolderList({ customers, nameFilter, setCustomer, sortFile }) {
+export function DirectoryList({ customers, nameFilter, setCustomer, sortFile }) {
     const [ filteredNames, setFilteredNames ] = useState([]);
     const [ selectedName, setSelectedName ] = useState(null);
 

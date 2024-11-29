@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { UseFetchGetRequest } from "../../hooks/UseFetchGetRequest";
-import { FolderList } from "../../components/FolderDisplay/FoldersList";
+import { DirectoryList } from "./DirectoryList";
 
-export function FolderDisplay({ setIsUserInteractionDisabled, sortFile, nameFilter, setCustomer }) {
+export function DirectoryDisplay({ setIsUserInteractionDisabled, sortFile, nameFilter, setCustomer }) {
     const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: 'http://localhost:3000/getDirectories', makeRequest: ''})
     const [ customerFolders, setCustomerFolders ] = useState([]);
 
@@ -20,7 +20,7 @@ export function FolderDisplay({ setIsUserInteractionDisabled, sortFile, nameFilt
     return (
         <div>
             {isLoading && <h2>Gathering Customer Folders</h2>}
-            {errorOccurred ? <h2>{errorOccurred}</h2> : <FolderList customers={customerFolders} sortFile={sortFile} nameFilter={nameFilter} setCustomer={setCustomer} />}
+            {errorOccurred ? <h2>{errorOccurred}</h2> : <DirectoryList customers={customerFolders} sortFile={sortFile} nameFilter={nameFilter} setCustomer={setCustomer} />}
         </div>
     )
 }

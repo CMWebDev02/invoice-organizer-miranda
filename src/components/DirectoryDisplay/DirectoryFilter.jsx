@@ -1,4 +1,4 @@
-export function CustomerFilter({filterControls, isDisabled}) {
+export function DirectoryFilter({filterControls, isDisabled}) {
     const [ filterValue, setFilterValue ] = filterControls;
 
     function checkFilterValue(e) {

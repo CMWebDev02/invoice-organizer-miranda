@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { ChangeInfo } from '../../components/ChangeLog/ChangeInfo.jsx'
+import { ChangeInfo } from './ChangeInfo.jsx'
 import { UseFetchPostRequest } from "../../hooks/UseFetchPostRequest.jsx";
 
-export function ChangeLog({ changeLog, alterChangeLog }) {
+export function ChangeLogDisplay({ changeLog, alterChangeLog }) {
     const [ undoChangeInfo, setUndoChangeInfo ] = useState(null);
 
     const { isLoading: isUndoingAction, errorOccurred: undoActionError, fetchResponse: undoActionData } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/undoAction', queries: undoChangeInfo})

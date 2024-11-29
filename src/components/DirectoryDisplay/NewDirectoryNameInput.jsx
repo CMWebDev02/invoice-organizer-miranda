@@ -1,4 +1,4 @@
-export function NewCustomerNameInput({customerNameControls}) {
+export function NewDirectoryNameInput({customerNameControls}) {
     const [ newCustomerName, setNewCustomerName ] = customerNameControls;
 
     return (

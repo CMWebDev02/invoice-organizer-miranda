@@ -1,8 +1,8 @@
-import { ChangeLogIcon } from "../containers/NavBar/ChangeLogIcon"
+import { ChangeLogIcon } from "../ChangeLog/ChangeLogIcon"
 
 export function NavBar({ sortFile, isInteractionDisabled, isChanging, changeResult, toggleNewFolderModal }) {
     return (
-        <nav>
+      <nav>
         <h1>Invoice Organizer</h1>
         <ChangeLogIcon isChanging={isChanging} changeResult={changeResult} />
 

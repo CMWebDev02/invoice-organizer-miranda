@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { NumberSetting } from "../components/SettingsPage/NumberSetting";
-import { ToggleSetting } from "../components/SettingsPage/ToggleSetting";
+import { NumberSetting } from "../components/UserSettings/NumberSetting";
+import { ToggleSetting } from "../components/UserSettings/ToggleSetting";
 
-import { UserSettingsStorage } from "../JavaScript/localStorage";
+import { UserSettingsStorage } from "../utilities/localStorage";
 
 export function SettingsPage() {
     const [ userSettings, setUserSettings ] = useState(UserSettingsStorage.getStorage());

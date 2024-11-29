@@ -1,4 +1,4 @@
-import { ChangeLogToolTip } from '../../components/TransferIcon/ChangeLogToolTip';
+import { ChangeLogToolTip } from './ChangeLogToolTip';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFile} from '@fortawesome/free-regular-svg-icons'
