@@ -1,13 +1,13 @@
 export function FilterOptions({alterDisplayedChanges, currentFilter}) {
+    const filterOptionsArray = [ 'File Transfer', 'Folder Creation', 'Undo Action' ];
+    
     let tempStyle = {
         backgroundColor: 'red'
     }
 
     return (
         <div>
-            <button style={currentFilter == 'File Transfer' ? tempStyle : {}} onClick={() => alterDisplayedChanges('File Transfer')}>File Transfers</button>
-            <button style={currentFilter == 'Folder Creation' ? tempStyle : {}} onClick={() => alterDisplayedChanges('Folder Creation')}>Folder Creations</button>
-            <button style={currentFilter == 'Undo Action' ? tempStyle : {}} onClick={() => alterDisplayedChanges('Undo Action')}>Undone Actions</button>
+            {filterOptionsArray.map(option => <button key={option} style={currentFilter == option ? tempStyle : {}} onClick={alterDisplayedChanges} name={option}>{option}</button>)}            
         </div>
     )
 }
