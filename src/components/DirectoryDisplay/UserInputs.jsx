@@ -6,7 +6,7 @@ export function UserInputs({filter, year, isInteractionDisabled}) {
         <div>
             <DirectoryFilter filterControls={filter} isDisabled={isInteractionDisabled} />
             
-            <YearSelector yearControls={year} isDisabled={isInteractionDisabled} />
+            <YearSelector isDisabled={isInteractionDisabled} />
         </div>
     )
 }

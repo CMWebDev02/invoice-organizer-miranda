@@ -1,14 +1,18 @@
 import { NavBar } from "../components/ui/NavBar";
 import { ChangeLogIcon } from "../components/ChangeLog/ChangeLogIcon";
-
+import { UserInputs } from "../components/DirectoryDisplay/UserInputs"
+import { DirectoryDisplay } from "../components/DirectoryDisplay/DirectoryDisplay"
+import { InvoiceViewer } from "../components/DirectoryDisplay/InvoiceViewer"
+import { NewDirectoryModal } from "../components/DirectoryDisplay/NewDirectoryModal";
+import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
 import { Footer } from "../components/ui/Footer";
 
 import { useEffect, useState } from "react";
-import { InvoiceArea } from '../components/DirectoryDisplay/InvoiceArea'
 import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
 
 import { ChangeLogStorage } from "../utilities/localStorage";
 import { UserSettingsStorage } from "../utilities/localStorage";
+import { useSearchParams } from "react-router";
 
 // Pseudo Code
 /*  Send two get request to the server
@@ -34,19 +38,20 @@ Also if the user hovers, display the last change within the Changelog.
 Finally, remake the get request only for the next invoice since the customer directories should not be changed. */
 
 export function InvoiceOrganizer() {
-    const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
+    const [ queryParameters, setQueryParameters ] = useSearchParams();
 
-    const [ selectedYear, setSelectedYear ] = useState(0);
+    const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
 
     const [ currentInvoice, setCurrentInvoice ] = useState('');
     const [ selectedCustomer, setSelectedCustomer ] = useState('');
+    const [ nameFilter, setNameFilter ] = useState('');
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
     const [ changeLog, setChangeLog ] = useState(ChangeLogStorage.getStorage());
 
-    const [ showNewFolderModal, setShowNewFolderModal ] = useState(false);
-    const toggleNewFolderModal = () => setShowNewFolderModal(!showNewFolderModal);
+    const [ showNewDirectoryModal, setShowNewDirectoryModal ] = useState(false);
+    const toggleNewDirectoryModal = () => setShowNewDirectoryModal(!showNewDirectoryModal);
 
     const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, fetchResponse: folderCreationResult } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/createNewFolder', queries: newCustomerFolderName})
     const { isLoading: isTransferring, errorOccurred: fileTransferError, fetchResponse: transferResult } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/sortFile', queries: fileTransfer})
@@ -62,14 +67,14 @@ export function InvoiceOrganizer() {
     }, [newFolderError, fileTransferError])
 
     useEffect(() => {
-      //? Checks if either a file sort fetch resolved.
+      //? Checks if a file sort fetch resolved.
       if (transferResult) {
         setChangeLog(prevChanges => [transferResult, ...prevChanges]);
       }
     }, [transferResult])
 
     useEffect(() => {
-      //? Checks if either a folderCreation fetch resolved.
+      //? Checks if a folderCreation fetch resolved.
       if (folderCreationResult) {
         setChangeLog(prevChanges => [folderCreationResult, ...prevChanges]);
       }
@@ -99,7 +104,7 @@ export function InvoiceOrganizer() {
         invoiceName: currentInvoice, 
         customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
         customerName: queryString.toUpperCase(),
-        year: selectedYear,
+        year: queryParameters.get('year'),
       });
     }
 
@@ -109,14 +114,25 @@ export function InvoiceOrganizer() {
           <ChangeLogIcon isChanging={isNewFolderInitializing || isTransferring} changeResult={changeLog[0]} />
 
           <button onClick={createFileInfo} disabled={isUserInteractionDisabled}>Sort</button>
-          <button onClick={toggleNewFolderModal}>Create Folder</button>
+          <button onClick={toggleNewDirectoryModal}>Create Folder</button>
         </NavBar>
 
-        <InvoiceArea year={[ selectedYear, setSelectedYear ]} userInteraction={[isUserInteractionDisabled, setIsUserInteractionDisabled]}
-          sortFile={createFileInfo} setCustomer={setSelectedCustomer} currentInvoice={setCurrentInvoice} 
-            transferOccurred={transferResult} showNewFolderModal={showNewFolderModal}
-              toggleNewFolderModal={toggleNewFolderModal} newCustomerFolderName={setNewCustomerFolderName} 
-                changeLog={changeLog} alterChangeLog={setChangeLog} />
+        <main> 
+          <UserInputs filter={[nameFilter, setNameFilter]} isInteractionDisabled={isUserInteractionDisabled} />
+
+            
+          <div>
+            <DirectoryDisplay 
+                setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={createFileInfo} 
+                    nameFilter={nameFilter} setCustomer={setSelectedCustomer} />
+
+            <ChangeLogDisplay changeLog={changeLog} alterChangeLog={setChangeLog} />
+          </div>
+
+          <InvoiceViewer setCurrentInvoice={setCurrentInvoice} transferOccurred={transferResult} />
+
+          <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} newCustomerFolderName={setNewCustomerFolderName} />
+        </main>
 
         {/* Turn these into toast Icons for the bottom right of the screen */}
         {fileTransferError && <h2>{fileTransferError}</h2>}
@@ -125,7 +141,7 @@ export function InvoiceOrganizer() {
 
         <Footer>
             <button onClick={createFileInfo} disabled={isUserInteractionDisabled} >Sort</button>
-            <button onClick={toggleNewFolderModal} >Create Folder</button>
+            <button onClick={toggleNewDirectoryModal} >Create Folder</button>
         </Footer>
       </>
     )
