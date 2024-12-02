@@ -28,22 +28,23 @@ export function DirectoryList({ customers, nameFilter, setCustomer, sortFile }) 
         setCustomer('');
     }, [nameFilter, customers, setCustomer, setSelectedName])
 
-    function signalSelectedCustomer(e, name) {
-        setSelectedName(name);
+    function signalSelectedCustomer(e) {
+        e.stopPropagation()
+        setSelectedName(e.target.id);
 
-        setCustomer(name);
+        setCustomer(e.target.id);
     }
     
-    function quickSort(e, name) {
+    function quickSort(e) {
         e.stopPropagation()
-        
-        sortFile(name);
+
+        sortFile(e);
     }
 
     return (
         <div>
             {filteredNames == 0 ? <h2>No Matching Users</h2> : 
-            filteredNames.map(name => <div key={`folder-${name}`} onClick={(e) => signalSelectedCustomer(e, name)} style={{color: selectedName == name ? 'red' : 'black'}}>{name} <button onClick={(e) => quickSort(e, name)}>Quick Transfer</button></div>)}
+            filteredNames.map(name => <div key={`folder-${name}`} id={name} onClick={signalSelectedCustomer} style={{color: selectedName == name ? 'red' : 'black'}}>{name} <button name={name} onClick={quickSort}>Quick Transfer</button></div>)}
         </div>
     )
 }

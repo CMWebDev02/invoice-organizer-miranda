@@ -87,9 +87,11 @@ export function InvoiceOrganizer() {
       }
     }, [changeLog])
 
-    function createFileInfo(quickSortName) {
-      //? Checks if a name parameter was passed in, and if it was, that name is used instead of whats currently saved in state.
-      let customerName = typeof quickSortName === 'string' ? quickSortName : selectedCustomer;
+    function createFileInfo(e) {
+      //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected customer is used.
+      //* This is necessary for the quick transfer feature, this allows the selected customer to remain stored in state while still allowing the user to quickly transfer to another customer if they
+      //* click the quick transfer button.
+      let customerName = e.target.name ? e.target.name : selectedCustomer;
       if (customerName == '' || currentInvoice == '') return;
 
       // Temporary
