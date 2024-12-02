@@ -1,9 +1,9 @@
 import { NavBar } from "../components/ui/NavBar";
 import { ChangeLogIcon } from "../components/ChangeLog/ChangeLogIcon";
-import { UserInputs } from "../components/DirectoryDisplay/UserInputs"
+import { UserInputs } from "../components/DirectoryDisplay/UserInteraction/UserInputs"
 import { DirectoryDisplay } from "../components/DirectoryDisplay/DirectoryDisplay"
 import { InvoiceViewer } from "../components/DirectoryDisplay/InvoiceViewer"
-import { NewDirectoryModal } from "../components/DirectoryDisplay/NewDirectoryModal";
+import { NewDirectoryModal } from "../components/DirectoryDisplay/UserInteraction/NewDirectoryModal";
 import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
 import { Footer } from "../components/ui/Footer";
 
