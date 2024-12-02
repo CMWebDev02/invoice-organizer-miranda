@@ -1,5 +1,10 @@
-export function DirectoryFilter({filterControls, isDisabled}) {
-    const [ filterValue, setFilterValue ] = filterControls;
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
+
+export function DirectoryFilter({ isDisabled }) {
+    const [ queryParameters, setQueryParameters ] = useSearchParams();
+    const [ filterValue, setFilterValue ] = useState(queryParameters.get('nameFilter') || '');
+
 
     function checkFilterValue(e) {
         let filterInput = e.target.value.toUpperCase()
@@ -12,6 +17,20 @@ export function DirectoryFilter({filterControls, isDisabled}) {
             if (firstCharacterCode >= 0 && firstCharacterCode < 26) setFilterValue(e.target.value);
         }
     }
+
+    useEffect(() => {
+        // if (!filterValue) return
+        let timeOut = setTimeout(() => {
+            setQueryParameters(prevParameters => {
+                prevParameters.set('nameFilter', filterValue);
+                return prevParameters;
+            })
+        }, 250)
+
+        return () => {
+            clearTimeout(timeOut)
+        }
+    }, [filterValue, setQueryParameters])
 
     return (
         <div>

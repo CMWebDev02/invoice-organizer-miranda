@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
+import { useSearchParams } from "react-router";
 
-export function DirectoryList({ customers, nameFilter, setCustomer, sortFile }) {
+export function DirectoryList({ customers, setCustomer, sortFile }) {
+    const [queryParameters, setQueryParameters] = useSearchParams();
     const [ filteredNames, setFilteredNames ] = useState([]);
     const [ selectedName, setSelectedName ] = useState(null);
 
     useEffect(() => {
-        if (nameFilter != '') {
+        if (queryParameters.get('nameFilter')) {
             //* All strings will be capitalized before being compared to allow for instances in which the user chooses to store folders based on their preferred writing convention,
             //* either all uppercase, lowercase, or a mixture of the two.
-            let capitalizedFilter = nameFilter.toUpperCase();
+            let capitalizedFilter = queryParameters.get('nameFilter').toUpperCase();
             //? The customer array contains arrays that are separated alphabetically, using character codes allows for easy access of the appropriate array.
             let characterIndex = capitalizedFilter.charCodeAt(0) - 65;
             //! A check needs to be made in case the server does not have a folder associated with the letter to avoid errors.
@@ -26,7 +28,7 @@ export function DirectoryList({ customers, nameFilter, setCustomer, sortFile }) 
         
         setSelectedName(null)
         setCustomer('');
-    }, [nameFilter, customers, setCustomer, setSelectedName])
+    }, [queryParameters, customers, setCustomer, setSelectedName])
 
     function signalSelectedCustomer(e) {
         e.stopPropagation()

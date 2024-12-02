@@ -100,7 +100,7 @@ export function InvoiceOrganizer() {
           <div>
             <DirectoryDisplay 
                 setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={createFileInfo} 
-                    nameFilter={nameFilter} setCustomer={setSelectedCustomer} />
+                    setCustomer={setSelectedCustomer} />
 
             <ChangeLogDisplay changeLog={changeLog} alterChangeLog={setChangeLog} />
           </div>

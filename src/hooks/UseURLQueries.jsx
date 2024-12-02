@@ -11,6 +11,7 @@ export function UseURLQueries() {
                 year: prevParameters.get('year') || new Date().getFullYear(),
                 currentInvoice: prevParameters.get('currentInvoice') || '',
                 selectedCustomer: prevParameters.get('selectedCustomer') || '',
+                nameFilter: prevParameters.get('nameFilter') || '',
             }
         })
     }, [setQueryParameters])
