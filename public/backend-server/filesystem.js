@@ -142,31 +142,36 @@ export class FileSystem {
         }
     }
 
-    async getFirstInvoice() {
+    async getInvoice(requestQueryParameters) {
+        let { selectedInvoice } = requestQueryParameters;
         try {
-            //? Reads the folder where all the invoice are located and for the first invoice in the list and saves it path as a string.
-            let invoiceFolder = await fs.readdir(this._invoiceDirPath);
+            if (selectedInvoice) {
+                let invoicePath = `${this._invoiceDirPath}/${selectedInvoice}`;
+                console.log(invoicePath)
+            }
+            // //? Reads the folder where all the invoice are located and looks for the first invoice in the list and saves it path as a string.
+            // let invoiceFolder = await fs.readdir(this._invoiceDirPath);
             
-            let offset = 0;
-            let invoicePath = '';
-            let invoiceName = '';
-            let invoiceStat;
-            do {
-                if (invoiceFolder.length <= offset) throw new Error('No Valid Files Within Invoice Directory.');
-                invoicePath = `${this._invoiceDirPath}/${invoiceFolder[offset]}`;
-                invoiceName = invoiceFolder[offset]
-                offset++;
-                invoiceStat = await fs.stat(invoicePath)
-            } while (!invoiceStat.isFile());
+            // let offset = 0;
+            // let invoicePath = '';
+            // let invoiceName = '';
+            // let invoiceStat;
+            // do {
+            //     if (invoiceFolder.length <= offset) throw new Error('No Valid Files Within Invoice Directory.');
+            //     invoicePath = `${this._invoiceDirPath}/${invoiceFolder[offset]}`;
+            //     invoiceName = invoiceFolder[offset]
+            //     offset++;
+            //     invoiceStat = await fs.stat(invoicePath)
+            // } while (!invoiceStat.isFile());
     
-            //* Reads the file and saves it output and encodes it to base64 to convert the binary data to readable text
-            //* that the webpages can handle,
-                //! skipping this step resulted in the binary data becoming corrupted once it was received by the client.
-            let fileStream = await fs.readFile(invoicePath)
+            // //* Reads the file and saves it output and encodes it to base64 to convert the binary data to readable text
+            // //* that the webpages can handle,
+            //     //! skipping this step resulted in the binary data becoming corrupted once it was received by the client.
+            // let fileStream = await fs.readFile(invoicePath)
     
-            let encodedFileStream = fileStream.toString('base64')
+            // let encodedFileStream = fileStream.toString('base64')
     
-            return [invoiceName, encodedFileStream];
+            // return [invoiceName, encodedFileStream];
         } catch (error) {
             console.error(error);
         }

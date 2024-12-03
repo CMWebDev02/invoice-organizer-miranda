@@ -30,7 +30,8 @@ backEnd.get('/getDirectories', async (req, res) => {
 
 backEnd.get('/getInvoice', async (req, res) => {
     try {
-        let [ invoiceRelativePath, invoicePDF ] = await fileAccess.getFirstInvoice();
+        let requestQueryParameters = req.query;
+        let [ invoiceRelativePath, invoicePDF ] = await fileAccess.getInvoice(requestQueryParameters);
 
         //? A response body is used to store the relative file path and the file's encoded string before being sent to the user.
         let responseBody = {

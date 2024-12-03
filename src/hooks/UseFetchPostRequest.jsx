@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { appendQueriesParameters } from "../utilities/stringMutations";
 
 export function UseFetchPostRequest({ fetchURLBase, queries }) {
     const [ fetchResponse, setFetchResponse ] = useState(null);
@@ -14,13 +15,8 @@ export function UseFetchPostRequest({ fetchURLBase, queries }) {
             try {
                 setIsLoading(true);
                 setErrorOccurred(false);
-                let fetchURL = `${fetchURLBase}?`;
-                for (const [key, value] of Object.entries(queries)) {
-                    fetchURL += `${key}=${value}&`;
-                }
-
-                fetchURL = fetchURL.substring(0, fetchURL.length - 1);
-
+                let fetchURL = appendQueriesParameters(fetchURLBase, queries);
+                
                 let response = await fetch(fetchURL, { method: 'POST', signal: abortSignal});
                 if (!response.ok) throw new Error('Fetch request failed.');
                 let data = await response.json();

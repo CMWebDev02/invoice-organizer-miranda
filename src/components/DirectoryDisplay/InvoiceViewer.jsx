@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import { UseFetchGetRequest } from '../../hooks/UseFetchGetRequest';
+import { useSearchParams } from 'react-router';
 
-export function InvoiceViewer({setCurrentInvoice, transferOccurred}) {
-    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, fetchData } = UseFetchGetRequest({ fetchURL: 'http://localhost:3000/getInvoice', makeRequest: transferOccurred });
+export function InvoiceViewer({ transferOccurred }) {
+    const [ queryParameters, setQueryParameters ] = useSearchParams();
+    const queries = queryParameters.get('currentInvoice') ? { selectedInvoice: queryParameters.get('currentInvoice') } : undefined
+    console.log(queryParameters.get('currentInvoice'))
+    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, fetchData } = UseFetchGetRequest({ fetchURLBase: 'http://localhost:3000/getInvoice', makeRequest: transferOccurred, queries });
     const [ invoicePath, setInvoicePath ] = useState('');
 
     useEffect(() => {
@@ -34,15 +38,23 @@ export function InvoiceViewer({setCurrentInvoice, transferOccurred}) {
 
         if (!fetchData) return;
 
-        if (fetchData.fileName != '') {
-            setCurrentInvoice(fetchData.fileName);
-            setInvoicePath(decodePDFIntoBlob(fetchData.file))
+        if (fetchData.fileName != '' && queryParameters.get('currentInvoice') != fetchData.fileName) {
+            setQueryParameters(prevParameters => {
+                prevParameters.set('currentInvoice', fetchData.fileName);
+                return prevParameters;
+            });
         };
-    }, [fetchData, setCurrentInvoice])
+        if (fetchData.file) setInvoicePath(decodePDFIntoBlob(fetchData.file))
+    }, [fetchData, queryParameters, setQueryParameters])
 
     useEffect(() => {
-        if (invoiceError) setCurrentInvoice('')
-    }, [invoiceError, setCurrentInvoice])
+        if (invoiceError) {
+            setQueryParameters(prevParameters => {
+                prevParameters.set('currentInvoice', '');
+                return prevParameters;
+            })
+        }
+    }, [invoiceError, setQueryParameters])
 
     return (
         <div>

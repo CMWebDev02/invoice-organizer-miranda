@@ -13,18 +13,16 @@ import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
 
 import { ChangeLogStorage } from "../utilities/localStorage";
 import { UserSettingsStorage } from "../utilities/localStorage";
-import { convertToValidQueryString } from "../utilities/stringConverter";
+import { convertToValidQueryString } from "../utilities/stringMutations";
 import { UseURLQueries } from "../hooks/UseURLQueries";
 
 export function InvoiceOrganizer() {
-    // const [ queryParameters, setQueryParameters ] = useSearchParams();
     const queryParameters = UseURLQueries();
 
     const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
 
-    const [ currentInvoice, setCurrentInvoice ] = useState('');
+    // const [ currentInvoice, setCurrentInvoice ] = useState('');
     const [ selectedCustomer, setSelectedCustomer ] = useState('');
-    const [ nameFilter, setNameFilter ] = useState('');
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
@@ -72,16 +70,17 @@ export function InvoiceOrganizer() {
       //* This is necessary for the quick transfer feature, this allows the selected customer to remain stored in state while still allowing the user to quickly transfer to another customer if they
       //* click the quick transfer button.
       let customerName = e.target.name ? e.target.name : selectedCustomer;
-      if (customerName == '' || currentInvoice == '') return;
+      console.log(queryParameters.get('currentInvoice'))
+      if (customerName == '' || queryParameters.get('currentInvoice')) return;
 
       let queryString = convertToValidQueryString(customerName);
 
-      setFileTransfer({
-        invoiceName: currentInvoice, 
-        customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
-        customerName: queryString.toUpperCase(),
-        year: queryParameters.get('year'),
-      });
+      // setFileTransfer({
+      //   invoiceName: queryParameters.get('currentInvoice'), 
+      //   customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
+      //   customerName: queryString.toUpperCase(),
+      //   year: queryParameters.get('year'),
+      // });
     }
 
     return (
@@ -94,7 +93,7 @@ export function InvoiceOrganizer() {
         </NavBar>
 
         <main> 
-          <UserInputs filter={[nameFilter, setNameFilter]} isInteractionDisabled={isUserInteractionDisabled} />
+          <UserInputs isInteractionDisabled={isUserInteractionDisabled} />
 
             
           <div>
@@ -105,7 +104,7 @@ export function InvoiceOrganizer() {
             <ChangeLogDisplay changeLog={changeLog} alterChangeLog={setChangeLog} />
           </div>
 
-          <InvoiceViewer setCurrentInvoice={setCurrentInvoice} transferOccurred={transferResult} />
+          <InvoiceViewer transferOccurred={transferResult} />
 
           <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} newCustomerFolderName={setNewCustomerFolderName} />
         </main>
