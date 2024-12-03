@@ -42,7 +42,11 @@ backEnd.get('/getInvoice', async (req, res) => {
         res.json(responseBody)
     } catch (error) {
         console.error(`Error: ${error}`);
-        res.status(500).send('Server Error');
+        if (error.cause = 'INVALID_INVOICE_QUERY') {
+            res.status(404).send(`Invoice Not Found`)
+        } else {
+            res.status(500).send('Server Error');
+        }
     }
 })
 

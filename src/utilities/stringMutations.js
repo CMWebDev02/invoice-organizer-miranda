@@ -9,5 +9,4 @@ export function appendQueriesParameters(baseURL, queries) {
         fetchURL += `${key}=${value}&`;
     };
     return fetchURL.substring(0, fetchURL.length - 1);
-    
 }

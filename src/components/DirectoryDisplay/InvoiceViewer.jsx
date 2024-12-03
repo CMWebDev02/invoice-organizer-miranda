@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
-import { UseFetchGetRequest } from '../../hooks/UseFetchGetRequest';
+// import { UseFetchGetRequest } from '../../hooks/UseFetchGetRequest';
 import { useSearchParams } from 'react-router';
+import { UseInvoiceRetriever } from '../../hooks/UseInvoiceRetriever';
 
 export function InvoiceViewer({ transferOccurred }) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
-    const queries = queryParameters.get('currentInvoice') ? { selectedInvoice: queryParameters.get('currentInvoice') } : undefined
-    console.log(queryParameters.get('currentInvoice'))
-    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, fetchData } = UseFetchGetRequest({ fetchURLBase: 'http://localhost:3000/getInvoice', makeRequest: transferOccurred, queries });
     const [ invoicePath, setInvoicePath ] = useState('');
+
+    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, invoiceData } = UseInvoiceRetriever({
+        fetchURLBase: 'http://localhost:3000/getInvoice',
+        makeRequest: transferOccurred,
+        invoiceQuery: queryParameters.get('currentInvoice')
+    });
 
     useEffect(() => {
         /**
@@ -36,16 +40,16 @@ export function InvoiceViewer({ transferOccurred }) {
             return URL.createObjectURL(pdfBlob);
         }
 
-        if (!fetchData) return;
+        if (!invoiceData) return;
 
-        if (fetchData.fileName != '' && queryParameters.get('currentInvoice') != fetchData.fileName) {
+        if (invoiceData.fileName != '') {
             setQueryParameters(prevParameters => {
-                prevParameters.set('currentInvoice', fetchData.fileName);
+                prevParameters.set('currentInvoice', invoiceData.fileName);
                 return prevParameters;
             });
+            setInvoicePath(decodePDFIntoBlob(invoiceData.file))
         };
-        if (fetchData.file) setInvoicePath(decodePDFIntoBlob(fetchData.file))
-    }, [fetchData, queryParameters, setQueryParameters])
+    }, [invoiceData, queryParameters, setQueryParameters])
 
     useEffect(() => {
         if (invoiceError) {

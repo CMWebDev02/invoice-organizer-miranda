@@ -75,12 +75,12 @@ export function InvoiceOrganizer() {
 
       let queryString = convertToValidQueryString(customerName);
 
-      // setFileTransfer({
-      //   invoiceName: queryParameters.get('currentInvoice'), 
-      //   customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
-      //   customerName: queryString.toUpperCase(),
-      //   year: queryParameters.get('year'),
-      // });
+      setFileTransfer({
+        invoiceName: queryParameters.get('currentInvoice'), 
+        customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
+        customerName: queryString.toUpperCase(),
+        year: queryParameters.get('year'),
+      });
     }
 
     return (
