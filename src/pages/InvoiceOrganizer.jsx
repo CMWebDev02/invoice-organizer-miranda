@@ -8,7 +8,6 @@ import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
 import { Footer } from "../components/ui/Footer";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
 import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
 
 import { ChangeLogStorage } from "../utilities/localStorage";
@@ -18,6 +17,8 @@ import { UseURLQueries } from "../hooks/UseURLQueries";
 
 export function InvoiceOrganizer() {
     const queryParameters = UseURLQueries();
+
+    const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS')
 
     const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
 
@@ -61,9 +62,9 @@ export function InvoiceOrganizer() {
     useEffect(() => {
       if (changeLog) {
         // Potential change (UserSettingsStorage.getStorage()).changeLogActions to use the userSettings instead
-        ChangeLogStorage.setStorage(changeLog, 5)
+        ChangeLogStorage.setStorage(changeLog, maximumChangeLogActionStore)
       }
-    }, [changeLog])
+    }, [maximumChangeLogActionStore, changeLog])
 
     function createFileInfo(e) {
       //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected customer is used.
@@ -101,7 +102,7 @@ export function InvoiceOrganizer() {
                 setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={createFileInfo} 
                     setCustomer={setSelectedCustomer} />
 
-            <ChangeLogDisplay changeLog={changeLog} alterChangeLog={setChangeLog} />
+            <ChangeLogDisplay changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
           </div>
 
           <InvoiceViewer transferOccurred={transferResult} />

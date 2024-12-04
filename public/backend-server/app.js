@@ -30,8 +30,7 @@ backEnd.get('/getDirectories', async (req, res) => {
 
 backEnd.get('/getInvoice', async (req, res) => {
     try {
-        let requestQueryParameters = req.query;
-        let [ invoiceRelativePath, invoicePDF ] = await fileAccess.getInvoice(requestQueryParameters);
+        let [ invoiceRelativePath, invoicePDF ] = await fileAccess.getInvoice();
 
         //? A response body is used to store the relative file path and the file's encoded string before being sent to the user.
         let responseBody = {
@@ -42,11 +41,7 @@ backEnd.get('/getInvoice', async (req, res) => {
         res.json(responseBody)
     } catch (error) {
         console.error(`Error: ${error}`);
-        if (error.cause = 'INVALID_INVOICE_QUERY') {
-            res.status(404).send(`Invoice Not Found`)
-        } else {
-            res.status(500).send('Server Error');
-        }
+        res.status(500).send('Server Error');
     }
 })
 

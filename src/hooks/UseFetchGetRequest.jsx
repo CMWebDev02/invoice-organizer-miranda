@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function UseFetchGetRequest({ fetchURLBase, makeRequest, optionalQuery }) {
+export function UseFetchGetRequest({ fetchURL, makeRequest }) {
     const [ fetchData, setFetchData ] = useState(null);
     const [ errorOccurred, setErrorOccurred ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(false);
@@ -9,13 +9,9 @@ export function UseFetchGetRequest({ fetchURLBase, makeRequest, optionalQuery })
         const abortController = new AbortController;
         const abortSignal = abortController.signal;
 
-        async function makeBasicGetRequest() {
+        async function makeGetRequest() {
             try {
                 setIsLoading(true);
-                let fetchURL = fetchURLBase;
-                if (optionalQuery) {
-                    fetchURL += `?q=${optionalQuery}`;
-                }
                 let response = await fetch(fetchURL, { method: 'GET', signal: abortSignal});
                 if (!response.ok) throw new Error('Fetch request failed.');
                 let data = await response.json();
@@ -29,10 +25,10 @@ export function UseFetchGetRequest({ fetchURLBase, makeRequest, optionalQuery })
             }
         }
 
-        makeBasicGetRequest();
+        makeGetRequest();
 
         // return () => abortController.abort();
-    }, [fetchURLBase, makeRequest, optionalQuery]);
+    }, [fetchURL, makeRequest]);
     
     return {fetchData, errorOccurred, isLoading};
 }

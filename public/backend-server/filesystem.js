@@ -143,31 +143,21 @@ export class FileSystem {
     }
 
     async getInvoice(requestQueryParameters) {
-        let { q: selectedInvoice } = requestQueryParameters;
         try {
-            //? Initializes two required variables, both will need to be populated regardless of which code block executes.
+            //? Reads the folder where all the invoice are located and looks for the first invoice in the list and saves it path as a string.
+            let invoiceFolder = await fs.readdir(this._invoiceDirPath);
+            
             let invoicePath = '';
             let invoiceName = '';
-
-            if (selectedInvoice) {
-                invoicePath = `${this._invoiceDirPath}/${selectedInvoice}`;
-                invoiceName = selectedInvoice;
-                let doesInvoiceExist = await this._checkPath(invoicePath);
-                if (!doesInvoiceExist) throw new Error('The invoice you entered does not exist!', {cause: 'INVALID_INVOICE_QUERY'})
-            } else {
-                //? Reads the folder where all the invoice are located and looks for the first invoice in the list and saves it path as a string.
-                let invoiceFolder = await fs.readdir(this._invoiceDirPath);
-                
-                let offset = 0;
-                let invoiceStat;
-                do {
-                    if (invoiceFolder.length <= offset) throw new Error('No Valid Files Within Invoice Directory.');
-                    invoicePath = `${this._invoiceDirPath}/${invoiceFolder[offset]}`;
-                    invoiceName = invoiceFolder[offset]
-                    offset++;
-                    invoiceStat = await fs.stat(invoicePath)
-                } while (!invoiceStat.isFile());
-            }
+            let offset = 0;
+            let invoiceStat;
+            do {
+                if (invoiceFolder.length <= offset) throw new Error('No Valid Files Within Invoice Directory.');
+                invoicePath = `${this._invoiceDirPath}/${invoiceFolder[offset]}`;
+                invoiceName = invoiceFolder[offset]
+                offset++;
+                invoiceStat = await fs.stat(invoicePath)
+            } while (!invoiceStat.isFile());
     
             //* Reads the file and saves it output and encodes it to base64 to convert the binary data to readable text
             //* that the webpages can handle,

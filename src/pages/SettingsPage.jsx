@@ -22,11 +22,11 @@ export function SettingsPage() {
 
     return (
         <div>
-            <NumberSetting currentSetting={userSettings.changeLogActions} updateSetting={changeCurrentSetting} settingName={'changeLogActions'}>
+            <NumberSetting currentSetting={userSettings.CHANGELOG_ACTIONS} updateSetting={changeCurrentSetting} settingName={'CHANGELOG_ACTIONS'}>
                 Maximum ChangeLog Actions:</NumberSetting>
-            <ToggleSetting currentSetting={userSettings.showQuickTransferButtons} updateSetting={changeCurrentSetting} settingName={'showQuickTransferButtons'}>
+            <ToggleSetting currentSetting={userSettings.SHOW_QUICK_TRANSFER_BUTTONS} updateSetting={changeCurrentSetting} settingName={'SHOW_QUICK_TRANSFER_BUTTONS'}>
                 Show Quick Transfer Buttons</ToggleSetting>
-            <ToggleSetting currentSetting={userSettings.showUndoButtons} updateSetting={changeCurrentSetting} settingName={'showUndoButtons'}>
+            <ToggleSetting currentSetting={userSettings.SHOW_QUICK_UNDO_BUTTONS} updateSetting={changeCurrentSetting} settingName={'SHOW_QUICK_UNDO_BUTTONS'}>
                 Show Undo Buttons</ToggleSetting>
         </div>
     )

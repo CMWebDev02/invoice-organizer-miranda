@@ -1,17 +1,12 @@
 import { useEffect, useState } from 'react';
-// import { UseFetchGetRequest } from '../../hooks/UseFetchGetRequest';
 import { useSearchParams } from 'react-router';
-import { UseInvoiceRetriever } from '../../hooks/UseInvoiceRetriever';
+import { UseFetchGetRequest  } from '../../hooks/UseFetchGetRequest';
 
 export function InvoiceViewer({ transferOccurred }) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
     const [ invoicePath, setInvoicePath ] = useState('');
 
-    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, invoiceData } = UseInvoiceRetriever({
-        fetchURLBase: 'http://localhost:3000/getInvoice',
-        makeRequest: transferOccurred,
-        invoiceQuery: queryParameters.get('currentInvoice')
-    });
+    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, fetchData } = UseFetchGetRequest({ fetchURL: 'http://localhost:3000/getInvoice',makeRequest: transferOccurred });
 
     useEffect(() => {
         /**
@@ -40,16 +35,16 @@ export function InvoiceViewer({ transferOccurred }) {
             return URL.createObjectURL(pdfBlob);
         }
 
-        if (!invoiceData) return;
+        if (!fetchData) return;
 
-        if (invoiceData.fileName != '') {
+        if (fetchData.fileName != '') {
             setQueryParameters(prevParameters => {
-                prevParameters.set('currentInvoice', invoiceData.fileName);
+                prevParameters.set('currentInvoice', fetchData.fileName);
                 return prevParameters;
             });
-            setInvoicePath(decodePDFIntoBlob(invoiceData.file))
+            setInvoicePath(decodePDFIntoBlob(fetchData.file))
         };
-    }, [invoiceData, queryParameters, setQueryParameters])
+    }, [fetchData])
 
     useEffect(() => {
         if (invoiceError) {
