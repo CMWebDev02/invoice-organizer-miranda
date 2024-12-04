@@ -22,9 +22,6 @@ export function InvoiceOrganizer() {
 
     const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
 
-    // const [ currentInvoice, setCurrentInvoice ] = useState('');
-    const [ selectedCustomer, setSelectedCustomer ] = useState('');
-
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
     const [ changeLog, setChangeLog ] = useState(ChangeLogStorage.getStorage());
@@ -70,9 +67,8 @@ export function InvoiceOrganizer() {
       //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected customer is used.
       //* This is necessary for the quick transfer feature, this allows the selected customer to remain stored in state while still allowing the user to quickly transfer to another customer if they
       //* click the quick transfer button.
-      let customerName = e.target.name ? e.target.name : selectedCustomer;
-      console.log(queryParameters.get('currentInvoice'))
-      if (customerName == '' || queryParameters.get('currentInvoice')) return;
+      let customerName = e.target.name ? e.target.name : queryParameters.get('selectedCustomer');
+      if (customerName == null || queryParameters.get('currentInvoice') == null) return;
 
       let queryString = convertToValidQueryString(customerName);
 
@@ -99,8 +95,7 @@ export function InvoiceOrganizer() {
             
           <div>
             <DirectoryDisplay 
-                setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={createFileInfo} 
-                    setCustomer={setSelectedCustomer} />
+                setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={createFileInfo}/>
 
             <ChangeLogDisplay changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
           </div>

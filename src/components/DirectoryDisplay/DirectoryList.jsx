@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router";
 
-export function DirectoryList({ customers, setCustomer, sortFile }) {
+export function DirectoryList({ customers, sortFile }) {
     const [queryParameters, setQueryParameters] = useSearchParams();
     const [ filteredNames, setFilteredNames ] = useState([]);
     const [ selectedName, setSelectedName ] = useState(null);
@@ -27,14 +27,20 @@ export function DirectoryList({ customers, setCustomer, sortFile }) {
 
         
         setSelectedName(null)
-        setCustomer('');
-    }, [queryParameters, customers, setCustomer, setSelectedName])
+        setQueryParameters(prevParameters => {
+            prevParameters.set('selectedCustomer', '')
+            return prevParameters
+        });
+    }, [queryParameters, customers, setSelectedName, setQueryParameters])
 
     function signalSelectedCustomer(e) {
         e.stopPropagation()
         setSelectedName(e.target.id);
 
-        setCustomer(e.target.id);
+        setQueryParameters(prevParameters => {
+            prevParameters.set('selectedCustomer', e.target.id)
+            return prevParameters
+        });;
     }
     
     function quickSort(e) {
