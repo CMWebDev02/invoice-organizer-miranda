@@ -8,8 +8,6 @@ class accessLocalStorage {
 }
 
 export class ChangeLogStorage extends accessLocalStorage {
-    static _key = 'changeLog';
-
     static setStorage(array, maxActionStorage) {
         if (maxActionStorage > array.length) {
             localStorage.setItem(this._key, JSON.stringify(array));
@@ -23,6 +21,14 @@ export class ChangeLogStorage extends accessLocalStorage {
     static getStorage() {
         return JSON.parse(localStorage.getItem(this._key)) || [];
     }
+}
+
+export class InvoiceOrganizerChangeLog extends ChangeLogStorage {
+    static _key = 'changeLogInvoices';
+}
+
+export class AccountsPayableChangeLog extends ChangeLogStorage {
+    static _key = 'changeLogInvoices';
 }
 
 export class UserSettingsStorage extends accessLocalStorage {

@@ -1,20 +1,30 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router";
 
-export function UseURLQueries() {
+export function UseURLQueries({ pageName }) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
 
     // Injects the necessary queries into the url upon initialization of the hook.
     useEffect(() => {
-        setQueryParameters(prevParameters => {
-            return {
-                year: prevParameters.get('year') || new Date().getFullYear(),
-                currentInvoice: prevParameters.get('currentInvoice') || '',
-                selectedCustomer: prevParameters.get('selectedCustomer') || '',
-                nameFilter: prevParameters.get('nameFilter') || '',
-            }
-        })
-    }, [setQueryParameters])
+        if (pageName == 'Invoice') {
+            setQueryParameters(preParameters => {
+                return {
+                    year: preParameters.get('year') || '',
+                    currentInvoice: preParameters.get('currentInvoice') || '',
+                    selectedCustomer: preParameters.get('selectedCustomer') || '',
+                    nameFilter: preParameters.get('nameFilter') || ''
+                }
+            }) 
+        } else if (pageName == 'AccountsPayable') {
+            setQueryParameters(preParameters => {
+                return {
+                    year: preParameters.get('year') || '',
+                    currentInvoice: preParameters.get('currentInvoice') || '',
+                    selectedAccount: preParameters.get('selectedAccount') || ''
+                }
+            }) 
+        }
+    }, [setQueryParameters, pageName])
 
     //* Returns only a way to access the queries, since altering or reassigning values for the queries will be handled in other components
     return queryParameters;

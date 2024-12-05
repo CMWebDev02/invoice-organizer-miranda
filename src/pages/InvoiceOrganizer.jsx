@@ -1,6 +1,7 @@
 import { NavBar } from "../components/ui/NavBar";
 import { ChangeLogIcon } from "../components/ChangeLog/ChangeLogIcon";
-import { UserInputs } from "../components/DirectoryDisplay/UserInteraction/UserInputs"
+import { DirectoryFilter } from "../components/DirectoryDisplay/UserInteraction/DirectoryFilter";
+import { YearSelector } from "../components/YearSelection/YearSelector";
 import { DirectoryDisplay } from "../components/DirectoryDisplay/DirectoryDisplay"
 import { InvoiceViewer } from "../components/DirectoryDisplay/InvoiceViewer"
 import { NewDirectoryModal } from "../components/DirectoryDisplay/UserInteraction/NewDirectoryModal";
@@ -10,13 +11,13 @@ import { Footer } from "../components/ui/Footer";
 import { useEffect, useState } from "react";
 import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
 
-import { ChangeLogStorage } from "../utilities/localStorage";
+import { InvoiceOrganizerChangeLog } from "../utilities/localStorage";
 import { UserSettingsStorage } from "../utilities/localStorage";
 import { convertToValidQueryString } from "../utilities/stringMutations";
 import { UseURLQueries } from "../hooks/UseURLQueries";
 
 export function InvoiceOrganizer() {
-    const queryParameters = UseURLQueries();
+    const queryParameters = UseURLQueries({pageName: 'Invoice'});
 
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS')
 
@@ -24,7 +25,7 @@ export function InvoiceOrganizer() {
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
-    const [ changeLog, setChangeLog ] = useState(ChangeLogStorage.getStorage());
+    const [ changeLog, setChangeLog ] = useState(InvoiceOrganizerChangeLog.getStorage());
 
     const [ showNewDirectoryModal, setShowNewDirectoryModal ] = useState(false);
     const toggleNewDirectoryModal = () => setShowNewDirectoryModal(!showNewDirectoryModal);
@@ -59,7 +60,7 @@ export function InvoiceOrganizer() {
     useEffect(() => {
       if (changeLog) {
         // Potential change (UserSettingsStorage.getStorage()).changeLogActions to use the userSettings instead
-        ChangeLogStorage.setStorage(changeLog, maximumChangeLogActionStore)
+        InvoiceOrganizerChangeLog.setStorage(changeLog, maximumChangeLogActionStore)
       }
     }, [maximumChangeLogActionStore, changeLog])
 
@@ -90,9 +91,12 @@ export function InvoiceOrganizer() {
         </NavBar>
 
         <main> 
-          <UserInputs isInteractionDisabled={isUserInteractionDisabled} />
-
+          <div>
+            <DirectoryFilter isDisabled={isUserInteractionDisabled} />
             
+            <YearSelector isDisabled={isUserInteractionDisabled} />
+          </div>
+
           <div>
             <DirectoryDisplay 
                 setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={createFileInfo}/>

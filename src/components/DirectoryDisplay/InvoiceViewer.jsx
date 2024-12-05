@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { UseFetchGetRequest  } from '../../hooks/UseFetchGetRequest';
 
-export function InvoiceViewer({ transferOccurred }) {
+export function InvoiceViewer({ transferOccurred, pageName }) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
     const [ invoicePath, setInvoicePath ] = useState('');
 
-    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, fetchData } = UseFetchGetRequest({ fetchURL: 'http://localhost:3000/getInvoice',makeRequest: transferOccurred });
+    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, fetchData } = UseFetchGetRequest({ fetchURL: `http://localhost:3000/getInvoice${pageName}`,makeRequest: transferOccurred });
 
     useEffect(() => {
         /**

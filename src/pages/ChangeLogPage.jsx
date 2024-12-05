@@ -1,14 +1,14 @@
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
 
-import { ChangeLogStorage } from "../utilities/localStorage";
+import { InvoiceOrganizerChangeLog } from "../utilities/localStorage";
 
 import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
 import { FilterOptions } from '../components/ChangeLog/FilterOptions'
 
 export function ChangeLogPage() {
     //* This changeLog is the main one, it will store all of the data without being affected by the filter, it will only remove actions when their undo process executed successfully.
-    const [ changeLog, setChangeLog ] = useState(ChangeLogStorage.getStorage());
+    const [ changeLog, setChangeLog ] = useState(InvoiceOrganizerChangeLog.getStorage());
     //* This changeLog will be used to display the actions the user wishes to see and will remove elements depending on the selected filter.
     const [ filterBy, setFilterBy ] = useState(null);
 
@@ -23,8 +23,8 @@ export function ChangeLogPage() {
     }
 
     function resetChangeLog() {
-        ChangeLogStorage.resetStorage();
-        setChangeLog(ChangeLogStorage.getStorage());
+        InvoiceOrganizerChangeLog.resetStorage();
+        setChangeLog(InvoiceOrganizerChangeLog.getStorage());
     }
 
     return (
