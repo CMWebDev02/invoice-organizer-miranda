@@ -3,6 +3,7 @@ import { NumberSetting } from "../components/UserSettings/NumberSetting";
 import { ToggleSetting } from "../components/UserSettings/ToggleSetting";
 
 import { UserSettingsStorage } from "../utilities/localStorage";
+import { Link } from "react-router";
 
 export function SettingsPage() {
     const [ userSettings, setUserSettings ] = useState(UserSettingsStorage.getStorage());
@@ -21,13 +22,16 @@ export function SettingsPage() {
     }
 
     return (
-        <div>
-            <NumberSetting currentSetting={userSettings.CHANGELOG_ACTIONS} updateSetting={changeCurrentSetting} settingName={'CHANGELOG_ACTIONS'}>
-                Maximum ChangeLog Actions:</NumberSetting>
-            <ToggleSetting currentSetting={userSettings.SHOW_QUICK_TRANSFER_BUTTONS} updateSetting={changeCurrentSetting} settingName={'SHOW_QUICK_TRANSFER_BUTTONS'}>
-                Show Quick Transfer Buttons</ToggleSetting>
-            <ToggleSetting currentSetting={userSettings.SHOW_QUICK_UNDO_BUTTONS} updateSetting={changeCurrentSetting} settingName={'SHOW_QUICK_UNDO_BUTTONS'}>
-                Show Undo Buttons</ToggleSetting>
-        </div>
+        <>
+            <div>
+                <NumberSetting currentSetting={userSettings.CHANGELOG_ACTIONS} updateSetting={changeCurrentSetting} settingName={'CHANGELOG_ACTIONS'}>
+                    Maximum ChangeLog Actions:</NumberSetting>
+                <ToggleSetting currentSetting={userSettings.SHOW_QUICK_TRANSFER_BUTTONS} updateSetting={changeCurrentSetting} settingName={'SHOW_QUICK_TRANSFER_BUTTONS'}>
+                    Show Quick Transfer Buttons</ToggleSetting>
+                <ToggleSetting currentSetting={userSettings.SHOW_QUICK_UNDO_BUTTONS} updateSetting={changeCurrentSetting} settingName={'SHOW_QUICK_UNDO_BUTTONS'}>
+                    Show Undo Buttons</ToggleSetting>
+            </div>
+            <Link to='/'>Return</Link>
+        </>
     )
 }
