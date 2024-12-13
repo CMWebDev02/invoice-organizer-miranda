@@ -9,7 +9,7 @@ export function UseURLQueries({ pageName }) {
         if (pageName == 'Invoice') {
             setQueryParameters(preParameters => {
                 return {
-                    year: preParameters.get('year') || '',
+                    year: preParameters.get('year') || new Date().getFullYear(),
                     currentInvoice: preParameters.get('currentInvoice') || '',
                     selectedCustomer: preParameters.get('selectedCustomer') || '',
                 }

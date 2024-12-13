@@ -36,6 +36,7 @@ export class UserSettingsStorage extends accessLocalStorage {
 
     static _defaultSettingsObj = {
         CHANGELOG_ACTIONS: 25,
+        YEAR_OFFSET: 5,
         SHOW_QUICK_TRANSFER_BUTTONS: true,
         SHOW_QUICK_UNDO_BUTTONS: true,
     }
@@ -45,7 +46,6 @@ export class UserSettingsStorage extends accessLocalStorage {
     }
 
     static getStorage() {
-        let item = JSON.parse(localStorage.getItem(this._key))
         return JSON.parse(localStorage.getItem(this._key)) || {...this._defaultSettingsObj};
     }
 
