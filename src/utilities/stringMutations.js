@@ -10,3 +10,7 @@ export function appendQueriesParameters(baseURL, queries) {
     };
     return fetchURL.substring(0, fetchURL.length - 1);
 }
+
+export function convertToSentence() {
+    
+}
