@@ -17,11 +17,11 @@ import { convertToValidQueryString } from "../utilities/stringMutations";
 import { UseURLQueries } from "../hooks/UseURLQueries";
 
 export function InvoiceOrganizer() {
+  const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
     const queryParameters = UseURLQueries({pageName: 'Invoice'});
 
-    const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS')
-
     const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
+    const [ nameFilter, setNameFilter ] = useState('');
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
@@ -59,7 +59,6 @@ export function InvoiceOrganizer() {
 
     useEffect(() => {
       if (changeLog) {
-        // Potential change (UserSettingsStorage.getStorage()).changeLogActions to use the userSettings instead
         InvoiceOrganizerChangeLog.setStorage(changeLog, maximumChangeLogActionStore)
       }
     }, [maximumChangeLogActionStore, changeLog])
@@ -92,13 +91,13 @@ export function InvoiceOrganizer() {
 
         <main> 
           <div>
-            <DirectoryFilter isDisabled={isUserInteractionDisabled} />
+            <DirectoryFilter filter={[nameFilter, setNameFilter]} isDisabled={isUserInteractionDisabled} />
             
             <YearSelector isDisabled={isUserInteractionDisabled} />
           </div>
 
           <div>
-            <DirectoryDisplay 
+            <DirectoryDisplay nameFilter={nameFilter}
                 setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={createFileInfo}/>
 
             <ChangeLogDisplay changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />

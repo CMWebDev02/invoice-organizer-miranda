@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
-export function DirectoryFilter({ isDisabled }) {
-    const [ queryParameters, setQueryParameters ] = useSearchParams();
-    const [ filterValue, setFilterValue ] = useState(queryParameters.get('nameFilter') || '');
+export function DirectoryFilter({ filter, isDisabled }) {
+    const [ filterValue, setFilterValue ] = filter;
 
 
     function checkFilterValue(e) {
@@ -17,20 +16,6 @@ export function DirectoryFilter({ isDisabled }) {
             if (firstCharacterCode >= 0 && firstCharacterCode < 26) setFilterValue(e.target.value);
         }
     }
-
-    useEffect(() => {
-        // if (!filterValue) return
-        let timeOut = setTimeout(() => {
-            setQueryParameters(prevParameters => {
-                prevParameters.set('nameFilter', filterValue);
-                return prevParameters;
-            })
-        }, 250)
-
-        return () => {
-            clearTimeout(timeOut)
-        }
-    }, [filterValue, setQueryParameters])
 
     return (
         <div>

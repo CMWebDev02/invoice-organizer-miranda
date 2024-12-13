@@ -12,7 +12,6 @@ export function UseURLQueries({ pageName }) {
                     year: preParameters.get('year') || '',
                     currentInvoice: preParameters.get('currentInvoice') || '',
                     selectedCustomer: preParameters.get('selectedCustomer') || '',
-                    nameFilter: preParameters.get('nameFilter') || ''
                 }
             }) 
         } else if (pageName == 'AccountsPayable') {

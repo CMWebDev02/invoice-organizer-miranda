@@ -6,7 +6,7 @@ export function InvoiceViewer({ transferOccurred, pageName }) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
     const [ invoicePath, setInvoicePath ] = useState('');
 
-    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, fetchData } = UseFetchGetRequest({ fetchURL: `http://localhost:3000/getInvoice${pageName}`,makeRequest: transferOccurred });
+    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, fetchData } = UseFetchGetRequest({ fetchURL: `http://localhost:3000/getInvoice`, makeRequest: transferOccurred });
 
     useEffect(() => {
         /**

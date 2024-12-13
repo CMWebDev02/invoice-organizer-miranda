@@ -1,37 +1,22 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router";
 
-export function DirectoryList({ customers, sortFile }) {
-    const [queryParameters, setQueryParameters] = useSearchParams();
-    const [ filteredNames, setFilteredNames ] = useState([]);
+export function DirectoryList({ nameFilter, customers, sortFile }) {
+    const [ queryParameters, setQueryParameters ] = useSearchParams();
     const [ selectedName, setSelectedName ] = useState(null);
+    let filteredNames = [];
 
-    useEffect(() => {
-        if (queryParameters.get('nameFilter')) {
-            //* All strings will be capitalized before being compared to allow for instances in which the user chooses to store folders based on their preferred writing convention,
-            //* either all uppercase, lowercase, or a mixture of the two.
-            let capitalizedFilter = queryParameters.get('nameFilter').toUpperCase();
-            //? The customer array contains arrays that are separated alphabetically, using character codes allows for easy access of the appropriate array.
-            let characterIndex = capitalizedFilter.charCodeAt(0) - 65;
-            //! A check needs to be made in case the server does not have a folder associated with the letter to avoid errors.
-            if (customers.length > characterIndex) {
-                setFilteredNames(customers[characterIndex].filter(name => {
-                    if (name.toUpperCase().startsWith(capitalizedFilter)) return true
-                }))
-            } else {
-                setFilteredNames([]);
-            }
-        } else {
-            setFilteredNames([]);
+    if(nameFilter != '') {
+        //? The customer array contains arrays that are separated alphabetically, using character codes allows for easy access of the appropriate array.
+        const characterIndex = (nameFilter.toUpperCase()).charCodeAt(0) - 65;
+        if (customers[characterIndex].length != 0) {
+            filteredNames = customers[characterIndex].filter(name => {
+                //* All strings will be capitalized before being compared to allow for instances in which the user chooses to store folders based on their preferred writing convention,
+                //* either all uppercase, lowercase, or a mixture of the two.
+                if (name.toUpperCase().startsWith(nameFilter.toUpperCase())) return true
+            });
         }
-
-        
-        setSelectedName(null)
-        setQueryParameters(prevParameters => {
-            prevParameters.set('selectedCustomer', '')
-            return prevParameters
-        });
-    }, [queryParameters, customers, setSelectedName, setQueryParameters])
+    }
 
     function signalSelectedCustomer(e) {
         e.stopPropagation()
