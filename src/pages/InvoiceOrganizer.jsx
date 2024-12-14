@@ -20,8 +20,8 @@ export function InvoiceOrganizer() {
   const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
     const queryParameters = UseURLQueries({pageName: 'Invoice'});
 
-    const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
     const [ nameFilter, setNameFilter ] = useState('');
+    const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);

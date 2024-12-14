@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { NumberSetting } from "../components/UserSettings/NumberSetting";
 import { ToggleSetting } from "../components/UserSettings/ToggleSetting";
 
+import { convertToSentence } from "../utilities/stringMutations";
+
 import { UserSettingsStorage } from "../utilities/localStorage";
 import { Link } from "react-router";
 
@@ -9,8 +11,8 @@ export function SettingsPage() {
     const [ userSettings, setUserSettings ] = useState(UserSettingsStorage.getStorage());
     const displaySettings = Object.entries(userSettings).map(([setting, settingValue]) => {
         return (typeof settingValue) == 'boolean' ?
-            <ToggleSetting currentSetting={userSettings[setting]} updateSetting={changeCurrentSetting} settingName={setting}>{setting}</ToggleSetting> :
-            <NumberSetting currentSetting={userSettings[setting]} updateSetting={changeCurrentSetting} settingName={setting}>{setting}</NumberSetting>  
+            <ToggleSetting key={setting} currentSetting={userSettings[setting]} updateSetting={changeCurrentSetting} settingName={setting}>{convertToSentence(setting)}</ToggleSetting> :
+            <NumberSetting key={setting} currentSetting={userSettings[setting]} updateSetting={changeCurrentSetting} settingName={setting}>{convertToSentence(setting)}</NumberSetting>  
     })
 
     useEffect(() => {
@@ -28,15 +30,7 @@ export function SettingsPage() {
 
     return (
         <>
-            <div>
-                {displaySettings}
-                {/* <NumberSetting currentSetting={userSettings.CHANGELOG_ACTIONS} updateSetting={changeCurrentSetting} settingName={'CHANGELOG_ACTIONS'}>
-                    Maximum ChangeLog Actions:</NumberSetting>
-                <ToggleSetting currentSetting={userSettings.SHOW_QUICK_TRANSFER_BUTTONS} updateSetting={changeCurrentSetting} settingName={'SHOW_QUICK_TRANSFER_BUTTONS'}>
-                    Show Quick Transfer Buttons</ToggleSetting>
-                <ToggleSetting currentSetting={userSettings.SHOW_QUICK_UNDO_BUTTONS} updateSetting={changeCurrentSetting} settingName={'SHOW_QUICK_UNDO_BUTTONS'}>
-                    Show Undo Buttons</ToggleSetting> */}
-            </div>
+            <div>{displaySettings}</div>
             <Link to='/'>Return</Link>
         </>
     )
