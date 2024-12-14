@@ -1,11 +1,25 @@
-import { useState } from "react"
+import { useReducer } from "react"
 
-export function UseToggler({initialValue}) {
-    const [ isActive, setIsActive ] = useState(initialValue)    
+export function UseToggler({ initialValue }) {
+    const [ value, alterValue ] = useReducer(reducerFunction, { isActive: initialValue })    
 
-    function toggleIsActive() {
-        setIsActive(prevValue => !prevValue);
+    function reducerFunction(currentState, action) {
+        switch (action.type) {
+            case 'SET_ACTIVE': {
+                return {
+                    isActive: true
+                } 
+            };
+            case 'SET_DISABLED': {
+                return {
+                    isActive: false
+                } 
+            }  
+            default: {
+                throw new Error('Invalid Action!')
+            };
+        }
     }
 
-    return { isActive, toggleIsActive }
+    return { value, alterValue }
 }

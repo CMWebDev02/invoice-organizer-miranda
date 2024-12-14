@@ -1,11 +1,10 @@
 import { Link } from "react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { InvoiceOrganizerChangeLog } from "../utilities/localStorage";
 
 import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
 import { FilterOptions } from '../components/ChangeLog/FilterOptions'
-import { UseToggler } from "../hooks/UseToggler";
 
 export function ChangeLogPage() {
     //* This changeLog is the main one, it will store all of the data without being affected by the filter, it will only remove actions when their undo process executed successfully.

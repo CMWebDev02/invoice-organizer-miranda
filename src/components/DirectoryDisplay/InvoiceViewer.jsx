@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { UseFetchGetRequest  } from '../../hooks/UseFetchGetRequest';
 
-export function InvoiceViewer({ transferOccurred, pageName }) {
+export function InvoiceViewer({ transferOccurred, pageName, alterUserInteraction }) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
     const [ invoicePath, setInvoicePath ] = useState('');
 
-    const { isLoading: isInvoiceLoading, errorOccurred: invoiceError, fetchData } = UseFetchGetRequest({ fetchURL: `http://localhost:3000/getInvoice`, makeRequest: transferOccurred });
+    const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({ fetchURL: `http://localhost:3000/getInvoice`, makeRequest: transferOccurred });
 
     useEffect(() => {
         /**
@@ -47,18 +47,26 @@ export function InvoiceViewer({ transferOccurred, pageName }) {
     }, [fetchData])
 
     useEffect(() => {
-        if (invoiceError) {
+        if (errorOccurred) {
             setQueryParameters(prevParameters => {
                 prevParameters.set('currentInvoice', '');
                 return prevParameters;
             })
         }
-    }, [invoiceError, setQueryParameters])
+    }, [errorOccurred, setQueryParameters])
+
+    useEffect(() => {
+        if (isLoading) {
+            alterUserInteraction({type: 'SET_ACTIVE'})
+        } else {
+            alterUserInteraction({type: 'SET_DISABLED'})
+        }
+    }, [isLoading, alterUserInteraction])
 
     return (
         <div>
-            {isInvoiceLoading && <h2>Retrieving Invoice</h2>}
-            {invoiceError ? <h2>{invoiceError}</h2> : <iframe src={invoicePath} />}
+            {isLoading && <h2>Retrieving Invoice</h2>}
+            {errorOccurred ? <h2>{errorOccurred}</h2> : <iframe src={invoicePath} />}
         </div>
     )
 }

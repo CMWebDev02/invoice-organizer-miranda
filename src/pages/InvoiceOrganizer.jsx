@@ -22,7 +22,7 @@ export function InvoiceOrganizer() {
     const queryParameters = UseURLQueries({pageName: 'Invoice'});
 
     const [ nameFilter, setNameFilter ] = useState('');
-    const [ isUserInteractionDisabled, setIsUserInteractionDisabled ] = useState(true);
+    const {value: isUserInteractionDisabled, alterValue: alterUserInteraction} = UseToggler({initialValue: true})
 
     const [ fileTransfer, setFileTransfer ] = useState(null);
     const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
@@ -35,8 +35,12 @@ export function InvoiceOrganizer() {
     const { isLoading: isTransferring, errorOccurred: fileTransferError, fetchResponse: transferResult } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/sortFile', queries: fileTransfer})
 
     useEffect(() => {
-      setIsUserInteractionDisabled(isNewFolderInitializing || isTransferring)
-    }, [isTransferring, isNewFolderInitializing])
+      if (isNewFolderInitializing || isTransferring) {
+        alterUserInteraction({type: 'SET_ACTIVE'});
+      } else {
+        alterUserInteraction({type: 'SET_DISABLED'});
+      }
+    }, [isTransferring, isNewFolderInitializing, alterUserInteraction])
 
     useEffect(() => {
       //! If an error occurs for either fetch post attempt, clear the object associate with the action so that the user may attempt to recall their request..
@@ -86,25 +90,25 @@ export function InvoiceOrganizer() {
         <NavBar PageName={'Invoice Organizer'}>
           <ChangeLogIcon isChanging={isNewFolderInitializing || isTransferring} changeResult={changeLog[0]} />
 
-          <button onClick={createFileInfo} disabled={isUserInteractionDisabled}>Sort</button>
+          <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isActive}>Sort</button>
           <button onClick={toggleNewDirectoryModal}>Create Folder</button>
         </NavBar>
 
         <main> 
           <div>
-            <DirectoryFilter filter={[nameFilter, setNameFilter]} isDisabled={isUserInteractionDisabled} />
+            <DirectoryFilter filter={[nameFilter, setNameFilter]} isDisabled={isUserInteractionDisabled.isActive} />
             
-            <YearSelector isDisabled={isUserInteractionDisabled} />
+            <YearSelector isDisabled={isUserInteractionDisabled.isActive} />
           </div>
 
           <div>
             <DirectoryDisplay nameFilter={nameFilter}
-                setIsUserInteractionDisabled={setIsUserInteractionDisabled} sortFile={createFileInfo}/>
+                alterUserInteraction={alterUserInteraction} sortFile={createFileInfo}/>
 
             <ChangeLogDisplay changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
           </div>
 
-          <InvoiceViewer transferOccurred={transferResult} />
+          <InvoiceViewer transferOccurred={transferResult} alterUserInteraction={alterUserInteraction} />
 
           <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} newCustomerFolderName={setNewCustomerFolderName} />
         </main>
@@ -115,7 +119,7 @@ export function InvoiceOrganizer() {
 
 
         <Footer>
-            <button onClick={createFileInfo} disabled={isUserInteractionDisabled} >Sort</button>
+            <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isActive} >Sort</button>
             <button onClick={toggleNewDirectoryModal} >Create Folder</button>
         </Footer>
       </>
