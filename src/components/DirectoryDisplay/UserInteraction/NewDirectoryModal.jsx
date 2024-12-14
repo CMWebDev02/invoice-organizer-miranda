@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 
-import { NewDirectoryNameInput } from './NewDirectoryNameInput';
 
-export function NewDirectoryModal({ showModal, toggleNewFolderModal, newCustomerFolderName}) {
-    const [ newCustomerName, setNewCustomerName ] = useState('');
-    
+export function NewDirectoryModal({ showModal, toggleNewFolderModal, newCustomerFolderName}) {    
     const [errorMessage, setErrorMessage] = useState('');
-
-
+    const customerNameRef = useRef(null);
 
     useEffect(() => {
-        setNewCustomerName('');
-        setErrorMessage('');
+        let clearErrorMessage;
+        if (errorMessage != '') {
+            clearErrorMessage = setTimeout(() => {
+                setErrorMessage('');
+            }, 2000)
+        }
 
-        //! This currently clears the newCustomerFolderName input once the modal closes but this might cause an error 
-            //* As of now it does not seem to but I should still find a better way to do this.
-        newCustomerFolderName(null);
-    }, [showModal, newCustomerFolderName])
+        return () => {
+            clearTimeout(clearErrorMessage)
+        }
+    }, [errorMessage])
 
     function checkName() {
         setErrorMessage('')
-
+        let newCustomerName = customerNameRef.current.value;
+        
         let nameArr = newCustomerName.trim().split(' ');
         if (nameArr.length != 2) {
             setErrorMessage('Error: Please Enter a Valid Name!')
@@ -40,8 +41,8 @@ export function NewDirectoryModal({ showModal, toggleNewFolderModal, newCustomer
             </Modal.Header>
             <Modal.Body>
                 {errorMessage && <h3>{errorMessage}</h3>}
-                <NewDirectoryNameInput customerNameControls={[ newCustomerName, setNewCustomerName ] } />
-
+                <label htmlFor='customerFolderInput'>Customer Name (Lastname Firstname):</label>
+                <input id='customerFolderInput' type='text' placeholder='Lastname Firstname' ref={customerNameRef} />
             </Modal.Body>
             <Modal.Footer>
                 <button onClick={toggleNewFolderModal} >Close</button>

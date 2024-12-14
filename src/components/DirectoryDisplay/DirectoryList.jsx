@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useState } from "react"
 import { useSearchParams } from "react-router";
 
 export function DirectoryList({ nameFilter, customers, sortFile }) {
