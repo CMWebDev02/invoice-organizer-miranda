@@ -9,7 +9,7 @@ export function DirectoryList({ nameFilter, customers, sortFile }) {
     if(nameFilter != '') {
         //? The customer array contains arrays that are separated alphabetically, using character codes allows for easy access of the appropriate array.
         const characterIndex = (nameFilter.toUpperCase()).charCodeAt(0) - 65;
-        if (customers[characterIndex].length != 0) {
+        if (customers[characterIndex] && customers[characterIndex].length != 0) {
             filteredNames = customers[characterIndex].filter(name => {
                 //* All strings will be capitalized before being compared to allow for instances in which the user chooses to store folders based on their preferred writing convention,
                 //* either all uppercase, lowercase, or a mixture of the two.

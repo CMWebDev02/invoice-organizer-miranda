@@ -15,6 +15,7 @@ import { InvoiceOrganizerChangeLog } from "../utilities/localStorage";
 import { UserSettingsStorage } from "../utilities/localStorage";
 import { convertToValidQueryString } from "../utilities/stringMutations";
 import { UseURLQueries } from "../hooks/UseURLQueries";
+import { UseToggler } from "../hooks/UseToggler";
 
 export function InvoiceOrganizer() {
   const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
