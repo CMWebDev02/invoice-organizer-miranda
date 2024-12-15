@@ -1,34 +1,23 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
-export function UseFetchGetRequest({ fetchURL, makeRequest }) {
-    const [ fetchData, setFetchData ] = useState(null);
-    const [ errorOccurred, setErrorOccurred ] = useState(false);
-    const [ isLoading, setIsLoading ] = useState(false);
+export function UseFetchGetRequest({ fetchURL, key}) {
+    const { data: fetchData, isFetching: isLoading, error: errorOccurred } = useQuery({
+        queryKey: [key],
+        queryFn: makeGetRequest,
+        staleTime: (1000 * 60 * 5) // Refetch every five minutes 
 
-    useEffect(() => {
-        const abortController = new AbortController;
-        const abortSignal = abortController.signal;
+    })
 
-        async function makeGetRequest() {
-            try {
-                setIsLoading(true);
-                let response = await fetch(fetchURL, { method: 'GET', signal: abortSignal});
-                if (!response.ok) throw new Error('Fetch request failed.');
-                let data = await response.json();
-                setFetchData(data);
-                setErrorOccurred(false);
-            } catch (error) {
-                console.error(error);
-                setErrorOccurred(error.message);
-            } finally {
-                setIsLoading(false);
-            }
+    async function makeGetRequest() {
+        try {
+            let response = await fetch(fetchURL, { method: 'GET'});
+            if (!response.ok) throw new Error('Fetch request failed.');
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            throw new Error(error);
         }
-
-        makeGetRequest();
-
-        // return () => abortController.abort();
-    }, [fetchURL, makeRequest]);
+    }
     
     return {fetchData, errorOccurred, isLoading};
 }

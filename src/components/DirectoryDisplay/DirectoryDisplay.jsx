@@ -3,7 +3,7 @@ import { UseFetchGetRequest } from "../../hooks/UseFetchGetRequest";
 import { DirectoryList } from "./DirectoryList";
 
 export function DirectoryDisplay({ nameFilter, alterUserInteraction, sortFile }) {
-    const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: 'http://localhost:3000/getDirectories', makeRequest: ''})
+    const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: 'http://localhost:3000/getDirectories', key: 'customerFolders'})
     const [ customerFolders, setCustomerFolders ] = useState([]);
 
     useEffect(() => {
