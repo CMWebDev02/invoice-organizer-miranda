@@ -24,15 +24,13 @@ export function InvoiceOrganizer() {
     const [ nameFilter, setNameFilter ] = useState('');
     const {value: isUserInteractionDisabled, alterValue: alterUserInteraction} = UseToggler({initialValue: true})
 
-    const [ fileTransfer, setFileTransfer ] = useState(null);
-    const [ newCustomerFolderName, setNewCustomerFolderName ] = useState(null);
     const [ changeLog, setChangeLog ] = useState(InvoiceOrganizerChangeLog.getStorage());
 
     const [ showNewDirectoryModal, setShowNewDirectoryModal ] = useState(false);
     const toggleNewDirectoryModal = () => setShowNewDirectoryModal(!showNewDirectoryModal);
 
-    const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, fetchResponse: folderCreationResult } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/createNewFolder', queries: newCustomerFolderName})
-    const { isLoading: isTransferring, errorOccurred: fileTransferError, fetchResponse: transferResult } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/sortFile', queries: fileTransfer})
+    const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/createNewFolder', alterChangeLog: setChangeLog, associateFetchKey: 'customerFolders' })
+    const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/sortFile', alterChangeLog: setChangeLog, associateFetchKey: 'invoiceViewer' })
 
     useEffect(() => {
       if (isNewFolderInitializing || isTransferring) {
@@ -41,26 +39,6 @@ export function InvoiceOrganizer() {
         alterUserInteraction({type: 'SET_DISABLED'});
       }
     }, [isTransferring, isNewFolderInitializing, alterUserInteraction])
-
-    useEffect(() => {
-      //! If an error occurs for either fetch post attempt, clear the object associate with the action so that the user may attempt to recall their request..
-      if (newFolderError) setNewCustomerFolderName(null);
-      if (fileTransferError) setFileTransfer(null);
-    }, [newFolderError, fileTransferError])
-
-    useEffect(() => {
-      //? Checks if a file sort fetch resolved.
-      if (transferResult) {
-        setChangeLog(prevChanges => [transferResult, ...prevChanges]);
-      }
-    }, [transferResult])
-
-    useEffect(() => {
-      //? Checks if a folderCreation fetch resolved.
-      if (folderCreationResult) {
-        setChangeLog(prevChanges => [folderCreationResult, ...prevChanges]);
-      }
-    }, [folderCreationResult])
 
     useEffect(() => {
       if (changeLog) {
@@ -73,11 +51,13 @@ export function InvoiceOrganizer() {
       //* This is necessary for the quick transfer feature, this allows the selected customer to remain stored in state while still allowing the user to quickly transfer to another customer if they
       //* click the quick transfer button.
       let customerName = e.target.name ? e.target.name : queryParameters.get('selectedCustomer');
-      if (customerName == null || queryParameters.get('currentInvoice') == null) return;
+      // Checks that all of the required information is present for making a file transfer, and if something is missing the function returns.
+      //! Have this generate an error that prints on screen to alert the user that critical information is missing for the file transfer
+      if (customerName == '' || queryParameters.get('currentInvoice') == '' || queryParameters.get('year') == '') return;
 
       let queryString = convertToValidQueryString(customerName);
 
-      setFileTransfer({
+      triggerFileSort({
         invoiceName: queryParameters.get('currentInvoice'), 
         customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
         customerName: queryString.toUpperCase(),
@@ -108,9 +88,9 @@ export function InvoiceOrganizer() {
             <ChangeLogDisplay changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
           </div>
 
-          <InvoiceViewer transferOccurred={transferResult} alterUserInteraction={alterUserInteraction} />
+          <InvoiceViewer alterUserInteraction={alterUserInteraction} />
 
-          <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} newCustomerFolderName={setNewCustomerFolderName} />
+          <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} triggerFolderCreation={triggerFolderCreation} />
         </main>
 
         {/* Turn these into toast Icons for the bottom right of the screen */}

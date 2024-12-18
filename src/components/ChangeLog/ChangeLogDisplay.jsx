@@ -1,36 +1,20 @@
-import { useEffect, useState } from "react";
 import { ChangeInfo } from './ChangeInfo.jsx'
-import { UseFetchPostRequest } from "../../hooks/UseFetchPostRequest.jsx";
+import { UseUndoFetch } from "../../hooks/UseUndoFetch.jsx";
 
 export function ChangeLogDisplay({ changeLog, alterChangeLog }) {
-    const [ undoChangeInfo, setUndoChangeInfo ] = useState(null);
-
-    const { isLoading: isUndoingAction, errorOccurred: undoActionError, fetchResponse: undoActionData } = UseFetchPostRequest({fetchURLBase: 'http://localhost:3000/undoAction', queries: undoChangeInfo})
-
-    useEffect(() => {
-        if (undoActionData) {
-            alterChangeLog(prevChanges => {
-                let changes = [ undoActionData, ...prevChanges ];
-                if (undoActionData.result == "Succeeded") {
-                    changes = changes.filter(change => change.id != undoActionData.undoneActionId);
-                }
-
-                return changes;
-            })
-        }
-    }, [undoActionData, alterChangeLog])
-
+    const { isLoading: isUndoingAction, errorOccurred: undoActionError, triggerFetchPostRequest: triggerChangeLogPostRequest } = UseUndoFetch({fetchURLBase: 'http://localhost:3000/undoAction', alterChangeLog, associateFetchKey: ''})
 
     function undoChange(undoObj, id, action) {
         let userResult = confirm('Are You Sure You Want to Undo This Change?')
         if (!userResult) return;
         
-        setUndoChangeInfo({
+        triggerChangeLogPostRequest({
             action: action,
             actionId: id,
             undoInfo: JSON.stringify(undoObj)
         })
     }
+
 
     return (
         <div>

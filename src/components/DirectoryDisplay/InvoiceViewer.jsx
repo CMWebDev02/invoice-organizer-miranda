@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { UseFetchGetRequest  } from '../../hooks/UseFetchGetRequest';
 
-export function InvoiceViewer({ transferOccurred, pageName, alterUserInteraction }) {
-    const [ queryParameters, setQueryParameters ] = useSearchParams();
+export function InvoiceViewer({ pageName, alterUserInteraction }) {
+    const [ _, setQueryParameters ] = useSearchParams();
     const [ invoicePath, setInvoicePath ] = useState('');
 
     const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({ fetchURL: `http://localhost:3000/getInvoice`, key: 'invoiceViewer' });
@@ -53,7 +53,7 @@ export function InvoiceViewer({ transferOccurred, pageName, alterUserInteraction
                 return prevParameters;
             })
         }
-    }, [errorOccurred, setQueryParameters])
+    }, [errorOccurred])
 
     useEffect(() => {
         if (isLoading) {

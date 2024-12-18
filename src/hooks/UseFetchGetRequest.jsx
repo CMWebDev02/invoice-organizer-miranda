@@ -1,23 +1,18 @@
 import { useQuery } from "react-query";
+import axios from 'axios'
 
 export function UseFetchGetRequest({ fetchURL, key}) {
-    const { data: fetchData, isFetching: isLoading, error: errorOccurred } = useQuery({
+    const { data: fetchData, isLoading, error } = useQuery({
         queryKey: [key],
         queryFn: makeGetRequest,
-        staleTime: (1000 * 60 * 5) // Refetch every five minutes 
-
     })
 
     async function makeGetRequest() {
-        try {
-            let response = await fetch(fetchURL, { method: 'GET'});
-            if (!response.ok) throw new Error('Fetch request failed.');
-            return await response.json();
-        } catch (error) {
-            console.error(error);
-            throw new Error(error);
-        }
+        let response = await axios.get(fetchURL, {
+            method: 'get',
+        })
+        return response.data
     }
     
-    return {fetchData, errorOccurred, isLoading};
+    return {fetchData, errorOccurred: error?.message, isLoading};
 }

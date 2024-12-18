@@ -1,38 +1,29 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useMutation, useQueryClient } from "react-query";
 import { appendQueriesParameters } from "../utilities/stringMutations";
 
-export function UseFetchPostRequest({ fetchURLBase, queries }) {
-    const [ fetchResponse, setFetchResponse ] = useState(null);
-    const [ errorOccurred, setErrorOccurred ] = useState(false);
-    const [ isLoading, setIsLoading ] = useState(false);
+export function UseFetchPostRequest({ fetchURLBase, alterChangeLog, associateFetchKey }) {
+    const mainQueryClient = useQueryClient()
+    const { mutateAsync: triggerFetchPostRequest, error, isLoading } = useMutation({
+        mutationFn: makePostRequest,
+        onSuccess: handleSuccessfulTransfer
+    })
 
-    useEffect(() => {
-        if (!queries) return;
-        const abortController = new AbortController;
-        const abortSignal = abortController.signal;
+    async function makePostRequest(queries) {
+        let fetchURL = appendQueriesParameters(fetchURLBase, queries);
+        let response = await axios.post(fetchURL);
+        return response.data;
+    }
 
-        async function makePostRequest() {
-            try {
-                setIsLoading(true);
-                setErrorOccurred(false);
-                let fetchURL = appendQueriesParameters(fetchURLBase, queries);
-                
-                let response = await fetch(fetchURL, { method: 'POST', signal: abortSignal});
-                if (!response.ok) throw new Error('Fetch request failed.');
-                let data = await response.json();
-                setFetchResponse(data);
-            } catch (error) {
-                console.error(error);
-                setErrorOccurred(error.message);
-            } finally {
-                setIsLoading(false);
-            }
-        }
+    function handleSuccessfulTransfer(transferData) {
+        //* A check is made to determine if this post request alters data fetched from the server.
+        //? If so, the associated query key is invalidated
+        //? to trigger said queries to refetch for the updated information
+        if (associateFetchKey != '') mainQueryClient.invalidateQueries(associateFetchKey);
 
-        makePostRequest();
+        //? Then the response data from the post request is added to the changelog.
+        alterChangeLog(prevChanges => [transferData, ...prevChanges])
+    }
 
-        // return () => abortController.abort();
-    }, [fetchURLBase, queries]);
-    
-    return {fetchResponse, errorOccurred, isLoading};
+    return {triggerFetchPostRequest, errorOccurred: error?.message, isLoading};
 }

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 
 
-export function NewDirectoryModal({ showModal, toggleNewFolderModal, newCustomerFolderName}) {    
+export function NewDirectoryModal({ showModal, toggleNewFolderModal, triggerFolderCreation}) {    
     const [errorMessage, setErrorMessage] = useState('');
     const customerNameRef = useRef(null);
 
@@ -24,13 +24,9 @@ export function NewDirectoryModal({ showModal, toggleNewFolderModal, newCustomer
         let newCustomerName = customerNameRef.current.value;
         
         let nameArr = newCustomerName.trim().split(' ');
-        if (nameArr.length != 2) {
-            setErrorMessage('Error: Please Enter a Valid Name!')
-        } else {
-            let customerFolderQuery = nameArr.join('%20').toUpperCase();
-            newCustomerFolderName({customerFolderName: customerFolderQuery, letterFolder: customerFolderQuery[0]});
-            toggleNewFolderModal();
-        };
+        let customerFolderQuery = nameArr.join('%20').toUpperCase();
+        triggerFolderCreation({customerFolderName: customerFolderQuery, letterFolder: customerFolderQuery[0]});
+        toggleNewFolderModal();
 
     }
 
