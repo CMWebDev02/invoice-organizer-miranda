@@ -1,7 +1,7 @@
-export function NavBar({ children, PageName }) {
+export function NavBar({ children, pageName }) {
     return (
       <nav>
-        <h1>{PageName}</h1>
+        <h1>{pageName}</h1>
         {children}
         <button>Menu</button>
       </nav>

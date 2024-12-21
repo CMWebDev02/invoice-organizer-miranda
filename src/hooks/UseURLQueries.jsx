@@ -6,7 +6,7 @@ export function UseURLQueries({ pageName }) {
 
     // Injects the necessary queries into the url upon initialization of the hook.
     useEffect(() => {
-        if (pageName == 'Invoice') {
+        if (pageName == 'Customer Scanned Documents') {
             setQueryParameters(preParameters => {
                 return {
                     year: preParameters.get('year') || new Date().getFullYear(),

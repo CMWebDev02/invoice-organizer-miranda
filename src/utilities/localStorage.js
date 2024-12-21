@@ -23,12 +23,12 @@ export class ChangeLogStorage extends accessLocalStorage {
     }
 }
 
-export class InvoiceOrganizerChangeLog extends ChangeLogStorage {
-    static _key = 'changeLogInvoices';
+export class CustomerScannedDocumentsChangeLog extends ChangeLogStorage {
+    static _key = 'customerScannedDocs';
 }
 
-export class AccountsPayableChangeLog extends ChangeLogStorage {
-    static _key = 'changeLogInvoices';
+export class AccountsPayablesChangeLog extends ChangeLogStorage {
+    static _key = 'accountsPayables';
 }
 
 export class UserSettingsStorage extends accessLocalStorage {

@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { UseFetchGetRequest  } from '../../hooks/UseFetchGetRequest';
 
-export function InvoiceViewer({ pageName, alterUserInteraction }) {
+export function InvoiceViewer({ pageName, alterUserInteraction, fetchKey }) {
     const [ _, setQueryParameters ] = useSearchParams();
     const [ invoicePath, setInvoicePath ] = useState('');
 
-    const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({ fetchURL: `http://localhost:3000/getInvoice`, key: 'invoiceViewer' });
+    const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({ fetchURL: `http://localhost:3000/getInvoice`, key: fetchKey });
 
     useEffect(() => {
         /**
@@ -37,23 +37,19 @@ export function InvoiceViewer({ pageName, alterUserInteraction }) {
 
         if (!fetchData) return;
 
-        if (fetchData.fileName != '') {
-            setQueryParameters(prevParameters => {
-                prevParameters.set('currentInvoice', fetchData.fileName);
-                return prevParameters;
-            });
-            setInvoicePath(decodePDFIntoBlob(fetchData.file))
-        };
-    }, [fetchData])
-
-    useEffect(() => {
         if (errorOccurred) {
             setQueryParameters(prevParameters => {
                 prevParameters.set('currentInvoice', '');
                 return prevParameters;
             })
+        } else {
+            setQueryParameters(prevParameters => {
+                prevParameters.set('currentInvoice', fetchData.fileName);
+                return prevParameters;
+            });
+            setInvoicePath(decodePDFIntoBlob(fetchData.file))
         }
-    }, [errorOccurred])
+    }, [fetchData, setQueryParameters, errorOccurred])
 
     useEffect(() => {
         if (isLoading) {

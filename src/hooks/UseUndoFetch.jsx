@@ -2,7 +2,7 @@ import axios from "axios";
 import { useMutation } from "react-query";
 import { appendQueriesParameters } from "../utilities/stringMutations";
 
-export function UseUndoFetch({ fetchURLBase, alterChangeLog, associateFetchKey }) {
+export function UseUndoFetch({ fetchURLBase, alterChangeLog }) {
     const { mutateAsync: triggerFetchPostRequest, error, isLoading } = useMutation({
         mutationFn: makePostRequest,
         onSuccess: handleSuccessfulTransfer

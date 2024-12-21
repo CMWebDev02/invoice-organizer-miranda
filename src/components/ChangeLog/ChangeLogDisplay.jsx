@@ -2,7 +2,7 @@ import { ChangeInfo } from './ChangeInfo.jsx'
 import { UseUndoFetch } from "../../hooks/UseUndoFetch.jsx";
 
 export function ChangeLogDisplay({ changeLog, alterChangeLog }) {
-    const { isLoading: isUndoingAction, errorOccurred: undoActionError, triggerFetchPostRequest: triggerChangeLogPostRequest } = UseUndoFetch({fetchURLBase: 'http://localhost:3000/undoAction', alterChangeLog, associateFetchKey: ''})
+    const { isLoading: isUndoingAction, errorOccurred: undoActionError, triggerFetchPostRequest: triggerChangeLogPostRequest } = UseUndoFetch({fetchURLBase: 'http://localhost:3000/undoAction', alterChangeLog})
 
     function undoChange(undoObj, id, action) {
         let userResult = confirm('Are You Sure You Want to Undo This Change?')
