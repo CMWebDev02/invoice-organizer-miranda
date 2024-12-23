@@ -2,9 +2,18 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
 export function YearSelector({isDisabled}) {
+    const [ queryParameters, setQueryParameters ] = useSearchParams();
     const currentYear = new Date().getFullYear();
     const yearOffSet = 5;
-    const [ queryParameters, setQueryParameters ] = useSearchParams();
+
+    useEffect(() => {
+        if (queryParameters.get('year') == null) {
+            setQueryParameters(prevParameters => {
+                prevParameters.set('year', new Date().getFullYear())
+                return prevParameters;
+            })
+        }
+    }, [queryParameters, setQueryParameters])
 
     function changeYear(e) {
         setQueryParameters(prevParameters => {
