@@ -49,7 +49,7 @@ export function InvoiceViewer({ pageName, alterUserInteraction, fetchKey }) {
             });
             setInvoicePath(decodePDFIntoBlob(fetchData.file))
         }
-    }, [fetchData, setQueryParameters, errorOccurred])
+    }, [fetchData, errorOccurred]) // setQueryParameter is not added to the dependecy since it would trigger a rerender anytime one of the query parameters changes.
 
     useEffect(() => {
         if (isLoading) {

@@ -69,12 +69,18 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
 
       let queryString = convertToValidQueryString(customerName);
 
-      triggerFileSort({
-        invoiceName: queryParameters.get('currentInvoice'), 
-        customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
-        customerName: queryString.toUpperCase(),
-        year: queryParameters.get('year'),
-      });
+      console.log({
+          invoiceName: queryParameters.get('currentInvoice'), 
+          customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
+          customerName: queryString.toUpperCase(),
+          year: queryParameters.get('year'),
+        })
+      // triggerFileSort({
+      //   invoiceName: queryParameters.get('currentInvoice'), 
+      //   customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
+      //   customerName: queryString.toUpperCase(),
+      //   year: queryParameters.get('year'),
+      // });
     }
 
     return (
