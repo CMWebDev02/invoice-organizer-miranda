@@ -13,7 +13,6 @@ import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
 
 import { UserSettingsStorage } from "../utilities/localStorage";
 import { convertToValidQueryString } from "../utilities/stringMutations";
-import { UseURLQueries } from "../hooks/UseURLQueries";
 import { UseToggler } from "../hooks/UseToggler";
 
 // Things that will be different based on the selected page,
@@ -28,7 +27,6 @@ import { UseToggler } from "../hooks/UseToggler";
 // TODO Having a settings object initialize and store in local storage even if the user does not visit the settings page first.
 export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEndPoint, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
-    const queryParameters = UseURLQueries({pageName});
 
     const [ nameFilter, setNameFilter ] = useState('');
     const {value: isUserInteractionDisabled, alterValue: alterUserInteraction} = UseToggler({initialValue: true})
@@ -56,8 +54,6 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
       }
     }, [maximumChangeLogActionStore, changeLog, changeLogStorage])
 
-    // Rework this to make it reusable, remove all traces of customer name and instead use directory, and try to have all query parameters be pulled and tested instead of 
-    // specifying which ones to test
     function createFileInfo(e) {
       //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected customer is used.
       //* This is necessary for the quick transfer feature, this allows the selected customer to remain stored in state while still allowing the user to quickly transfer to another customer if they
@@ -69,19 +65,14 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
 
       let queryString = convertToValidQueryString(customerName);
 
-      console.log({
-          invoiceName: queryParameters.get('currentInvoice'), 
-          customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
-          customerName: queryString.toUpperCase(),
-          year: queryParameters.get('year'),
-        })
-      // triggerFileSort({
-      //   invoiceName: queryParameters.get('currentInvoice'), 
-      //   customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
-      //   customerName: queryString.toUpperCase(),
-      //   year: queryParameters.get('year'),
-      // });
+      triggerFileSort({
+        invoiceName: queryParameters.get('currentInvoice'), 
+        customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
+        customerName: queryString.toUpperCase(),
+        year: queryParameters.get('year'),
+      });
     }
+
 
     return (
       <>

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router';
 import { UseFetchGetRequest  } from '../../hooks/UseFetchGetRequest';
 
 export function InvoiceViewer({ pageName, alterUserInteraction, fetchKey }) {
-    const [ _, setQueryParameters ] = useSearchParams();
+    const [ queryParameter, setQueryParameters ] = useSearchParams();
     const [ invoicePath, setInvoicePath ] = useState('');
 
     const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({ fetchURL: `http://localhost:3000/getInvoice`, key: fetchKey });
@@ -42,14 +42,16 @@ export function InvoiceViewer({ pageName, alterUserInteraction, fetchKey }) {
                 prevParameters.set('currentInvoice', '');
                 return prevParameters;
             })
-        } else {
+        } else if (queryParameter.get('currentInvoice') != fetchData.fileName || invoicePath == '') {
+            //? Checks if the current fileName property is different or if the invoicePath is currently blank, if either of these are the case, then the invoice needs to be decoded and displayed to the user
+            //? and if these are not the case, the invoice is already being shown and does not need to be decoded.
             setQueryParameters(prevParameters => {
                 prevParameters.set('currentInvoice', fetchData.fileName);
                 return prevParameters;
             });
-            setInvoicePath(decodePDFIntoBlob(fetchData.file))
+            setInvoicePath(decodePDFIntoBlob(fetchData.file));
         }
-    }, [fetchData, errorOccurred]) // setQueryParameter is not added to the dependecy since it would trigger a rerender anytime one of the query parameters changes.
+    }, [fetchData, errorOccurred, queryParameter, setQueryParameters, invoicePath])
 
     useEffect(() => {
         if (isLoading) {
