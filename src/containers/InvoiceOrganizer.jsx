@@ -28,7 +28,7 @@ import { UseToggler } from "../hooks/UseToggler";
 export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEndPoint, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
 
-    const [ nameFilter, setNameFilter ] = useState('');
+    const [ directoryFilter, setDirectoryFilter ] = useState('');
     const {value: isUserInteractionDisabled, alterValue: alterUserInteraction} = UseToggler({initialValue: true})
 
     // Edit changeLog command to get the changelog associated with the page
@@ -85,13 +85,13 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
 
         <main> 
           <div>
-            <DirectoryFilter filter={[nameFilter, setNameFilter]} isDisabled={isUserInteractionDisabled.isActive} />
+            <DirectoryFilter filter={[directoryFilter, setDirectoryFilter]} isDisabled={isUserInteractionDisabled.isActive} />
             
             <YearSelector isDisabled={isUserInteractionDisabled.isActive} />
           </div>
 
           <div>
-            <DirectoryDisplay nameFilter={nameFilter} fetchKey={`${pageName}-customerFolders`}
+            <DirectoryDisplay directoryFilter={directoryFilter} fetchKey={`${pageName}-customerFolders`}
                 alterUserInteraction={alterUserInteraction} sortFile={createFileInfo}/>
             
             {/* Add the user setting to control how many changeLog actions are displayed in the quick view*/}

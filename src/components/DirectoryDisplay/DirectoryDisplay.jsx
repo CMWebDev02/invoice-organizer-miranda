@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
 import { UseFetchGetRequest } from "../../hooks/UseFetchGetRequest";
 import { DirectoryList } from "./DirectoryList";
+import { useSearchParams } from "react-router";
 
-export function DirectoryDisplay({ nameFilter, alterUserInteraction, sortFile, fetchKey }) {
+export function DirectoryDisplay({ directoryFilter, alterUserInteraction, sortFile, fetchKey }) {
     const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: 'http://localhost:3000/getDirectories', key: fetchKey})
-    const [ customerFolders, setCustomerFolders ] = useState([]);
+    const [ allDirectories, setAllDirectories ] = useState([]);
+    const [ queryParameters, setQueryParameters ] = useSearchParams();
+
+    useEffect(() => {
+        if (queryParameters.get('selectedDirectory') == null) {
+            setQueryParameters(prevParameters => {
+                prevParameters.set('selectedDirectory', '')
+                return prevParameters
+            })
+        }
+    }, [queryParameters, setQueryParameters])
 
     useEffect(() => {
         if (fetchData) {
-            setCustomerFolders(fetchData.customersArray);
+            setAllDirectories(fetchData.customersArray);
         }
     }, [fetchData])
 
@@ -20,10 +31,18 @@ export function DirectoryDisplay({ nameFilter, alterUserInteraction, sortFile, f
         }
     }, [isLoading, alterUserInteraction])
 
+    function setSelectedDirectory(e) {
+        e.stopPropagation()
+        setQueryParameters(prevParameters => {
+            prevParameters.set('selectedDirectory', e.target.id)
+            return prevParameters
+        });
+    }
+
     return (
         <div>
             {isLoading && <h2>Gathering Customer Folders</h2>}
-            {errorOccurred ? <h2>{errorOccurred}</h2> : <DirectoryList nameFilter={nameFilter} customers={customerFolders} sortFile={sortFile} />}
+            {errorOccurred ? <h2>{errorOccurred}</h2> : <DirectoryList selectDirectory={setSelectedDirectory} selectedDirectory={queryParameters.get('selectedDirectory')} directoryFilter={directoryFilter} directories={allDirectories} sortFile={sortFile} />}
         </div>
     )
 }
