@@ -14,6 +14,7 @@ import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
 import { UserSettingsStorage } from "../utilities/localStorage";
 import { convertToValidQueryString } from "../utilities/stringMutations";
 import { UseToggler } from "../hooks/UseToggler";
+import { useSearchParams } from "react-router";
 
 // Things that will be different based on the selected page,
 // // - Page name
@@ -27,6 +28,7 @@ import { UseToggler } from "../hooks/UseToggler";
 // TODO Having a settings object initialize and store in local storage even if the user does not visit the settings page first.
 export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEndPoint, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
+    const [ queryParameters, setQueryParameters ] = useSearchParams();
 
     const [ directoryFilter, setDirectoryFilter ] = useState('');
     const {value: isUserInteractionDisabled, alterValue: alterUserInteraction} = UseToggler({initialValue: true})
@@ -55,20 +57,20 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
     }, [maximumChangeLogActionStore, changeLog, changeLogStorage])
 
     function createFileInfo(e) {
-      //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected customer is used.
-      //* This is necessary for the quick transfer feature, this allows the selected customer to remain stored in state while still allowing the user to quickly transfer to another customer if they
+      //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected directory is used.
+      //* This is necessary for the quick transfer feature, this allows the selected directory to remain stored in state while still allowing the user to quickly transfer to another directory if they
       //* click the quick transfer button.
-      let customerName = e.target.name ? e.target.name : queryParameters.get('selectedCustomer');
+      let directoryName = e.target.name ? e.target.name : queryParameters.get('selectedDirectory');
       // Checks that all of the required information is present for making a file transfer, and if something is missing the function returns.
       //! Have this generate an error that prints on screen to alert the user that critical information is missing for the file transfer
-      if (customerName == '' || queryParameters.get('currentInvoice') == '' || queryParameters.get('year') == '') return;
+      if (directoryName == '' || queryParameters.get('currentInvoice') == '' || queryParameters.get('year') == '') return;
 
-      let queryString = convertToValidQueryString(customerName);
+      let queryString = convertToValidQueryString(directoryName);
 
       triggerFileSort({
         invoiceName: queryParameters.get('currentInvoice'), 
-        customerFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
-        customerName: queryString.toUpperCase(),
+        directoryFolderPath: `${queryString[0].toUpperCase()}/${queryString.toUpperCase()}`,
+        directoryName: queryString.toUpperCase(),
         year: queryParameters.get('year'),
       });
     }

@@ -1,6 +1,3 @@
-import { useState } from "react"
-import { useSearchParams } from "react-router";
-
 export function DirectoryList({ selectDirectory, selectedDirectory, directoryFilter, directories, sortFile }) {
     let filteredNames = [];
 
