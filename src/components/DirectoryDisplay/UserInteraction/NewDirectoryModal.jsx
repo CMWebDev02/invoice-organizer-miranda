@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 
 
-export function NewDirectoryModal({ showModal, toggleNewFolderModal, triggerFolderCreation}) {    
+export function NewDirectoryModal({ showModal, toggleNewFolderModal, createFolderInfo}) {    
     const [errorMessage, setErrorMessage] = useState('');
-    const customerNameRef = useRef(null);
+    const directoryNameRef = useRef(null);
 
     useEffect(() => {
         let clearErrorMessage;
@@ -21,12 +21,14 @@ export function NewDirectoryModal({ showModal, toggleNewFolderModal, triggerFold
 
     function checkName() {
         setErrorMessage('')
-        let newCustomerName = customerNameRef.current.value;
+        let NewDirectoryName = directoryNameRef.current.value;
         
-        let nameArr = newCustomerName.trim().split(' ');
-        let customerFolderQuery = nameArr.join('%20').toUpperCase();
-        triggerFolderCreation({customerFolderName: customerFolderQuery, letterFolder: customerFolderQuery[0]});
-        toggleNewFolderModal();
+        if (NewDirectoryName != '')  {
+            createFolderInfo(NewDirectoryName.toUpperCase())
+            toggleNewFolderModal();
+        } else {
+            setErrorMessage('Please Enter A Valid Directory Name!')
+        }
 
     }
 
@@ -38,7 +40,7 @@ export function NewDirectoryModal({ showModal, toggleNewFolderModal, triggerFold
             <Modal.Body>
                 {errorMessage && <h3>{errorMessage}</h3>}
                 <label htmlFor='customerFolderInput'>Customer Name (Lastname Firstname):</label>
-                <input id='customerFolderInput' type='text' placeholder='Lastname Firstname' ref={customerNameRef} />
+                <input id='customerFolderInput' type='text' placeholder='Lastname Firstname' ref={directoryNameRef} />
             </Modal.Body>
             <Modal.Footer>
                 <button onClick={toggleNewFolderModal} >Close</button>

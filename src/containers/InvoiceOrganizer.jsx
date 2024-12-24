@@ -56,6 +56,14 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
       }
     }, [maximumChangeLogActionStore, changeLog, changeLogStorage])
 
+    function createFolderInfo(directoryName) {
+      let directoryFolderQuery = convertToValidQueryString(directoryName);
+      triggerFolderCreation({
+        letterFolder: directoryName[0],
+        directoryFolderName: directoryFolderQuery
+      });
+    }
+
     function createFileInfo(e) {
       //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected directory is used.
       //* This is necessary for the quick transfer feature, this allows the selected directory to remain stored in state while still allowing the user to quickly transfer to another directory if they
@@ -102,7 +110,7 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
 
           <InvoiceViewer alterUserInteraction={alterUserInteraction} fetchKey={`${pageName}-invoiceViewer`} />
 
-          <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} triggerFolderCreation={triggerFolderCreation} />
+          <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo} />
         </main>
 
         {/* Turn these into toast Icons for the bottom right of the screen */}
