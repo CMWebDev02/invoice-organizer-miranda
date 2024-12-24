@@ -15,7 +15,7 @@ export function appendQueriesParameters(baseURL, queries) {
     return fetchURL.substring(0, fetchURL.length - 1);
 }
 
-export function convertToSentence(originalString) {
+export function convertToTitle(originalString) {
     let convertedString = originalString.toLowerCase();
     let convertedStringArray = convertedString.split('_');
     return convertedStringArray.map(word => {

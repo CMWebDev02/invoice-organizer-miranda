@@ -60,7 +60,8 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
       let directoryFolderQuery = convertToValidQueryString(directoryName);
       triggerFolderCreation({
         letterFolder: directoryName[0],
-        directoryFolderName: directoryFolderQuery
+        directoryFolderName: directoryFolderQuery,
+        pageName
       });
     }
 
