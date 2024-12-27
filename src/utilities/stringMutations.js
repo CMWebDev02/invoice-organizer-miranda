@@ -22,3 +22,11 @@ export function convertToTitle(originalString) {
         return capitalizeString(word)
     }).join(' ')
 }
+
+export function convertFromSpinalTap(originalString) {
+    let convertedString = originalString.toLowerCase();
+    let convertedStringArray = convertedString.split('-');
+    return convertedStringArray.map(word => {
+        return capitalizeString(word)
+    }).join(' ')
+}

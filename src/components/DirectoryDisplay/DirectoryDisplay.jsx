@@ -3,8 +3,8 @@ import { UseFetchGetRequest } from "../../hooks/UseFetchGetRequest";
 import { DirectoryList } from "./DirectoryList";
 import { useSearchParams } from "react-router";
 
-export function DirectoryDisplay({ directoryFilter, alterUserInteraction, sortFile, fetchKey }) {
-    const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: 'http://localhost:3000/getDirectories', key: fetchKey})
+export function DirectoryDisplay({ endPoint, directoryFilter, alterUserInteraction, sortFile, fetchKey }) {
+    const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: `${endPoint}/get-directories`, key: fetchKey})
     const [ allDirectories, setAllDirectories ] = useState([]);
     const [ queryParameters, setQueryParameters ] = useSearchParams();
 
@@ -19,7 +19,7 @@ export function DirectoryDisplay({ directoryFilter, alterUserInteraction, sortFi
 
     useEffect(() => {
         if (fetchData) {
-            setAllDirectories(fetchData.customersArray);
+            setAllDirectories(fetchData.directoriesArray);
         }
     }, [fetchData])
 

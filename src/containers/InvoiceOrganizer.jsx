@@ -26,7 +26,7 @@ import { useSearchParams } from "react-router";
 
 // TODO Add a page indicator Property on the undo object to allow the file api to know which file path to append to the passed in file name strings.
 // TODO Having a settings object initialize and store in local storage even if the user does not visit the settings page first.
-export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEndPoint, changeLogStorage}) {
+export function InvoiceOrganizer({ pageName, endPointURL, fileSortEndPoint, folderCreationEndPoint, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
     const [ queryParameters, setQueryParameters ] = useSearchParams();
 
@@ -39,8 +39,8 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
     const [ showNewDirectoryModal, setShowNewDirectoryModal ] = useState(false);
     const toggleNewDirectoryModal = () => setShowNewDirectoryModal(!showNewDirectoryModal);
 
-    const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: folderCreationEndPoint, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-customerFolders` })
-    const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: fileSortEndPoint, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-invoiceViewer` })
+    const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/create-new-folder`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-customerFolders` })
+    const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/sort-file`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-invoiceViewer` })
 
     useEffect(() => {
       if (isNewFolderInitializing || isTransferring) {
@@ -60,8 +60,7 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
       let directoryFolderQuery = convertToValidQueryString(directoryName);
       triggerFolderCreation({
         letterFolder: directoryName[0],
-        directoryFolderName: directoryFolderQuery,
-        pageName
+        directoryFolderName: directoryFolderQuery
       });
     }
 
@@ -103,13 +102,13 @@ export function InvoiceOrganizer({ pageName, fileSortEndPoint, folderCreationEnd
 
           <div>
             <DirectoryDisplay directoryFilter={directoryFilter} fetchKey={`${pageName}-customerFolders`}
-                alterUserInteraction={alterUserInteraction} sortFile={createFileInfo}/>
+                alterUserInteraction={alterUserInteraction} sortFile={createFileInfo} endPoint={`${endPointURL}/${pageName}`} />
             
             {/* Add the user setting to control how many changeLog actions are displayed in the quick view*/}
-            <ChangeLogDisplay changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
+            <ChangeLogDisplay endPoint={endPointURL} changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
           </div>
 
-          <InvoiceViewer alterUserInteraction={alterUserInteraction} fetchKey={`${pageName}-invoiceViewer`} />
+          <InvoiceViewer alterUserInteraction={alterUserInteraction} endPoint={`${endPointURL}/${pageName}`} fetchKey={`${pageName}-invoiceViewer`} />
 
           <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo} />
         </main>

@@ -1,7 +1,7 @@
-import { convertToTitle } from "../../utilities/stringMutations"
+import { convertFromSpinalTap } from "../../utilities/stringMutations"
 
 export function NavBar({ children, pageName }) {
-  let displayName = convertToTitle(pageName)
+  let displayName = convertFromSpinalTap(pageName)
 
   return (
     <nav>
