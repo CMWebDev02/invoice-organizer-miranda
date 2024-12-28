@@ -26,7 +26,7 @@ import { useSearchParams } from "react-router";
 
 // TODO Add a page indicator Property on the undo object to allow the file api to know which file path to append to the passed in file name strings.
 // TODO Having a settings object initialize and store in local storage even if the user does not visit the settings page first.
-export function InvoiceOrganizer({ pageName, endPointURL, fileSortEndPoint, folderCreationEndPoint, changeLogStorage}) {
+export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
     const [ queryParameters, setQueryParameters ] = useSearchParams();
 
@@ -105,7 +105,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, fileSortEndPoint, fold
                 alterUserInteraction={alterUserInteraction} sortFile={createFileInfo} endPoint={`${endPointURL}/${pageName}`} />
             
             {/* Add the user setting to control how many changeLog actions are displayed in the quick view*/}
-            <ChangeLogDisplay endPoint={endPointURL} changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
+            <ChangeLogDisplay endPoint={`${endPointURL}/${pageName}`} changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
           </div>
 
           <InvoiceViewer alterUserInteraction={alterUserInteraction} endPoint={`${endPointURL}/${pageName}`} fetchKey={`${pageName}-invoiceViewer`} />
