@@ -5,6 +5,7 @@ export function FilterOptions({alterDisplayedChanges, currentFilter}) {
         backgroundColor: 'red'
     }
 
+    // Change this to display a button group of the options
     return (
         <div>
             {filterOptionsArray.map(option => <button key={option} style={currentFilter == option ? tempStyle : {}} onClick={alterDisplayedChanges} name={option}>{option}</button>)}            

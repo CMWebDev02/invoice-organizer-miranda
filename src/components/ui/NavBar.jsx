@@ -7,7 +7,6 @@ export function NavBar({ children, pageName }) {
     <nav>
       <h1>{displayName}</h1>
       {children}
-      <button>Menu</button>
     </nav>
   )
 }

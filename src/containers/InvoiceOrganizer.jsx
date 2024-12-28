@@ -81,6 +81,8 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
           <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isActive}>Sort</button>
           <button onClick={toggleNewDirectoryModal}>Create Folder</button>
+          {/* Have this button trigger an offcanvas and pass to it the various actions like sort, create folder, changelog, and return to home page. */}
+          <button>Menu</button>
         </NavBar>
 
         <main> 
