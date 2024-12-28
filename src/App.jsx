@@ -1,12 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-import { InvoiceOrganizer } from "./containers/InvoiceOrganizer";
 import { ChangeLogPage } from './pages/ChangeLogPage';
 import { HomePage } from './pages/HomePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { CustomerScanDocsPage } from './pages/CustomerScanDocsPage';
-import { UserSettingsStorage } from './utilities/localStorage';
+import { AccountsPayablesPage } from './pages/AccountPayablesPage';
 
 const baseQueryClient = new QueryClient();
 const endPointURL = 'http://localhost:3000';
@@ -18,7 +17,7 @@ export function App() {
           <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/invoiceOrganizer' element={<CustomerScanDocsPage endPointURL={endPointURL} />} />
-            <Route path='/accountsPayable' element={<InvoiceOrganizer />} />
+            <Route path='/accountsPayable' element={<AccountsPayablesPage endPointURL={endPointURL} />} />
             <Route path='/changeLog' element={<ChangeLogPage endPointURL={endPointURL} />} />
             <Route path='/settings' element={<SettingsPage />} />
           </Routes>

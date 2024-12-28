@@ -16,16 +16,6 @@ import { convertToValidQueryString } from "../utilities/stringMutations";
 import { UseToggler } from "../hooks/UseToggler";
 import { useSearchParams } from "react-router";
 
-// Things that will be different based on the selected page,
-// // - Page name
-// // - Sort File Url
-// // - File Creation Url
-// // - changeLog in localStorage
-// // - keys used in url queries, mainly appending the name of the page to the ones I preset
-// Object and query parameters created when sending info through a post request.
-
-// TODO Add a page indicator Property on the undo object to allow the file api to know which file path to append to the passed in file name strings.
-// TODO Having a settings object initialize and store in local storage even if the user does not visit the settings page first.
 export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
     const [ queryParameters, setQueryParameters ] = useSearchParams();
