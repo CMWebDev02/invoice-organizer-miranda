@@ -46,12 +46,16 @@ export class UserSettingsStorage extends accessLocalStorage {
     }
 
     static getStorage() {
-        return JSON.parse(localStorage.getItem(this._key)) || {...this._defaultSettingsObj};
+        // Checks if localStorage has a value associated with the userSettings key and if not, then the default settings object is stored in localStorage.
+        if (localStorage.getItem(this._key) == null) this.setStorage(this._defaultSettingsObj)
+
+        return JSON.parse(localStorage.getItem(this._key));
+
     }
 
     static getSpecificSetting(setting) {
-        let settings = this.getStorage();
+        let allSettings = this.getStorage();
 
-        return settings[setting];
+        return allSettings[setting];
     }
 }
