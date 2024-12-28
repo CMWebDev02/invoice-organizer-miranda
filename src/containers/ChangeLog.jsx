@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
 
 export function ChangeLog({ changeLogClass, filterBy, endPoint }) {
@@ -7,8 +7,6 @@ export function ChangeLog({ changeLogClass, filterBy, endPoint }) {
     
     //* This changeLog will be used to display the actions the user wishes to see and will remove elements depending on the selected filter.
     const displayChangeLog = filterBy == null ? [...changeLog] : changeLog.filter(change => change.action == filterBy);
-
-    console.log(endPoint)
 
     return (
         <>
