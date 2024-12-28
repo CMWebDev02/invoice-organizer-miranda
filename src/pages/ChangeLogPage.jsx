@@ -11,7 +11,7 @@ export function ChangeLogPage({ endPointURL }) {
     const [ currentChangeLog, setCurrentChangeLog ] = useState('customer-scanned-documents')
     const [ filterBy, setFilterBy ] = useState(null);
 
-    const [ isChangeLogCleared, setIsChangeLogCleared ] = useState(false)
+    const clearChangeLogRef = useRef(null); 
 
     
     function changeFilter(e) {
@@ -23,9 +23,9 @@ export function ChangeLogPage({ endPointURL }) {
     }
 
     // Find a way to trigger a rerender for the change log that is cleared, 
-    function resetChangeLog() {
-        if (currentChangeLog == 'customer-scanned-documents') CustomerScannedDocumentsChangeLog.resetStorage();
-        if (currentChangeLog == 'account-payables') AccountsPayablesChangeLog.resetStorage();
+    function handleClick() {
+        clearChangeLogRef.current();
+        console.log('test')
     }
 
     return (
@@ -34,14 +34,14 @@ export function ChangeLogPage({ endPointURL }) {
 
             <ChangeLogSelector updateSelected={setCurrentChangeLog}/>
 
-            { currentChangeLog == 'customer-scanned-documents' && <ChangeLog changeLogClass={CustomerScannedDocumentsChangeLog} filterBy={filterBy}
+            { currentChangeLog == 'customer-scanned-documents' && <ChangeLog clearChangeLogRef={clearChangeLogRef} changeLogClass={CustomerScannedDocumentsChangeLog} filterBy={filterBy}
                 endPoint={`${endPointURL}/customer-scanned-documents`} /> }
             <hr/>
-            { currentChangeLog == 'account-payables' && <ChangeLog changeLogClass={AccountsPayablesChangeLog} filterBy={filterBy}
+            { currentChangeLog == 'account-payables' && <ChangeLog clearChangeLogRef={clearChangeLogRef} changeLogClass={AccountsPayablesChangeLog} filterBy={filterBy}
                 endPoint={`${endPointURL}/account-payables`} /> }
 
             <div>
-                <button onClick={resetChangeLog}>Clear</button>
+                <button onClick={handleClick}>Clear</button>
                 <Link to={'/'} >Return</Link>
             </div>
         </>
