@@ -1,10 +1,10 @@
 import { InvoiceOrganizer } from "../containers/InvoiceOrganizer";
 import { CustomerScannedDocumentsChangeLog } from "../utilities/localStorage";
 
-export function CustomerScanDocsPage() {
+export function CustomerScanDocsPage({endPointURL}) {
     
     return (
         <InvoiceOrganizer pageName={'customer-scanned-documents'} changeLogStorage={CustomerScannedDocumentsChangeLog}
-            endPointURL={'http://localhost:3000'} />
+            endPointURL={endPointURL} />
     )
 }

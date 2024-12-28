@@ -1,18 +1,14 @@
 import { Link } from "react-router";
 import { useState } from "react";
 
-import { CustomerScannedDocumentsChangeLog } from "../utilities/localStorage";
+import { CustomerScannedDocumentsChangeLog, AccountsPayablesChangeLog } from "../utilities/localStorage";
 
-import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
 import { FilterOptions } from '../components/ChangeLog/FilterOptions'
+import { ChangeLog } from "../containers/ChangeLog";
 
-export function ChangeLogPage() {
-    //* This changeLog is the main one, it will store all of the data without being affected by the filter, it will only remove actions when their undo process executed successfully.
-    const [ changeLog, setChangeLog ] = useState(CustomerScannedDocumentsChangeLog.getStorage());
-    //* This changeLog will be used to display the actions the user wishes to see and will remove elements depending on the selected filter.
+export function ChangeLogPage({ endPointURL }) {
     const [ filterBy, setFilterBy ] = useState(null);
 
-    const displayChangeLog = filterBy == null ? [...changeLog] : changeLog.filter(change => change.action == filterBy);
     
     function changeFilter(e) {
         if (e.target.name == filterBy) {
@@ -23,15 +19,16 @@ export function ChangeLogPage() {
     }
 
     function resetChangeLog() {
-        CustomerScannedDocumentsChangeLog.resetStorage();
-        setChangeLog(CustomerScannedDocumentsChangeLog.getStorage());
+        console.log('test')
     }
 
     return (
         <>
             <FilterOptions alterDisplayedChanges={changeFilter} currentFilter={filterBy} />
 
-            <ChangeLogDisplay changeLog={displayChangeLog} alterChangeLog={setChangeLog} />
+            <ChangeLog changeLogClass={CustomerScannedDocumentsChangeLog} filterBy={filterBy} endPoint={`${endPointURL}/customer-scanned-documents`} />
+            <hr/>
+            <ChangeLog changeLogClass={AccountsPayablesChangeLog} filterBy={filterBy} endPoint={`${endPointURL}/account-payables`} />
 
             <div>
                 <button onClick={resetChangeLog}>Clear</button>
