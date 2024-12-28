@@ -25,7 +25,6 @@ export function ChangeLogPage({ endPointURL }) {
     // Find a way to trigger a rerender for the change log that is cleared, 
     function handleClick() {
         clearChangeLogRef.current();
-        console.log('test')
     }
 
     return (

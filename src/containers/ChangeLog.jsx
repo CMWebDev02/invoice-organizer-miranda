@@ -9,7 +9,6 @@ export function ChangeLog({ clearChangeLogRef, changeLogClass, filterBy, endPoin
         changeLogClass.resetStorage();
         //* The getStorage class method is called to reinitialize the changelog in local storage once it is removed.
         setChangeLog(changeLogClass.getStorage())
-        console.log(changeLogClass);
     }
 
     clearChangeLogRef.current = clearChangeLog;
