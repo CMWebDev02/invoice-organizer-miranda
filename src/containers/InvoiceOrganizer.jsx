@@ -15,6 +15,7 @@ import { convertToValidQueryString } from "../utilities/stringMutations";
 import { UseToggler } from "../hooks/UseToggler";
 import { Link, useSearchParams } from "react-router";
 import { OffCanvasMenu } from "../components/ui/OffCanvasMenu";
+import { ErrorToastDisplay } from "../components/ErrorPopUps/ErrorToastDisplay";
 
 export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
@@ -29,7 +30,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
     const [ showOffCanvasMenu, setShowOffCanvasMenu ] = useState(false);
 
-    const [ createFileInfoError, setCreateFileInfoError ] = useState('');
+    const [ createFileInfoError, setCreateFileInfoError ] = useState(undefined);
     
     const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/create-new-folder`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-customerFolders` })
     const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/sort-file`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-invoiceViewer` })
@@ -67,6 +68,10 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     }
 
     function createFileInfo(e) {
+      //? Sets the fileInfoError message to undefined, to clear any previously errors.
+          //* Undefined is used to make this error message function the same as react query's error handling.
+      setCreateFileInfoError(undefined)
+
       //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected directory is used.
       //* This is necessary for the quick transfer feature, this allows the selected directory to remain stored in state while still allowing the user to quickly transfer to another directory if they
       //* click the quick transfer button.
@@ -120,7 +125,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
           <InvoiceViewer alterUserInteraction={alterUserInteraction} endPoint={`${endPointURL}/${pageName}`} fetchKey={`${pageName}-invoiceViewer`} />
 
           <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu}>
-            <button onClick={toggleNewDirectoryModal}>Create Folder</button>
+            <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>
             <Link to={'/settings'}>Settings</Link>
             <Link to={'/changelog'}>ChangeLog</Link>
             <Link to={'/'}>Home</Link>
@@ -129,10 +134,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
           <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo}  />
         </main>
 
-        {/* Turn these into toast Icons for the bottom right of the screen */}
-        {fileTransferError && <h2>{fileTransferError}</h2>}
-        {newFolderError && <h2>{newFolderError}</h2>}
-        {createFileInfoError != '' && <h2>{createFileInfoError}</h2>}
+        <ErrorToastDisplay errorsArray={[{name: 'Sort File Error', message: createFileInfoError}, {name: 'File Transfer Error', message: fileTransferError}, {name: 'New Folder Error', message: newFolderError}]} />
 
         <footer>
             <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isActive} >Sort</button>
