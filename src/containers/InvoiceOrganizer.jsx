@@ -6,7 +6,6 @@ import { DirectoryDisplay } from "../components/DirectoryDisplay/DirectoryDispla
 import { InvoiceViewer } from "../components/DirectoryDisplay/InvoiceViewer"
 import { NewDirectoryModal } from "../components/DirectoryDisplay/UserInteraction/NewDirectoryModal";
 import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
-import { Footer } from "../components/ui/Footer";
 
 import { useEffect, useState } from "react";
 import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
@@ -14,7 +13,8 @@ import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
 import { UserSettingsStorage } from "../utilities/localStorage";
 import { convertToValidQueryString } from "../utilities/stringMutations";
 import { UseToggler } from "../hooks/UseToggler";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
+import { OffCanvasMenu } from "../components/ui/OffCanvasMenu";
 
 export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
@@ -23,16 +23,13 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const [ directoryFilter, setDirectoryFilter ] = useState('');
     const {value: isUserInteractionDisabled, alterValue: alterUserInteraction} = UseToggler({initialValue: true})
 
-    // Edit changeLog command to get the changelog associated with the page
     const [ changeLog, setChangeLog ] = useState(changeLogStorage.getStorage());
 
     const [ showNewDirectoryModal, setShowNewDirectoryModal ] = useState(false);
-    const toggleNewDirectoryModal = () => setShowNewDirectoryModal(!showNewDirectoryModal);
+    
 
     const [ showOffCanvasMenu, setShowOffCanvasMenu ] = useState(false);
-    const handleCloseMenu = () => setShowOffCanvasMenu(false);
-    const handleShowMenu = () => setShowOffCanvasMenu(true);
-
+    
     const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/create-new-folder`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-customerFolders` })
     const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/sort-file`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-invoiceViewer` })
 
@@ -49,6 +46,16 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
         changeLogStorage.setStorage(changeLog, maximumChangeLogActionStore)
       }
     }, [maximumChangeLogActionStore, changeLog, changeLogStorage])
+
+    
+    const handleCloseMenu = () => setShowOffCanvasMenu(false);
+    
+    const handleShowMenu = () => setShowOffCanvasMenu(true);
+    
+    function toggleNewDirectoryModal() {
+      setShowNewDirectoryModal(!showNewDirectoryModal);
+      handleCloseMenu()
+    };
 
     function createFolderInfo(directoryName) {
       let directoryFolderQuery = convertToValidQueryString(directoryName);
@@ -77,16 +84,14 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
       });
     }
 
-
     return (
       <>
         <NavBar pageName={pageName}>
           <ChangeLogIcon isChanging={isNewFolderInitializing || isTransferring} changeResult={changeLog[0]} />
 
+          <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>
           <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isActive}>Sort</button>
-          <button onClick={toggleNewDirectoryModal}>Create Folder</button>
-          {/* Have this button trigger an offcanvas and pass to it the various actions like sort, create folder, changelog, and return to home page. */}
-          <button >Menu</button>
+          <button onClick={handleShowMenu}>Menu</button>
         </NavBar>
 
         <main> 
@@ -106,17 +111,25 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
           <InvoiceViewer alterUserInteraction={alterUserInteraction} endPoint={`${endPointURL}/${pageName}`} fetchKey={`${pageName}-invoiceViewer`} />
 
-          <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo} />
+          <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu}>
+            <button onClick={toggleNewDirectoryModal}>Create Folder</button>
+            <Link to={'/settings'}>Settings</Link>
+            <Link to={'/changelog'}>ChangeLog</Link>
+            <Link to={'/'}>Home</Link>
+          </OffCanvasMenu>
+
+          <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo}  />
         </main>
 
         {/* Turn these into toast Icons for the bottom right of the screen */}
         {fileTransferError && <h2>{fileTransferError}</h2>}
         {newFolderError && <h2>{newFolderError}</h2>}
 
-        <Footer>
+        <footer>
             <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isActive} >Sort</button>
             <button onClick={toggleNewDirectoryModal} >Create Folder</button>
-        </Footer>
+            <Link to={'/changelog'}>ChangeLog</Link>
+        </footer>
       </>
     )
 }
