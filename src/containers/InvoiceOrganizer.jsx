@@ -26,9 +26,10 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const [ changeLog, setChangeLog ] = useState(changeLogStorage.getStorage());
 
     const [ showNewDirectoryModal, setShowNewDirectoryModal ] = useState(false);
-    
 
     const [ showOffCanvasMenu, setShowOffCanvasMenu ] = useState(false);
+
+    const [ createFileInfoError, setCreateFileInfoError ] = useState('');
     
     const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/create-new-folder`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-customerFolders` })
     const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/sort-file`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-invoiceViewer` })
@@ -72,7 +73,14 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
       let directoryName = e.target.name ? e.target.name : queryParameters.get('selectedDirectory');
       // Checks that all of the required information is present for making a file transfer, and if something is missing the function returns.
       //! Have this generate an error that prints on screen to alert the user that critical information is missing for the file transfer
-      if (directoryName == '' || queryParameters.get('currentInvoice') == '' || queryParameters.get('year') == '') return;
+      if (directoryName == '' || queryParameters.get('currentInvoice') == '' || queryParameters.get('year') == '' || queryParameters.get('year').length != 4) {
+        let errorMessage = '';
+        if (directoryName == '') errorMessage += 'The currently selected directory is invalid!\n';
+        if (queryParameters.get('currentInvoice') == '') errorMessage += 'The current invoice name is invalid!\n';
+        if (queryParameters.get('year') == '' || queryParameters.get('year').length != 4) errorMessage += 'The current year is invalid!\n';
+        setCreateFileInfoError(errorMessage);
+        return;
+      }
 
       let queryString = convertToValidQueryString(directoryName);
 
@@ -124,6 +132,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
         {/* Turn these into toast Icons for the bottom right of the screen */}
         {fileTransferError && <h2>{fileTransferError}</h2>}
         {newFolderError && <h2>{newFolderError}</h2>}
+        {createFileInfoError != '' && <h2>{createFileInfoError}</h2>}
 
         <footer>
             <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isActive} >Sort</button>
