@@ -1,18 +1,18 @@
 import { useReducer } from "react"
 
 export function UseToggler({ initialValue }) {
-    const [ value, alterValue ] = useReducer(reducerFunction, { isActive: initialValue })    
+    const [ value, alterValue ] = useReducer(reducerFunction, { isDisabled: initialValue })    
 
     function reducerFunction(currentState, action) {
         switch (action.type) {
             case 'SET_ACTIVE': {
                 return {
-                    isActive: true
+                    isDisabled: true
                 } 
             };
             case 'SET_DISABLED': {
                 return {
-                    isActive: false
+                    isDisabled: false
                 } 
             }  
             default: {

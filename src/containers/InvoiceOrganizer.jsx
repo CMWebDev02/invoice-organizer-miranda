@@ -102,16 +102,16 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
         <NavBar pageName={pageName}>
           <ChangeLogIcon isChanging={isNewFolderInitializing || isTransferring} changeResult={changeLog[0]} />
 
-          <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>
-          <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isActive}>Sort</button>
+          <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isDisabled}>Create Folder</button>
+          <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isDisabled}>Sort</button>
           <button onClick={handleShowMenu}>Menu</button>
         </NavBar>
 
         <main> 
           <div>
-            <DirectoryFilter filter={[directoryFilter, setDirectoryFilter]} isDisabled={isUserInteractionDisabled.isActive} />
+            <DirectoryFilter filter={[directoryFilter, setDirectoryFilter]} isDisabled={isUserInteractionDisabled.isDisabled} />
             
-            <YearSelector isDisabled={isUserInteractionDisabled.isActive} />
+            <YearSelector isDisabled={isUserInteractionDisabled.isDisabled} />
           </div>
 
           <div>

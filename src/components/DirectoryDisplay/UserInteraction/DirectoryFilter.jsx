@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
-
 export function DirectoryFilter({ filter, isDisabled }) {
     const [ filterValue, setFilterValue ] = filter;
 
@@ -19,8 +16,8 @@ export function DirectoryFilter({ filter, isDisabled }) {
 
     return (
         <div>
-            <label htmlFor="customerFilter">Find:</label>
-            <input id="customerFilter" type='text' placeholder='Enter Customer Name...' value={filterValue} onChange={checkFilterValue} 
+            <label htmlFor="directoryFilter">Find:</label>
+            <input id="directoryFilter" type='text' placeholder='Filter By...' value={filterValue} onChange={checkFilterValue} 
                 disabled={isDisabled} />
         </div>
     )
