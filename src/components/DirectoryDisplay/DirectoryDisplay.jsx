@@ -3,7 +3,7 @@ import { UseFetchGetRequest } from "../../hooks/UseFetchGetRequest";
 import { DirectoryList } from "./DirectoryList";
 import { useSearchParams } from "react-router";
 
-export function DirectoryDisplay({ endPoint, directoryFilter, alterUserInteraction, sortFile, fetchKey }) {
+export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoolean, sortFile, fetchKey }) {
     const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: `${endPoint}/get-directories`, key: fetchKey})
     const [ allDirectories, setAllDirectories ] = useState([]);
     const [ queryParameters, setQueryParameters ] = useSearchParams();
@@ -23,13 +23,17 @@ export function DirectoryDisplay({ endPoint, directoryFilter, alterUserInteracti
         }
     }, [fetchData])
 
+    // useEffect(() => {
+    //     if (isLoading) {
+    //         alterUserInteraction({type: 'SET_DISABLED'})
+    //     } else {
+    //         alterUserInteraction({type: 'SET_ENABLED'})
+    //     }
+    // }, [isLoading, alterUserInteraction])
+
     useEffect(() => {
-        if (isLoading) {
-            alterUserInteraction({type: 'SET_DISABLED'})
-        } else {
-            alterUserInteraction({type: 'SET_ENABLED'})
-        }
-    }, [isLoading, alterUserInteraction])
+        updateIsLoadingBoolean({name: 'directoriesLoading', value: isLoading})
+    }, [isLoading])
 
     function setSelectedDirectory(e) {
         e.stopPropagation()

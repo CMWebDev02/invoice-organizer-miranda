@@ -22,7 +22,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
 
     const [ directoryFilter, setDirectoryFilter ] = useState('');
-    const {value: isUserInteractionDisabled, alterValue: alterUserInteraction} = UseToggler({initialValue: true})
+    const {value: isUserInteractionDisabled, updateBoolean: updateIsLoadingBoolean} = UseToggler({initialValue: true})
 
     const [ changeLog, setChangeLog ] = useState(changeLogStorage.getStorage());
 
@@ -34,14 +34,14 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     
     const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/create-new-folder`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-customerFolders` })
     const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/sort-file`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-invoiceViewer` })
+    
+    useEffect(() => {
+        updateIsLoadingBoolean({name: 'newFolderInitializing', value: isNewFolderInitializing})
+    }, [isNewFolderInitializing])
 
     useEffect(() => {
-      if (isNewFolderInitializing || isTransferring) {
-        alterUserInteraction({type: 'SET_DISABLED'});
-      } else {
-        alterUserInteraction({type: 'SET_ENABLED'});
-      }
-    }, [isTransferring, isNewFolderInitializing, alterUserInteraction])
+      updateIsLoadingBoolean({name: 'fileTransferring', value: isTransferring})
+  }, [isTransferring])
 
     useEffect(() => {
       if (changeLog) {
@@ -116,13 +116,13 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
           <div>
             <DirectoryDisplay directoryFilter={directoryFilter} fetchKey={`${pageName}-customerFolders`}
-                alterUserInteraction={alterUserInteraction} sortFile={createFileInfo} endPoint={`${endPointURL}/${pageName}`} />
+                updateIsLoadingBoolean={updateIsLoadingBoolean} sortFile={createFileInfo} endPoint={`${endPointURL}/${pageName}`} />
             
             {/* Add the user setting to control how many changeLog actions are displayed in the quick view*/}
             <ChangeLogDisplay endPoint={`${endPointURL}/${pageName}`} changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
           </div>
 
-          <InvoiceViewer alterUserInteraction={alterUserInteraction} endPoint={`${endPointURL}/${pageName}`} fetchKey={`${pageName}-invoiceViewer`} />
+          <InvoiceViewer updateIsLoadingBoolean={updateIsLoadingBoolean} endPoint={`${endPointURL}/${pageName}`} fetchKey={`${pageName}-invoiceViewer`} />
 
           <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu}>
             <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>

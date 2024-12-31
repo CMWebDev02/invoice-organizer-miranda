@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { UseFetchGetRequest  } from '../../hooks/UseFetchGetRequest';
 
-export function InvoiceViewer({ endPoint, alterUserInteraction, fetchKey }) {
+export function InvoiceViewer({ endPoint, updateIsLoadingBoolean, fetchKey }) {
     const [ queryParameter, setQueryParameters ] = useSearchParams();
     const [ invoicePath, setInvoicePath ] = useState('');
 
@@ -54,12 +54,8 @@ export function InvoiceViewer({ endPoint, alterUserInteraction, fetchKey }) {
     }, [fetchData, errorOccurred, queryParameter, setQueryParameters, invoicePath])
 
     useEffect(() => {
-        if (isLoading) {
-            alterUserInteraction({type: 'SET_DISABLED'})
-        } else {
-            alterUserInteraction({type: 'SET_ENABLED'})
-        }
-    }, [isLoading, alterUserInteraction])
+        updateIsLoadingBoolean({name: 'invoiceLoading', value: isLoading})
+    }, [isLoading])
 
     return (
         <div>
