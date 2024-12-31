@@ -55,9 +55,9 @@ export function InvoiceViewer({ endPoint, alterUserInteraction, fetchKey }) {
 
     useEffect(() => {
         if (isLoading) {
-            alterUserInteraction({type: 'SET_ACTIVE'})
-        } else {
             alterUserInteraction({type: 'SET_DISABLED'})
+        } else {
+            alterUserInteraction({type: 'SET_ENABLED'})
         }
     }, [isLoading, alterUserInteraction])
 

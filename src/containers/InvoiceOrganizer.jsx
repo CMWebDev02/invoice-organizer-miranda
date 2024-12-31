@@ -37,9 +37,9 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
     useEffect(() => {
       if (isNewFolderInitializing || isTransferring) {
-        alterUserInteraction({type: 'SET_ACTIVE'});
-      } else {
         alterUserInteraction({type: 'SET_DISABLED'});
+      } else {
+        alterUserInteraction({type: 'SET_ENABLED'});
       }
     }, [isTransferring, isNewFolderInitializing, alterUserInteraction])
 
