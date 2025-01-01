@@ -17,6 +17,9 @@ import { OffCanvasMenu } from "../components/InvoiceOrganizerUI/OffCanvasMenu";
 import { ErrorToastDisplay } from "../components/ErrorPopUps/ErrorToastDisplay";
 
 import styles from '../styles/InvoiceOrganizerStyles.module.css'
+import { NavBar } from "../components/InvoiceOrganizerUI/NavBar";
+import { Footer } from "../components/InvoiceOrganizerUI/Footer";
+import { MainContainer } from "../components/InvoiceOrganizerUI/MainContainer";
 
 export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
@@ -100,36 +103,16 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
     return (
       <>
-        <nav>
-          <h1>{convertFromSpinalTap(pageName)}</h1>
-          <ChangeLogIcon isChanging={isNewFolderInitializing || isTransferring} changeResult={changeLog[0]} />
+        <NavBar isChanging={isNewFolderInitializing || isTransferring} lastChange={changeLog[0]} 
+          toggleNewDirectoryModal={toggleNewDirectoryModal} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled} 
+            createFileInfo={createFileInfo} handleShowMenu={handleShowMenu} pageName={pageName} />
 
-          <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isDisabled}>Create Folder</button>
-          <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isDisabled}>Sort</button>
-          <button onClick={handleShowMenu}>Menu</button>
-        </nav>
+        <MainContainer directoryFilter={directoryFilter} alterDirectoryFilter={setDirectoryFilter} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled}
+          pageName={pageName} endPointURL={endPointURL} updateIsLoadingBoolean={updateIsLoadingBoolean} sortFile={createFileInfo} 
+            changeLog={changeLog} alterChangeLog={setChangeLog}/>
 
-        <main> 
-          <div>
-            <DirectoryFilter filter={[directoryFilter, setDirectoryFilter]} isDisabled={isUserInteractionDisabled.isDisabled} />
-            
-            <YearSelector isDisabled={isUserInteractionDisabled.isDisabled} />
-          </div>
-
-          <div>
-            <DirectoryDisplay directoryFilter={directoryFilter} fetchKey={`${pageName}-customerFolders`}
-                updateIsLoadingBoolean={updateIsLoadingBoolean} sortFile={createFileInfo} endPoint={`${endPointURL}/${pageName}`} />
-            
-            {/* Add the user setting to control how many changeLog actions are displayed in the quick view*/}
-            <ChangeLogDisplay endPoint={`${endPointURL}/${pageName}`} changeLog={changeLog.slice(0)} alterChangeLog={setChangeLog} />
-          </div>
-
-          <InvoiceViewer updateIsLoadingBoolean={updateIsLoadingBoolean} endPoint={`${endPointURL}/${pageName}`} fetchKey={`${pageName}-invoiceViewer`} />
-
-
-          <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo}  />
-        </main>
-
+        <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo}  />
+        
         <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu}>
           <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>
           <Link to={'/settings'}>Settings</Link>
@@ -139,11 +122,8 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
         
         <ErrorToastDisplay errorsArray={[{name: 'Sort File Error', message: createFileInfoError}, {name: 'File Transfer Error', message: fileTransferError}, {name: 'New Folder Error', message: newFolderError}]} />
 
-        <footer>
-            <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isActive} >Sort</button>
-            <button onClick={toggleNewDirectoryModal} >Create Folder</button>
-            <Link to={'/changelog'}>ChangeLog</Link>
-        </footer>
+        <Footer createFileInfo={createFileInfo} userInteraction={isUserInteractionDisabled.isDisabled} 
+          toggleNewDirectoryModal={toggleNewDirectoryModal} />
       </>
     )
 }
