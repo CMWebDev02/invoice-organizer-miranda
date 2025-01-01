@@ -1,4 +1,3 @@
-import { NavBar } from "../components/ui/NavBar";
 import { ChangeLogIcon } from "../components/ChangeLog/ChangeLogIcon";
 import { DirectoryFilter } from "../components/DirectoryDisplay/UserInteraction/DirectoryFilter";
 import { YearSelector } from "../components/YearSelection/YearSelector";
@@ -14,7 +13,7 @@ import { UserSettingsStorage } from "../utilities/localStorage";
 import { convertFromSpinalTap, convertToValidQueryString } from "../utilities/stringMutations";
 import { UseToggler } from "../hooks/UseToggler";
 import { Link, useSearchParams } from "react-router";
-import { OffCanvasMenu } from "../components/ui/OffCanvasMenu";
+import { OffCanvasMenu } from "../components/InvoiceOrganizerUI/OffCanvasMenu";
 import { ErrorToastDisplay } from "../components/ErrorPopUps/ErrorToastDisplay";
 
 import styles from '../styles/InvoiceOrganizerStyles.module.css'
@@ -127,16 +126,17 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
           <InvoiceViewer updateIsLoadingBoolean={updateIsLoadingBoolean} endPoint={`${endPointURL}/${pageName}`} fetchKey={`${pageName}-invoiceViewer`} />
 
-          <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu}>
-            <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>
-            <Link to={'/settings'}>Settings</Link>
-            <Link to={'/changelog'}>ChangeLog</Link>
-            <Link to={'/'}>Home</Link>
-          </OffCanvasMenu>
 
           <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo}  />
         </main>
 
+        <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu}>
+          <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>
+          <Link to={'/settings'}>Settings</Link>
+          <Link to={'/changelog'}>ChangeLog</Link>
+          <Link to={'/'}>Home</Link>
+        </OffCanvasMenu>
+        
         <ErrorToastDisplay errorsArray={[{name: 'Sort File Error', message: createFileInfoError}, {name: 'File Transfer Error', message: fileTransferError}, {name: 'New Folder Error', message: newFolderError}]} />
 
         <footer>
