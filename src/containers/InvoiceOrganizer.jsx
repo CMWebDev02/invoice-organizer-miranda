@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
+import Container from "react-bootstrap/esm/Container";
 
 import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
 import { UseToggler } from "../hooks/UseToggler";
@@ -96,27 +97,30 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
     return (
       <>
-        <NavBar isChanging={isNewFolderInitializing || isTransferring} lastChange={changeLog[0]} 
-          toggleNewDirectoryModal={toggleNewDirectoryModal} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled} 
-            createFileInfo={createFileInfo} handleShowMenu={handleShowMenu} pageName={pageName} />
+        <Container fluid>
+          <NavBar isChanging={isNewFolderInitializing || isTransferring} lastChange={changeLog[0]} 
+            toggleNewDirectoryModal={toggleNewDirectoryModal} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled} 
+              createFileInfo={createFileInfo} handleShowMenu={handleShowMenu} pageName={pageName} />
 
-        <MainContainer directoryFilter={directoryFilter} alterDirectoryFilter={setDirectoryFilter} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled}
-          pageName={pageName} endPointURL={endPointURL} updateIsLoadingBoolean={updateIsLoadingBoolean} sortFile={createFileInfo} 
-            changeLog={changeLog} alterChangeLog={setChangeLog}/>
+          <MainContainer directoryFilter={directoryFilter} alterDirectoryFilter={setDirectoryFilter} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled}
+            pageName={pageName} endPointURL={endPointURL} updateIsLoadingBoolean={updateIsLoadingBoolean} sortFile={createFileInfo} 
+              changeLog={changeLog} alterChangeLog={setChangeLog}/>
 
-        <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo}  />
-        
-        <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu}>
-          <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>
-          <Link to={'/settings'}>Settings</Link>
-          <Link to={'/changelog'}>ChangeLog</Link>
-          <Link to={'/'}>Home</Link>
-        </OffCanvasMenu>
-        
-        <ErrorToastDisplay errorsArray={[{name: 'Sort File Error', message: createFileInfoError}, {name: 'File Transfer Error', message: fileTransferError}, {name: 'New Folder Error', message: newFolderError}]} />
 
-        <Footer createFileInfo={createFileInfo} userInteraction={isUserInteractionDisabled.isDisabled} 
-          toggleNewDirectoryModal={toggleNewDirectoryModal} />
+          <Footer createFileInfo={createFileInfo} userInteraction={isUserInteractionDisabled.isDisabled}
+            toggleNewDirectoryModal={toggleNewDirectoryModal} />
+
+          <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo}  />
+          
+          <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu}>
+            <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>
+            <Link to={'/settings'}>Settings</Link>
+            <Link to={'/changelog'}>ChangeLog</Link>
+            <Link to={'/'}>Home</Link>
+          </OffCanvasMenu>
+          
+          <ErrorToastDisplay errorsArray={[{name: 'Sort File Error', message: createFileInfoError}, {name: 'File Transfer Error', message: fileTransferError}, {name: 'New Folder Error', message: newFolderError}]} />
+        </Container>
       </>
     )
 }

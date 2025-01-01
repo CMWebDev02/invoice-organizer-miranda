@@ -24,7 +24,7 @@ export function YearSelector({isDisabled}) {
 
     return (
         <div>
-            <label></label>
+            <label>Year:</label>
             <input type='number'
                 min={currentYear - yearOffSet} max={currentYear + yearOffSet}
                     onChange={changeYear} value={queryParameters.get('year') || currentYear} disabled={isDisabled} />
