@@ -11,11 +11,13 @@ import { useEffect, useState } from "react";
 import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
 
 import { UserSettingsStorage } from "../utilities/localStorage";
-import { convertToValidQueryString } from "../utilities/stringMutations";
+import { convertFromSpinalTap, convertToValidQueryString } from "../utilities/stringMutations";
 import { UseToggler } from "../hooks/UseToggler";
 import { Link, useSearchParams } from "react-router";
 import { OffCanvasMenu } from "../components/ui/OffCanvasMenu";
 import { ErrorToastDisplay } from "../components/ErrorPopUps/ErrorToastDisplay";
+
+import styles from '../styles/InvoiceOrganizerStyles.module.css'
 
 export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
@@ -99,13 +101,14 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
     return (
       <>
-        <NavBar pageName={pageName}>
+        <nav>
+          <h1>{convertFromSpinalTap(pageName)}</h1>
           <ChangeLogIcon isChanging={isNewFolderInitializing || isTransferring} changeResult={changeLog[0]} />
 
           <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isDisabled}>Create Folder</button>
           <button onClick={createFileInfo} disabled={isUserInteractionDisabled.isDisabled}>Sort</button>
           <button onClick={handleShowMenu}>Menu</button>
-        </NavBar>
+        </nav>
 
         <main> 
           <div>

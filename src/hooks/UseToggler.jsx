@@ -12,7 +12,6 @@ export function UseToggler({ initialValue }) {
                 } 
             };
             case 'SET_ENABLED': {
-                console.log('value false')
                 return {
                     isDisabled: false
                 } 
