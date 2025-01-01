@@ -1,25 +1,18 @@
-import { ChangeLogIcon } from "../components/ChangeLog/ChangeLogIcon";
-import { DirectoryFilter } from "../components/DirectoryDisplay/UserInteraction/DirectoryFilter";
-import { YearSelector } from "../components/YearSelection/YearSelector";
-import { DirectoryDisplay } from "../components/DirectoryDisplay/DirectoryDisplay"
-import { InvoiceViewer } from "../components/DirectoryDisplay/InvoiceViewer"
-import { NewDirectoryModal } from "../components/DirectoryDisplay/UserInteraction/NewDirectoryModal";
-import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
-
 import { useEffect, useState } from "react";
-import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
-
-import { UserSettingsStorage } from "../utilities/localStorage";
-import { convertFromSpinalTap, convertToValidQueryString } from "../utilities/stringMutations";
-import { UseToggler } from "../hooks/UseToggler";
 import { Link, useSearchParams } from "react-router";
-import { OffCanvasMenu } from "../components/InvoiceOrganizerUI/OffCanvasMenu";
-import { ErrorToastDisplay } from "../components/ErrorPopUps/ErrorToastDisplay";
 
-import styles from '../styles/InvoiceOrganizerStyles.module.css'
+import { UseFetchPostRequest } from "../hooks/UseFetchPostRequest";
+import { UseToggler } from "../hooks/UseToggler";
+
 import { NavBar } from "../components/InvoiceOrganizerUI/NavBar";
 import { Footer } from "../components/InvoiceOrganizerUI/Footer";
 import { MainContainer } from "../components/InvoiceOrganizerUI/MainContainer";
+import { NewDirectoryModal } from "../components/DirectoryDisplay/UserInteraction/NewDirectoryModal";
+import { OffCanvasMenu } from "../components/InvoiceOrganizerUI/OffCanvasMenu";
+import { ErrorToastDisplay } from "../components/ErrorPopUps/ErrorToastDisplay";
+
+import { convertToValidQueryString } from "../utilities/stringMutations";
+import { UserSettingsStorage } from "../utilities/localStorage";
 
 export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
