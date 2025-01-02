@@ -3,5 +3,16 @@ $theme-colors: (
   'danger': rgb(0, 0, 0)
 );
 
+// These breakpoints are based on less than or equal, so each is 1 pixel larger than their wireframe' view size.
+$grid-breakpoints: (
+  mobilePortrait: 0,
+  // Experiment with screen sizes and possibly change this to occur after around 400px
+  mobileLandscape: 321px,
+  tabletPortrait: 569px,
+  tabletLandscape: 745px,
+  desktopView: 1134px
+);
+
+
 /* import bootstrap to set changes */
 @import "../../node_modules/bootstrap/scss/bootstrap.scss"

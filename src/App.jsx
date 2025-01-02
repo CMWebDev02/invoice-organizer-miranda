@@ -7,6 +7,8 @@ import { SettingsPage } from './pages/SettingsPage';
 import { CustomerScanDocsPage } from './pages/CustomerScanDocsPage';
 import { AccountsPayablesPage } from './pages/AccountPayablesPage';
 
+import './styles/GlobalStyles.css'
+
 const baseQueryClient = new QueryClient();
 const endPointURL = 'http://localhost:3000';
 

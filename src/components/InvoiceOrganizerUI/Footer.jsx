@@ -7,11 +7,11 @@ export function Footer(props) {
     return (
         <footer>
             <Row>
-                <Col xs={10}>
+                <Col mobilePortrait={10}>
                     <button onClick={props.createFileInfo} disabled={props.isUserInteractionDisabled}>Sort</button>
                     <button onClick={props.toggleNewDirectoryModal} >Create Folder</button>
                 </Col>
-                <Col xs={2}>
+                <Col mobilePortrait={2}>
                     <Link to={'/changelog'}>ChangeLog</Link>
                 </Col>
             </Row>
