@@ -112,12 +112,8 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
           <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo}  />
           
-          <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu}>
-            <button onClick={toggleNewDirectoryModal} disabled={isUserInteractionDisabled.isActive}>Create Folder</button>
-            <Link to={'/settings'}>Settings</Link>
-            <Link to={'/changelog'}>ChangeLog</Link>
-            <Link to={'/'}>Home</Link>
-          </OffCanvasMenu>
+          <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu} toggleNewDirectoryModal={toggleNewDirectoryModal} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled} />
+
           
           <ErrorToastDisplay errorsArray={[{name: 'Sort File Error', message: createFileInfoError}, {name: 'File Transfer Error', message: fileTransferError}, {name: 'New Folder Error', message: newFolderError}]} />
         </Container>
