@@ -1,4 +1,6 @@
-export function DirectoryFilter({ filter, isDisabled }) {
+import Stack from "react-bootstrap/esm/Stack";
+
+export function DirectoryFilter({ filter, isDisabled, styles }) {
     const [ filterValue, setFilterValue ] = filter;
 
 
@@ -15,10 +17,10 @@ export function DirectoryFilter({ filter, isDisabled }) {
     }
 
     return (
-        <div>
+        <Stack direction="horizontal" gap={1} className={`${styles.userInputContainer} ${styles.directoryFilterContainer}`}>
             <label htmlFor="directoryFilter">Find:</label>
             <input id="directoryFilter" type='text' placeholder='Filter By...' value={filterValue} onChange={checkFilterValue} 
-                disabled={isDisabled} />
-        </div>
+                disabled={isDisabled} className={styles.userInput} />
+        </Stack>
     )
 }

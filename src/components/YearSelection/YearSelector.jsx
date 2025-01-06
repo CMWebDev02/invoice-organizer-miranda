@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import Stack from 'react-bootstrap/esm/Stack';
 import { useSearchParams } from 'react-router';
 
-export function YearSelector({isDisabled}) {
+export function YearSelector({isDisabled, styles}) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
     const currentYear = new Date().getFullYear();
     const yearOffSet = 5;
@@ -23,11 +24,11 @@ export function YearSelector({isDisabled}) {
     }
 
     return (
-        <div>
+        <Stack direction='horizontal' gap={1} className={`${styles.userInputContainer} ${styles.yearSelectorContainer} ms-auto`}>
             <label>Year:</label>
-            <input type='number'
+            <input type='number' className={styles.userInput}
                 min={currentYear - yearOffSet} max={currentYear + yearOffSet}
                     onChange={changeYear} value={queryParameters.get('year') || currentYear} disabled={isDisabled} />
-        </div>
+        </Stack>
     )
 }
