@@ -19,9 +19,9 @@ export function NavBar(props) {
                     <h1 className={` ${styles.projectTitle}`}>{displayName}</h1>
                     <ChangeLogIcon isChanging={props.isChanging} changeResult={props.lastChange} className={styles.icon} />
                     <Stack className={`ms-auto ${styles.buttonsContainer}`} direction="horizontal" gap={1}>
-                        <button className="d-none d-tabletPortrait-flex d-desktopView-none" onClick={props.toggleNewDirectoryModal} disabled={props.isUserInteractionDisabled}>Create Folder</button>
-                        <button className="d-desktopView-none" onClick={props.createFileInfo} disabled={props.isUserInteractionDisabled}>Sort</button>
-                        <button onClick={props.handleShowMenu}>Menu</button>
+                        <button className="d-none d-tabletPortrait-flex d-desktopView-none interfaceButton" onClick={props.toggleNewDirectoryModal} disabled={props.isUserInteractionDisabled}>Create Folder</button>
+                        <button className="d-desktopView-none interfaceButton" onClick={props.createFileInfo} disabled={props.isUserInteractionDisabled}>Sort</button>
+                        <button className="interfaceButton" onClick={props.handleShowMenu}>Menu</button>
                     </Stack>
                 </Stack>
             </Col>

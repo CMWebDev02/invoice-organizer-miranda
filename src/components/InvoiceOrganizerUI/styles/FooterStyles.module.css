@@ -1,3 +1,7 @@
 .footerContainer {
     padding: var(--base-padding);
 }
+
+.buttonsContainer button {
+
+}

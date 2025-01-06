@@ -13,6 +13,8 @@ $grid-breakpoints: (
   desktopView: 1134px
 );
 
+$offcanvas-horizontal-width: clamp(160px, 30vw, 320px);
+
 
 /* import bootstrap to set changes */
 @import "../../node_modules/bootstrap/scss/bootstrap.scss"

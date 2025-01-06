@@ -6,14 +6,15 @@ import Stack from "react-bootstrap/esm/Stack";
 import styles from './styles/FooterStyles.module.css'
 
 export function Footer(props) {
-
     return (
             <Row className={`${styles.footerContainer} d-none d-desktopView-flex`}>
                 <Col className="p-0">
                     <Stack direction="horizontal" gap={2}>
-                        <button onClick={props.createFileInfo} disabled={props.isUserInteractionDisabled}>Sort</button>
-                        <button onClick={props.toggleNewDirectoryModal} >Create Folder</button>
-                        <Link to={'/changelog'} className="ms-auto">ChangeLog</Link>
+                        <Stack className={styles.buttonsContainer} direction="horizontal" gap={2}>
+                            <button className="interfaceButton"  onClick={props.createFileInfo} disabled={props.isUserInteractionDisabled}>Sort</button>
+                            <button className="interfaceButton" onClick={props.toggleNewDirectoryModal} >Create Folder</button>
+                        </Stack>
+                        <Link to={'/changelog'} className="ms-auto interfaceButton">ChangeLog</Link>
                     </Stack>
                 </Col>
             </Row>

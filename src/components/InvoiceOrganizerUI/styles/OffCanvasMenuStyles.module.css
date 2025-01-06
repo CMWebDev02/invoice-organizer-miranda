@@ -1,3 +1,7 @@
-.offCanvasBodyContainer {
+.offCanvasMenu {
     padding: var(--base-padding);
+}
+
+.buttonElement {
+    width: 100%;
 }
