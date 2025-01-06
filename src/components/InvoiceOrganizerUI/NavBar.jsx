@@ -13,7 +13,7 @@ export function NavBar(props) {
 
     return (
         <Row className={styles.navBar}>
-            <Col className="m-0">
+            <Col className="p-0">
                 <Stack direction="horizontal" gap={2}>
                     <FontAwesomeIcon icon={faArrowDownShortWide} className={styles.icon}/>
                     <h1 className={` ${styles.projectTitle}`}>{displayName}</h1>

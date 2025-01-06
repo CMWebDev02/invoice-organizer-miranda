@@ -1,12 +1,9 @@
 .navBar {
     align-items: center;
     margin: 0;
-    padding: 0.5rem 0 0.5rem;
+    padding: var(--base-padding);
 }
 
-.navBar * {
-    padding: 0;
-}
 
 .buttonsContainer button {
     font-size: 16px;

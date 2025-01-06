@@ -1,3 +1,9 @@
+:root {
+    --base-padding: 0.5rem
+    
+}
+
+
 * {
     padding: 0px;
     margin: 0px;
