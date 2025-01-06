@@ -7,7 +7,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 import { useEffect, useRef, useState } from 'react';
 
-export function ChangeLogIcon({ isChanging, changeResult }) {
+export function ChangeLogIcon({ isChanging, changeResult, className }) {
     const [ iconColor, setIconColor ] = useState('black');
     const lastChangeResultTarget = useRef(null)
 
@@ -23,7 +23,7 @@ export function ChangeLogIcon({ isChanging, changeResult }) {
             target={lastChangeResultTarget}
         >
             <FontAwesomeIcon icon={faFile} ref={lastChangeResultTarget}
-                color={iconColor} shake={isChanging} />
+                color={iconColor} shake={isChanging} className={className}/>
         </OverlayTrigger>
     )
 }

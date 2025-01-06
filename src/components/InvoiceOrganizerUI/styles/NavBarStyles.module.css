@@ -1,0 +1,24 @@
+.navBar {
+    align-items: center;
+    margin: 0;
+    padding: 0.5rem 0 0.5rem;
+}
+
+.navBar * {
+    padding: 0;
+}
+
+.buttonsContainer button {
+    font-size: 16px;
+    width: fit-content;
+    padding: 0px 2px;
+}
+.projectTitle {
+    font-size: clamp(20px, 0.75vw, 30px);
+    margin: 0;
+}
+
+.icon {
+    width: clamp(20px, 1vw, 30px);
+    height: clamp(20px, 1vw, 30px);
+}
