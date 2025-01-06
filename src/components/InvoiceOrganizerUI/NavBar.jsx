@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDownShortWide } from "@fortawesome/free-solid-svg-icons";
 
 import styles from './styles/NavBarStyles.module.css'
-import Container from "react-bootstrap/esm/Container";
 
 export function NavBar(props) {
     const displayName = convertFromSpinalTap(props.pageName);
@@ -17,7 +16,7 @@ export function NavBar(props) {
             <Col className="m-0">
                 <Stack direction="horizontal" gap={2}>
                     <FontAwesomeIcon icon={faArrowDownShortWide} className={styles.icon}/>
-                    <h1 className={styles.projectTitle}>{displayName}</h1>
+                    <h1 className={` ${styles.projectTitle}`}>{displayName}</h1>
                     <ChangeLogIcon isChanging={props.isChanging} changeResult={props.lastChange} className={styles.icon} />
                     <Stack className={`ms-auto ${styles.buttonsContainer}`} direction="horizontal" gap={1}>
                         <button className="d-none d-tabletPortrait-flex d-desktopView-none" onClick={props.toggleNewDirectoryModal} disabled={props.isUserInteractionDisabled}>Create Folder</button>
