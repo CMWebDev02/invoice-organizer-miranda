@@ -7,6 +7,7 @@ import { InvoiceViewer } from "../DirectoryDisplay/InvoiceViewer";
 import { DirectoryFilter } from "../DirectoryDisplay/UserInteraction/DirectoryFilter";
 import { YearSelector } from "../YearSelection/YearSelector";
 import Container from "react-bootstrap/esm/Container";
+import Stack from "react-bootstrap/esm/Stack";
 
 export function MainContainer(props) {
 
@@ -16,20 +17,15 @@ export function MainContainer(props) {
                 <Container>
                     <Row>
                         <Col mobilePortrait={12} tabletPortrait={9} tabletLandscape={12} className="order-1 order-tabletPortrait-2 order-tabletLandscape-1">
-                            <Row>
-                                <Col mobilePortrait={10}>
+                            <Stack gap={2}>
+                                <Stack direction="horizontal" gap={2}>
                                     <DirectoryFilter filter={[props.directoryFilter, props.alterDirectoryFilter]} isDisabled={props.isUserInteractionDisabled} />
-                                </Col>
-                    
-                                <Col mobilePortrait={2}>
                                     <YearSelector isDisabled={props.isUserInteractionDisabled} />
-                                </Col>
+                                </Stack>
 
-                                <Col mobilePortrait={12}>
-                                    <DirectoryDisplay directoryFilter={props.directoryFilter} fetchKey={`${props.pageName}-customerFolders`}
-                                        updateIsLoadingBoolean={props.updateIsLoadingBoolean} sortFile={props.sortFile} endPoint={`${props.endPointURL}/${props.pageName}`} />
-                                </Col>
-                            </Row>
+                                <DirectoryDisplay directoryFilter={props.directoryFilter} fetchKey={`${props.pageName}-customerFolders`}
+                                    updateIsLoadingBoolean={props.updateIsLoadingBoolean} sortFile={props.sortFile} endPoint={`${props.endPointURL}/${props.pageName}`} />
+                            </Stack>
                         </Col>
                     
                         {/* Add the user setting to control how many changeLog actions are displayed in the quick view*/}

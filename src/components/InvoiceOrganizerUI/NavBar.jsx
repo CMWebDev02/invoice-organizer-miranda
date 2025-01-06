@@ -15,7 +15,7 @@ export function NavBar(props) {
         <Row className={styles.navBar}>
             <Col className="p-0">
                 <Stack direction="horizontal" gap={2}>
-                    <FontAwesomeIcon icon={faArrowDownShortWide} className={styles.icon}/>
+                    <FontAwesomeIcon icon={faArrowDownShortWide} className={`${styles.icon} d-none d-mobileLandscape-flex`}/>
                     <h1 className={` ${styles.projectTitle}`}>{displayName}</h1>
                     <ChangeLogIcon isChanging={props.isChanging} changeResult={props.lastChange} className={styles.icon} />
                     <Stack className={`ms-auto ${styles.buttonsContainer}`} direction="horizontal" gap={1}>
