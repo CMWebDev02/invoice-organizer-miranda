@@ -21,7 +21,8 @@
 }
 
 .userInput:focus {
-    
+    outline: 2px solid var(--outline-color);
+    color: var(--secondary-text-color)
 }
 
 .directoryFilterContainer {
@@ -35,5 +36,5 @@
 
 
 .directoryDisplay {
-
+    
 }
