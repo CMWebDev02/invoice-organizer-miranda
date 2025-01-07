@@ -36,8 +36,11 @@
     font-size: clamp(0.75rem, 2.5vw, 1rem);
 }
 
-
 .directoryDisplay {
-    min-height: 140px;
-    max-height: 350px;
+    height: clamp(140px, 30vh, 250px);
+}
+
+.changeLogDisplay {
+    max-height: clamp(140px, 30vh, 250px);
+    overflow-y: auto;
 }
