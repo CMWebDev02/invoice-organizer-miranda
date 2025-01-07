@@ -21,9 +21,10 @@ $grid-breakpoints: (
 
 $offcanvas-horizontal-width: clamp(160px, 30vw, 320px);
 
+// Note that the className is used at first and then the sass variable name.
 $utilities: map-merge(
   $utilities, (
-    "h": map-merge(
+    "h": map-merge( 
       map-get($utilities, "height"),
       ( responsive: true ),
     ),
