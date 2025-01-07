@@ -25,7 +25,7 @@ export function MainContainer(props) {
                                     <YearSelector styles={styles} isDisabled={props.isUserInteractionDisabled} />
                                 </Stack>
 
-                                <DirectoryDisplay directoryFilter={props.directoryFilter} fetchKey={`${props.pageName}-customerFolders`}
+                                <DirectoryDisplay directoryFilter={props.directoryFilter} fetchKey={`${props.pageName}-customerFolders`} className={styles.directoryDisplay}
                                     updateIsLoadingBoolean={props.updateIsLoadingBoolean} sortFile={props.sortFile} endPoint={`${props.endPointURL}/${props.pageName}`} />
                             </Stack>
                         </Col>
@@ -38,7 +38,7 @@ export function MainContainer(props) {
                 </Container>
             </Col>
 
-            <Col mobilePortrait={12} mobileLandscape={6} tabletPortrait={12} tabletLandscape={8} className={`pe-1`}>
+            <Col mobilePortrait={12} mobileLandscape={6} tabletPortrait={12} tabletLandscape={8} className={`p-0`}>
                 <InvoiceViewer updateIsLoadingBoolean={props.updateIsLoadingBoolean} endPoint={`${props.endPointURL}/${props.pageName}`} fetchKey={`${props.pageName}-invoiceViewer`} />
             </Col>
         </Row>

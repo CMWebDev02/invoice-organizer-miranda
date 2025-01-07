@@ -12,9 +12,9 @@ export function NavBar(props) {
     const displayName = convertFromSpinalTap(props.pageName);
 
     return (
-        <Row className={styles.navBar}>
-            <Col className="p-0">
-                <Stack direction="horizontal" gap={2}>
+        <Row className={`${styles.navBar} p-2`}>
+            <Col className="p-0 h-auto">
+                <Stack direction="horizontal" gap={2} className="h-auto">
                     <FontAwesomeIcon icon={faArrowDownShortWide} className={`${styles.icon} d-none d-mobileLandscape-flex`}/>
                     <h1 className={` ${styles.projectTitle}`}>{displayName}</h1>
                     <ChangeLogIcon isChanging={props.isChanging} changeResult={props.lastChange} className={styles.icon} />

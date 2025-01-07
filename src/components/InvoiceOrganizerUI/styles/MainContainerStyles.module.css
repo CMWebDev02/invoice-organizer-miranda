@@ -1,11 +1,13 @@
 .mainContainer {
     padding: var(--base-padding);
+    height: var(--main-container-height);
 }
 
 
 .userInputContainer {
     font-size: clamp(0.75rem, 2.5vw, 1rem);
     color: var(--secondary-text-color);
+    height: clamp(30px, 5vh, 40px);
 }
 
 .userInput {
@@ -21,7 +23,7 @@
 }
 
 .userInput:focus {
-    outline: 2px solid var(--outline-color);
+    outline: 0.125rem solid var(--outline-color);
     color: var(--secondary-text-color)
 }
 
@@ -36,5 +38,6 @@
 
 
 .directoryDisplay {
-    
+    min-height: 140px;
+    max-height: 350px;
 }
