@@ -31,7 +31,7 @@ export function MainContainer(props) {
                         </Col>
                     
                         {/* Add the user setting to control how many changeLog actions are displayed in the quick view*/}
-                        <Col className={`d-none d-tabletPortrait-flex order-2 order-tabletPortrait-1 order-tabletLandscape-2 p-0 h-100 h-tabletLandscape-25 overflow-scroll`} mobilePortrait={12} tabletPortrait={3} tabletLandscape={12}>
+                        <Col className={`d-none d-tabletPortrait-flex order-2 order-tabletPortrait-1 order-tabletLandscape-2 p-0 h-100 h-tabletLandscape-25 overflow-auto`} mobilePortrait={12} tabletPortrait={3} tabletLandscape={12}>
                             <Stack className={`${styles.changeLogDisplay}`}>
                                 <ChangeLogDisplay endPoint={`${props.endPointURL}/${props.pageName}`} changeLog={props.changeLog.slice(0)} alterChangeLog={props.alterChangeLog} />
                             </Stack>

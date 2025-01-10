@@ -1,4 +1,7 @@
-export function DirectoryList({ selectDirectory, selectedDirectory, directoryFilter, directories, sortFile }) {
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export function DirectoryList({ selectDirectory, selectedDirectory, directoryFilter, directories, sortFile, styles }) {
     let filteredNames = [];
 
     if(directoryFilter != '') {
@@ -22,7 +25,10 @@ export function DirectoryList({ selectDirectory, selectedDirectory, directoryFil
     return (
         <>
             {filteredNames == 0 ? <h2>No Matching Users</h2> : 
-            filteredNames.map(name => <div key={`folder-${name}`} id={name} onClick={selectDirectory} style={{color: selectedDirectory == name ? 'red' : 'black'}}>{name} <button name={name} onClick={quickSort}>Quick Transfer</button></div>)}
+            filteredNames.map(name => <div key={`folder-${name}`} id={name} onClick={selectDirectory} className={`${selectedDirectory == name ? styles.selectedDirectoryOption : styles.directoryOption} w-50 d-flex justify-content-between align-items-center`}>
+                                            <p>{name}</p>
+                                            <button name={name} onClick={quickSort}><FontAwesomeIcon icon={faArrowUpFromBracket} color="white"/></button>
+                                        </div>)}
         </>
     )
 }

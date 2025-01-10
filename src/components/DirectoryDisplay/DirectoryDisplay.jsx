@@ -38,16 +38,24 @@ export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoo
 
     function setSelectedDirectory(e) {
         e.stopPropagation()
+        let targetID;
+
+        if (e.target.tagName == 'P') {
+            targetID = e.target.parentElement.id
+        } else {
+            targetID = e.target.id
+        }
+
         setQueryParameters(prevParameters => {
-            prevParameters.set('selectedDirectory', e.target.id)
+            prevParameters.set('selectedDirectory', targetID)
             return prevParameters
         });
     }
 
     return (
-        <Stack className={`${styles.directoryDisplay} h-75 overflow-scroll`}>
+        <Stack className={`${styles.directoryDisplay} p-1 h-75 overflow-auto w-100 d-flex flex-row flex-wrap align-items-start align-content-start`}>
             {isLoading && <h2>Gathering Customer Folders</h2>}
-            {errorOccurred ? <h2>{errorOccurred}</h2> : <DirectoryList selectDirectory={setSelectedDirectory} selectedDirectory={queryParameters.get('selectedDirectory')} directoryFilter={directoryFilter} directories={allDirectories} sortFile={sortFile} />}
+            {errorOccurred ? <h2>{errorOccurred}</h2> : <DirectoryList styles={styles} selectDirectory={setSelectedDirectory} selectedDirectory={queryParameters.get('selectedDirectory')} directoryFilter={directoryFilter} directories={allDirectories} sortFile={sortFile} />}
         </Stack>
     )
 }
