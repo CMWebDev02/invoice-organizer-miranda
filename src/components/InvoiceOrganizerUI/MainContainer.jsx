@@ -3,7 +3,7 @@ import Col from "react-bootstrap/esm/Col";
 
 import { ChangeLogDisplay } from "../ChangeLog/ChangeLogDisplay";
 import { DirectoryDisplay } from "../DirectoryDisplay/DirectoryDisplay";
-import { InvoiceViewer } from "../DirectoryDisplay/InvoiceViewer";
+import { InvoiceViewer } from "../InvoiceViewer/InvoiceViewer";
 import { DirectoryFilter } from "../DirectoryDisplay/UserInteraction/DirectoryFilter";
 import { YearSelector } from "../YearSelection/YearSelector";
 import Container from "react-bootstrap/esm/Container";
@@ -41,7 +41,7 @@ export function MainContainer(props) {
             </Col>
 
             <Col mobilePortrait={12} mobileLandscape={6} tabletPortrait={12} tabletLandscape={8} className={`p-0 h-75 h-mobileLandscape-100 h-tabletPortrait-75 h-tabletLandscape-100`}>
-                <InvoiceViewer updateIsLoadingBoolean={props.updateIsLoadingBoolean} endPoint={`${props.endPointURL}/${props.pageName}`} fetchKey={`${props.pageName}-invoiceViewer`} />
+                <InvoiceViewer styles={styles} updateIsLoadingBoolean={props.updateIsLoadingBoolean} endPoint={`${props.endPointURL}/${props.pageName}`} fetchKey={`${props.pageName}-invoiceViewer`} />
             </Col>
         </Row>
     )

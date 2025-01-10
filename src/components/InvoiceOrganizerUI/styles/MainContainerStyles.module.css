@@ -28,19 +28,23 @@
 }
 
 .directoryFilterContainer {
-    width: calc(65% - var(--base-padding));
+    width: calc(60% - var(--base-padding));
 }
 
 .yearSelectorContainer {
-    width: calc(35% - var(--base-padding));
-    font-size: clamp(0.75rem, 2.5vw, 1rem);
+    width: calc(40% - var(--base-padding));
 }
 
 .directoryDisplay {
     height: clamp(140px, 30vh, 250px);
+    overflow-y: auto;
 }
 
 .changeLogDisplay {
-    max-height: clamp(140px, 30vh, 250px);
-    overflow-y: auto;
+    overflow-y: scroll;
+}
+
+.invoiceViewer {
+    width: inherit;
+    height: inherit;
 }

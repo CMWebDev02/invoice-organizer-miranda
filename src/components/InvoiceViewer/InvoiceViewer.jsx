@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { UseFetchGetRequest  } from '../../hooks/UseFetchGetRequest';
 
-export function InvoiceViewer({ endPoint, updateIsLoadingBoolean, fetchKey }) {
+export function InvoiceViewer({ endPoint, updateIsLoadingBoolean, fetchKey, styles }) {
     const [ queryParameter, setQueryParameters ] = useSearchParams();
     const [ invoicePath, setInvoicePath ] = useState('');
 
@@ -58,9 +58,9 @@ export function InvoiceViewer({ endPoint, updateIsLoadingBoolean, fetchKey }) {
     }, [isLoading])
 
     return (
-        <div>
+        <div className={`h-100 w-100 ps-mobileLandscape-1 ps-tabletPortrait-0 ps-tabletLandscape-1`}>
             {isLoading && <h2>Retrieving Invoice</h2>}
-            {errorOccurred ? <h2>{errorOccurred}</h2> : <iframe src={invoicePath} />}
+            {errorOccurred ? <h2>{errorOccurred}</h2> : <iframe className={`${styles.invoiceViewer}`} src={invoicePath} />}
         </div>
     )
 }
