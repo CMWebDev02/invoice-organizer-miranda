@@ -36,12 +36,10 @@
 }
 
 .directoryDisplay {
-    height: clamp(140px, 30vh, 250px);
-    overflow-y: auto;
 }
 
 .changeLogDisplay {
-    overflow-y: scroll;
+
 }
 
 .invoiceViewer {

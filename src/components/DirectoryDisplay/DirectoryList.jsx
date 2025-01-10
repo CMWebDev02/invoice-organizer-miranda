@@ -20,9 +20,9 @@ export function DirectoryList({ selectDirectory, selectedDirectory, directoryFil
     }
 
     return (
-        <div>
+        <>
             {filteredNames == 0 ? <h2>No Matching Users</h2> : 
             filteredNames.map(name => <div key={`folder-${name}`} id={name} onClick={selectDirectory} style={{color: selectedDirectory == name ? 'red' : 'black'}}>{name} <button name={name} onClick={quickSort}>Quick Transfer</button></div>)}
-        </div>
+        </>
     )
 }
