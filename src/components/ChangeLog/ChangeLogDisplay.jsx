@@ -1,7 +1,8 @@
 import { ChangeInfo } from './ChangeInfo.jsx'
 import { UseUndoFetch } from "../../hooks/UseUndoFetch.jsx";
+import styles from './styles/ChangeLogStyles.module.css';
 
-export function ChangeLogDisplay({ endPoint, changeLog, alterChangeLog, styles }) {
+export function ChangeLogDisplay({ endPoint, changeLog, alterChangeLog }) {
     const { isLoading: isUndoingAction, errorOccurred: undoActionError, triggerFetchPostRequest: triggerChangeLogPostRequest } = UseUndoFetch({fetchURLBase: `${endPoint}/undo-action`, alterChangeLog})
 
     function undoChange(undoObj, id, action) {
