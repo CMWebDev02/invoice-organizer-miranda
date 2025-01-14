@@ -60,6 +60,8 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
       handleCloseMenu()
     };
 
+    const uHotKey = UseHotKey({triggerKey: "U", action: toggleNewDirectoryModal, variablesCheck: [], dependencies: []})
+
     function createFolderInfo(directoryName) {
       let directoryFolderQuery = convertToValidQueryString(directoryName);
       triggerFolderCreation({
