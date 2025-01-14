@@ -10,7 +10,7 @@ export function Footer(props) {
             <Row className={`${styles.footerContainer} d-none d-desktopView-flex`}>
                 <Col className="p-0">
                     <Stack direction="horizontal" gap={2}>
-                        <Stack className={styles.buttonsContainer} direction="horizontal" gap={2}>
+                        <Stack direction="horizontal" gap={2}>
                             <button className="interfaceButton"  onClick={props.createFileInfo} disabled={props.isUserInteractionDisabled}>Sort</button>
                             <button className="interfaceButton" onClick={props.toggleNewDirectoryModal} >Create Folder</button>
                         </Stack>

@@ -1,7 +1,4 @@
 .footerContainer {
     padding: var(--base-padding);
-}
-
-.buttonsContainer button {
-
+    background-color: var(--secondary-background-color);
 }
