@@ -1,5 +1,6 @@
-import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { useEffect } from "react";
+import { DirectoryOption } from "./DirectoryOption";
 
 export function DirectoryList({ selectDirectory, selectedDirectory, directoryFilter, directories, sortFile, styles }) {
     let filteredNames = [];
@@ -15,6 +16,23 @@ export function DirectoryList({ selectDirectory, selectedDirectory, directoryFil
             });
         }
     }
+
+    useEffect(() => {
+        function quickSelect(e) {
+            if (e.keyCode >= 49 && e.keyCode <= 57 && !e.shiftKey) {
+                let numberKey = e.keyCode - 49;
+                if (filteredNames.length > numberKey) {
+                    selectDirectory(filteredNames[numberKey])
+                }
+            }
+        }
+
+        addEventListener('keydown', quickSelect)
+
+        return () => {
+            removeEventListener('keydown', quickSelect)
+        }
+    }, [filteredNames])
     
     function quickSort(e) {
         e.stopPropagation()
@@ -25,10 +43,7 @@ export function DirectoryList({ selectDirectory, selectedDirectory, directoryFil
     return (
         <>
             {filteredNames == 0 ? <h2>No Matching Users</h2> : 
-            filteredNames.map(name => <div key={`folder-${name}`} id={name} onClick={selectDirectory} className={`${selectedDirectory == name ? styles.selectedDirectoryOption : styles.directoryOption} w-50 d-flex justify-content-between align-items-center`}>
-                                            <p>{name}</p>
-                                            <button name={name} onClick={quickSort}><FontAwesomeIcon icon={faArrowUpFromBracket} color="white"/></button>
-                                        </div>)}
+            filteredNames.map((name, index) => <DirectoryOption key={name} index={index} selectDirectory={selectDirectory} name={name} style={selectedDirectory == name ? styles.selectedDirectoryOption : styles.directoryOption} quickSort={quickSort} />)}
         </>
     )
 }

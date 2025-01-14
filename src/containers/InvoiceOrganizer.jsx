@@ -14,6 +14,7 @@ import { ErrorToastDisplay } from "../components/ErrorPopUps/ErrorToastDisplay";
 
 import { convertToValidQueryString } from "../utilities/stringMutations";
 import { UserSettingsStorage } from "../utilities/localStorage";
+import { UseHotKey } from "../hooks/UseHotKey";
 
 export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
@@ -33,25 +34,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/create-new-folder`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-customerFolders` })
     const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/sort-file`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-invoiceViewer` })
 
-    // Creates the keyboard shortcut to handle the quick file sort.
-    useEffect(() => {
-      if (showNewDirectoryModal || isUserInteractionDisabled.isDisabled) {
-        console.log('disable')
-        return  
-      }
-
-      function activateShortCut(e) {
-        if (e.key === "Enter") {
-          createFileInfo()
-        }
-      }
-
-      addEventListener('keypress', activateShortCut);
-
-      return () => {
-        removeEventListener('keypress', activateShortCut);
-      }
-    }, [queryParameters, showNewDirectoryModal, isUserInteractionDisabled])
+    const enterHotKey = UseHotKey({triggerKey: 'Enter', action: createFileInfo, variablesCheck: [showNewDirectoryModal, isUserInteractionDisabled.isDisabled], dependencies: [queryParameters, showNewDirectoryModal, isUserInteractionDisabled]})
 
     useEffect(() => {
         updateIsLoadingBoolean({name: 'newFolderInitializing', value: isNewFolderInitializing})

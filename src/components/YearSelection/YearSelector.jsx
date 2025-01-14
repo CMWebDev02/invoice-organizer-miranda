@@ -1,11 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Stack from 'react-bootstrap/esm/Stack';
 import { useSearchParams } from 'react-router';
+import { UseHotKey } from '../../hooks/UseHotKey';
 
 export function YearSelector({isDisabled, styles}) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
+    const yearInputRef = useRef();
     const currentYear = new Date().getFullYear();
     const yearOffSet = 5;
+
+    const yHotKey = UseHotKey({triggerKey: 'Y', action: focusYearInput, variablesCheck: [], dependencies: []});
+
+    function focusYearInput() {
+        yearInputRef.current.select()
+    }
 
     useEffect(() => {
         if (queryParameters.get('year') == null) {
@@ -26,7 +34,7 @@ export function YearSelector({isDisabled, styles}) {
     return (
         <Stack direction='horizontal' gap={1} className={`${styles.userInputContainer} ${styles.yearSelectorContainer} ms-auto`}>
             <label>Year:</label>
-            <input type='number' className={styles.userInput}
+            <input type='number' className={styles.userInput} ref={yearInputRef}
                 min={currentYear - yearOffSet} max={currentYear + yearOffSet}
                     onChange={changeYear} value={queryParameters.get('year') || currentYear} disabled={isDisabled} />
         </Stack>

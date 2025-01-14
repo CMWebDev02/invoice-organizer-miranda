@@ -31,13 +31,18 @@ export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoo
     }, [isLoading])
 
     function setSelectedDirectory(e) {
-        e.stopPropagation()
         let targetID;
 
-        if (e.target.tagName == 'P') {
-            targetID = e.target.parentElement.id
+        if (e?.target == undefined) {
+            targetID = e;
         } else {
-            targetID = e.target.id
+            e.stopPropagation()
+    
+            if (e.target.tagName == 'P') {
+                targetID = e.target.parentElement.id
+            } else {
+                targetID = e.target.id
+            }
         }
 
         setQueryParameters(prevParameters => {
