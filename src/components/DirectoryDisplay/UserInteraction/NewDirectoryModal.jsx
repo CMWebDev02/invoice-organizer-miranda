@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
+import { UseHotKey } from '../../../hooks/UseHotKey.jsx'
 import Modal from 'react-bootstrap/Modal'
 
 
 export function NewDirectoryModal({ showModal, toggleNewFolderModal, createFolderInfo}) {    
     const [errorMessage, setErrorMessage] = useState('');
     const directoryNameRef = useRef(null);
+
+    const uHotKey = UseHotKey({triggerKey: "U", action: toggleNewFolderModal, variablesCheck: [!showModal], dependencies: [showModal]});
+    const enterHotKey = UseHotKey({triggerKey: "Enter", action: checkName, variablesCheck: [!showModal], dependencies: [directoryNameRef, showModal]});
+
+    function focusDirectoryNameInput() {
+        console.log('focus')
+        directoryNameRef.current.select();
+    }
 
     useEffect(() => {
         let clearErrorMessage;
@@ -33,7 +42,7 @@ export function NewDirectoryModal({ showModal, toggleNewFolderModal, createFolde
     }
 
     return (
-        <Modal show={showModal} >
+        <Modal show={showModal} onEntering={focusDirectoryNameInput} >
             <Modal.Header>
                 <Modal.Title>Create New Customer Folder (Lastname Firstname)</Modal.Title>
             </Modal.Header>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import Container from "react-bootstrap/esm/Container";
 
@@ -57,10 +57,11 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     
     function toggleNewDirectoryModal() {
       setShowNewDirectoryModal(!showNewDirectoryModal);
+
       handleCloseMenu()
     };
 
-    const uHotKey = UseHotKey({triggerKey: "U", action: toggleNewDirectoryModal, variablesCheck: [], dependencies: []})
+    const uHotKey = UseHotKey({triggerKey: "U", action: toggleNewDirectoryModal, variablesCheck: [showNewDirectoryModal], dependencies: []})
 
     function createFolderInfo(directoryName) {
       let directoryFolderQuery = convertToValidQueryString(directoryName);

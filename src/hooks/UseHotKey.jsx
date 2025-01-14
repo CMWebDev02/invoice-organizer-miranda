@@ -5,12 +5,11 @@ export function UseHotKey({triggerKey, action, variablesCheck, dependencies}) {
     useEffect(() => {
         for (const variable of variablesCheck) {
             if (variable) {
-                return
+                return;
             }
         }
 
         function activateShortCut(e) {
-            console.log(e)
             if (e.key === triggerKey && e.ctrlKey& e.shiftKey) {
                 action();
             }
