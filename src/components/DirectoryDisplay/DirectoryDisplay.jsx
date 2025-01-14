@@ -37,8 +37,10 @@ export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoo
             targetID = e;
         } else {
             e.stopPropagation()
-    
-            if (e.target.tagName == 'P') {
+            
+            if (e.target.tagName == 'SPAN') {
+                targetID = e.target.parentElement.parentElement.id
+            } else if (e.target.tagName == 'P') {
                 targetID = e.target.parentElement.id
             } else {
                 targetID = e.target.id
