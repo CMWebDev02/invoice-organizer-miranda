@@ -25,7 +25,7 @@ export function MainContainer(props) {
                                     <YearSelector styles={styles} isDisabled={props.isUserInteractionDisabled} />
                                 </Stack>
 
-                                <DirectoryDisplay directoryFilter={props.directoryFilter} fetchKey={`${props.pageName}-customerFolders`} styles={styles}
+                                <DirectoryDisplay directoryFilter={props.directoryFilter} fetchKey={`${props.pageName}-customerFolders`} styles={styles} isUserInteractionDisabled={props.isUserInteractionDisabled}
                                     updateIsLoadingBoolean={props.updateIsLoadingBoolean} sortFile={props.sortFile} endPoint={`${props.endPointURL}/${props.pageName}`} />
                             </Stack>
                         </Col>

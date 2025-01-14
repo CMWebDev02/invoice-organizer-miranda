@@ -4,7 +4,7 @@ import { DirectoryList } from "./DirectoryList";
 import { useSearchParams } from "react-router";
 import Stack from "react-bootstrap/esm/Stack";
 
-export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoolean, sortFile, fetchKey, styles }) {
+export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoolean, sortFile, fetchKey, styles, isUserInteractionDisabled }) {
     const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: `${endPoint}/get-directories`, key: fetchKey})
     const [ allDirectories, setAllDirectories ] = useState([]);
     const [ queryParameters, setQueryParameters ] = useSearchParams();
@@ -18,19 +18,13 @@ export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoo
         }
     }, [queryParameters, setQueryParameters])
 
+
+
     useEffect(() => {
         if (fetchData) {
             setAllDirectories(fetchData.directoriesArray);
         }
     }, [fetchData])
-
-    // useEffect(() => {
-    //     if (isLoading) {
-    //         alterUserInteraction({type: 'SET_DISABLED'})
-    //     } else {
-    //         alterUserInteraction({type: 'SET_ENABLED'})
-    //     }
-    // }, [isLoading, alterUserInteraction])
 
     useEffect(() => {
         updateIsLoadingBoolean({name: 'directoriesLoading', value: isLoading})

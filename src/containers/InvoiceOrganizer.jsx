@@ -32,7 +32,27 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     
     const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/create-new-folder`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-customerFolders` })
     const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/sort-file`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-invoiceViewer` })
-    
+
+    // Creates the keyboard shortcut to handle the quick file sort.
+    useEffect(() => {
+      if (showNewDirectoryModal || isUserInteractionDisabled.isDisabled) {
+        console.log('disable')
+        return  
+      }
+
+      function activateShortCut(e) {
+        if (e.key === "Enter") {
+          createFileInfo()
+        }
+      }
+
+      addEventListener('keypress', activateShortCut);
+
+      return () => {
+        removeEventListener('keypress', activateShortCut);
+      }
+    }, [queryParameters, showNewDirectoryModal, isUserInteractionDisabled])
+
     useEffect(() => {
         updateIsLoadingBoolean({name: 'newFolderInitializing', value: isNewFolderInitializing})
     }, [isNewFolderInitializing])
@@ -73,7 +93,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
       //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected directory is used.
       //* This is necessary for the quick transfer feature, this allows the selected directory to remain stored in state while still allowing the user to quickly transfer to another directory if they
       //* click the quick transfer button.
-      let directoryName = e.target.name ? e.target.name : queryParameters.get('selectedDirectory');
+      let directoryName = e != undefined && e?.target?.name ? e.target.name : queryParameters.get('selectedDirectory');
       // Checks that all of the required information is present for making a file transfer, and if something is missing the function returns.
       //! Have this generate an error that prints on screen to alert the user that critical information is missing for the file transfer
       if (directoryName == '' || queryParameters.get('currentInvoice') == '' || queryParameters.get('year') == '' || queryParameters.get('year').length != 4) {

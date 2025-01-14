@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import Stack from "react-bootstrap/esm/Stack";
 
 export function DirectoryFilter({ filter, isDisabled, styles }) {
     const [ filterValue, setFilterValue ] = filter;
 
+    useEffect(() => {
+        
+    }, [])
 
     function checkFilterValue(e) {
         let filterInput = e.target.value.toUpperCase()
