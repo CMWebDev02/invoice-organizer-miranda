@@ -12,6 +12,12 @@ export function DirectoryFilter({ filter, isDisabled, styles }) {
         filterRef.current.select()
     }
 
+    function checkFocus(e) {
+        if (e.key === "Escape") {
+            filterRef.current.blur();
+        }
+    }
+
     function checkFilterValue(e) {
         let filterInput = e.target.value.toUpperCase()
         //* Offsets by 65 to make the process of filtering for the 26 capital letters of the alphabet more simplistic.
@@ -27,7 +33,7 @@ export function DirectoryFilter({ filter, isDisabled, styles }) {
     return (
         <Stack direction="horizontal" gap={1} className={`${styles.userInputContainer} ${styles.directoryFilterContainer}`}>
             <label htmlFor="directoryFilter">Find:</label>
-            <input id="directoryFilter" type='text' placeholder='Filter By...' value={filterValue} onChange={checkFilterValue} 
+            <input id="directoryFilter" type='text' placeholder='Filter By...' value={filterValue} onChange={checkFilterValue} onKeyDown={checkFocus}
                 disabled={isDisabled} className={styles.userInput} ref={filterRef}/>
         </Stack>
     )

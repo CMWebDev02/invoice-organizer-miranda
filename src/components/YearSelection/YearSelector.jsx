@@ -15,6 +15,12 @@ export function YearSelector({isDisabled, styles}) {
         yearInputRef.current.select()
     }
 
+    function checkFocus(e) {
+        if (e.key === "Escape") {
+            yearInputRef.current.blur();
+        }
+    }
+
     useEffect(() => {
         if (queryParameters.get('year') == null) {
             setQueryParameters(prevParameters => {
@@ -35,7 +41,7 @@ export function YearSelector({isDisabled, styles}) {
         <Stack direction='horizontal' gap={1} className={`${styles.userInputContainer} ${styles.yearSelectorContainer} ms-auto`}>
             <label>Year:</label>
             <input type='number' className={styles.userInput} ref={yearInputRef}
-                min={currentYear - yearOffSet} max={currentYear + yearOffSet}
+                min={currentYear - yearOffSet} max={currentYear + yearOffSet} onKeyDown={checkFocus}
                     onChange={changeYear} value={queryParameters.get('year') || currentYear} disabled={isDisabled} />
         </Stack>
     )
