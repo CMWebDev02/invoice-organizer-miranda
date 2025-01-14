@@ -9,7 +9,7 @@ export function YearSelector({isDisabled, styles}) {
     const currentYear = new Date().getFullYear();
     const yearOffSet = 5;
 
-    const yHotKey = UseHotKey({triggerKey: 'Y', action: focusYearInput, variablesCheck: [], dependencies: []});
+    UseHotKey({triggerKey: 'Y', action: focusYearInput, variablesCheck: [], dependencies: []});
 
     function focusYearInput() {
         yearInputRef.current.select()
