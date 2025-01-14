@@ -7,8 +7,8 @@ export function NewDirectoryModal({ showModal, toggleNewFolderModal, createFolde
     const [errorMessage, setErrorMessage] = useState('');
     const directoryNameRef = useRef(null);
 
-    const uHotKey = UseHotKey({triggerKey: "U", action: toggleNewFolderModal, variablesCheck: [!showModal], dependencies: [showModal]});
-    const enterHotKey = UseHotKey({triggerKey: "Enter", action: checkName, variablesCheck: [!showModal], dependencies: [directoryNameRef, showModal]});
+    UseHotKey({triggerKey: "U", action: toggleNewFolderModal, variablesCheck: [!showModal], dependencies: [showModal]});
+    UseHotKey({triggerKey: "Enter", action: checkName, variablesCheck: [!showModal], dependencies: [directoryNameRef, showModal]});
 
     function focusDirectoryNameInput() {
         console.log('focus')

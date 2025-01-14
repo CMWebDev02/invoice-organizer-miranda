@@ -6,7 +6,7 @@ export function DirectoryFilter({ filter, isDisabled, styles }) {
     const [ filterValue, setFilterValue ] = filter;
     const filterRef = useRef()
 
-    const fHotKey = UseHotKey({triggerKey: 'F', action: focusFilterInput, variablesCheck: [], dependencies: []})
+    UseHotKey({triggerKey: 'F', action: focusFilterInput, variablesCheck: [], dependencies: []})
 
     function focusFilterInput() {
         filterRef.current.select()

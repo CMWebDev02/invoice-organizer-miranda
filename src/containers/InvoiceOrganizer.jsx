@@ -34,7 +34,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
     const { isLoading: isNewFolderInitializing, errorOccurred: newFolderError, triggerFetchPostRequest: triggerFolderCreation } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/create-new-folder`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-customerFolders` })
     const { isLoading: isTransferring, errorOccurred: fileTransferError, triggerFetchPostRequest: triggerFileSort } = UseFetchPostRequest({fetchURLBase: `${endPointURL}/${pageName}/sort-file`, alterChangeLog: setChangeLog, associateFetchKey: `${pageName}-invoiceViewer` })
 
-    const enterHotKey = UseHotKey({triggerKey: 'Enter', action: createFileInfo, variablesCheck: [showNewDirectoryModal, isUserInteractionDisabled.isDisabled], dependencies: [queryParameters, showNewDirectoryModal, isUserInteractionDisabled]})
+    UseHotKey({triggerKey: 'Enter', action: createFileInfo, variablesCheck: [showNewDirectoryModal, isUserInteractionDisabled.isDisabled], dependencies: [queryParameters, showNewDirectoryModal, isUserInteractionDisabled]})
 
     useEffect(() => {
         updateIsLoadingBoolean({name: 'newFolderInitializing', value: isNewFolderInitializing})
@@ -61,7 +61,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
       handleCloseMenu()
     };
 
-    const uHotKey = UseHotKey({triggerKey: "U", action: toggleNewDirectoryModal, variablesCheck: [showNewDirectoryModal], dependencies: []})
+    UseHotKey({triggerKey: "U", action: toggleNewDirectoryModal, variablesCheck: [showNewDirectoryModal], dependencies: []})
 
     function createFolderInfo(directoryName) {
       let directoryFolderQuery = convertToValidQueryString(directoryName);

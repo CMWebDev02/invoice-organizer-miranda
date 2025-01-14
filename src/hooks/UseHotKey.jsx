@@ -21,6 +21,4 @@ export function UseHotKey({triggerKey, action, variablesCheck, dependencies}) {
             removeEventListener('keydown', activateShortCut);
         }
     }, [...dependencies])
-
-    return;
 }
