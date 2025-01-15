@@ -1,5 +1,6 @@
 .offCanvasMenu {
     padding: var(--base-padding);
+    background-color: var(--secondary-background-color) !important;
 }
 
 .buttonElement {
