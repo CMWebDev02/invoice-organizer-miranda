@@ -1,0 +1,20 @@
+.settingsLabel {
+    font-size: 1.25rem;
+}
+
+.settingsToggleInput {
+    font-size: 1rem;
+}
+
+.settingsInput {
+    background-color: var(--main-background-color);
+    color: var(--main-text-color);
+    border: none;
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+.settingsInput:focus {
+    outline: 0.125rem solid var(--outline-color);
+    color: var(--secondary-text-color)
+}

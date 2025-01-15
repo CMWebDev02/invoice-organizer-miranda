@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { NumberSetting } from "../components/UserSettings/NumberSetting";
 import { ToggleSetting } from "../components/UserSettings/ToggleSetting";
+import Stack from "react-bootstrap/esm/Stack";
 
 import { convertToTitle } from "../utilities/stringMutations";
 
 import { UserSettingsStorage } from "../utilities/localStorage";
 import { Link } from "react-router";
+
+import styles from './styles/SettingsPage.module.css'
 
 export function SettingsPage() {
     const [ userSettings, setUserSettings ] = useState(UserSettingsStorage.getStorage());
@@ -29,9 +32,14 @@ export function SettingsPage() {
     }
 
     return (
-        <>
-            <div>{displaySettings}</div>
-            <Link to='/'>Return</Link>
-        </>
+        <Stack gap={2} className={`p-1 w-100 h-100`}>
+            <Stack direction="horizontal" className={`${styles.header} p-1`}>
+                <h1>Settings</h1>
+                <Link to='/' className="ms-auto interfaceButton">Return</Link>
+            </Stack>
+            <Stack className={`${styles.settingsContainer} p-1 w-50 mx-auto`} gap={2}>
+                {displaySettings}
+            </Stack>
+        </Stack>
     )
 }
