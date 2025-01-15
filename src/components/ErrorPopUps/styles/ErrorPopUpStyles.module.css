@@ -1,0 +1,13 @@
+.header {
+    background-color: var(--secondary-background-color);
+    color: var(--secondary-text-color);
+}
+
+.header p {
+    margin: 0
+}
+
+.bodyContainer {
+    background-color: var(--main-background-color);
+
+}

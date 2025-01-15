@@ -113,14 +113,16 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
               changeLog={changeLog} alterChangeLog={setChangeLog} userSettings={userSettings} />
 
 
+          
           <Footer createFileInfo={createFileInfo} userInteraction={isUserInteractionDisabled.isDisabled}
             toggleNewDirectoryModal={toggleNewDirectoryModal} />
 
+          <ErrorToastDisplay errorsArray={[{name: 'Sort File Error', message: createFileInfoError}, {name: 'File Transfer Error', message: fileTransferError}, {name: 'New Folder Error', message: newFolderError}]} />
+          
           <NewDirectoryModal showModal={showNewDirectoryModal} toggleNewFolderModal={toggleNewDirectoryModal} createFolderInfo={createFolderInfo}  />
           
           <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu} toggleNewDirectoryModal={toggleNewDirectoryModal} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled} />
 
-          <ErrorToastDisplay errorsArray={[{name: 'Sort File Error', message: createFileInfoError}, {name: 'File Transfer Error', message: fileTransferError}, {name: 'New Folder Error', message: newFolderError}]} />
         </Container>
       </>
     )
