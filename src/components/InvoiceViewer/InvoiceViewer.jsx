@@ -59,8 +59,9 @@ export function InvoiceViewer({ endPoint, updateIsLoadingBoolean, fetchKey, styl
 
     return (
         <div className={`h-100 w-100 ps-mobileLandscape-1 ps-tabletPortrait-0 ps-tabletLandscape-1 pt-1 pt-mobileLandscape-0 pt-tabletPortrait-1 pt-tabletLandscape-0`}>
-            {isLoading && <h2>Retrieving Invoice</h2>}
-            {errorOccurred ? <h2>{errorOccurred}</h2> : <iframe className={`${styles.invoiceViewer}`} src={invoicePath} />}
+            {isLoading && <h2 className='h-25'>Retrieving Invoice</h2>}
+            {errorOccurred && <h2 className='h-25'>{errorOccurred}</h2>}
+            <iframe className={`w-100 ${isLoading || errorOccurred ? 'h-75' : 'h-100'}`} src={errorOccurred || isLoading ? './public/invalid-invoice.pdf' : invoicePath} />
         </div>
     )
 }

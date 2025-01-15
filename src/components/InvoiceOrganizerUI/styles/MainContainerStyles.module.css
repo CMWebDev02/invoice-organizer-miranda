@@ -70,8 +70,3 @@
 .directoryOption {
     border: 0.125rem solid var(--main-text-color);
 }
-
-.invoiceViewer {
-    width: inherit;
-    height: inherit;
-}

@@ -2,9 +2,9 @@ import { useQuery } from "react-query";
 import axios from 'axios'
 
 export function UseFetchGetRequest({ fetchURL, key}) {
-    const { data: fetchData, isLoading, error } = useQuery({
+    const { data: fetchData, isLoading, error, status } = useQuery({
         queryKey: [key],
-        queryFn: makeGetRequest,
+        queryFn: makeGetRequest
     })
 
     async function makeGetRequest() {

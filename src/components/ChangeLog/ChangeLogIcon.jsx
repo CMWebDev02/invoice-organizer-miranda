@@ -11,7 +11,6 @@ export function ChangeLogIcon({ isChanging, changeResult, className }) {
     const lastChangeResultTarget = useRef(null)
 
     useEffect(() => {
-        console.log(changeResult)
         if (changeResult?.result) setIconColor(changeResult?.result === 'Succeeded' ? 'green' : 'red');
     }, [changeResult])
 
