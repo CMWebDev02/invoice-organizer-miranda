@@ -1,0 +1,23 @@
+.changeLogContainer {
+    background-color: var(--secondary-background-color);
+}
+
+.selectedFilter {
+    color: var(--outline-color);
+}
+
+.changeLogSelector {
+    background-color: var(--secondary-background-color);
+    border: none;
+    color: var(--main-text-color);
+}
+
+.changeLogSelector:focus {
+    outline: 1px solid var(--outline-color);
+    box-shadow: none;
+}
+
+
+.footer {
+    background-color: var(--secondary-background-color);
+}
