@@ -13,7 +13,7 @@ export function OffCanvasMenu(props) {
             <Offcanvas.Header className='p-0'>
                 <button onClick={props.handleCloseMenu} className='interfaceButton ms-auto'>Close</button>
             </Offcanvas.Header>
-            <Offcanvas.Body className='p-0'>
+            <Offcanvas.Body className='p-2'>
                 <Container>
                     <Row className={styles.offCanvasBodyContainer}>
                             <Stack gap={2} className='p-0'>
