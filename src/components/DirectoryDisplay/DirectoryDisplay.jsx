@@ -4,7 +4,7 @@ import { DirectoryList } from "./DirectoryList";
 import { useSearchParams } from "react-router";
 import Stack from "react-bootstrap/esm/Stack";
 
-export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoolean, sortFile, fetchKey, styles, isUserInteractionDisabled }) {
+export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoolean, sortFile, fetchKey, styles, showQuickTransferButtons }) {
     const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: `${endPoint}/get-directories`, key: fetchKey})
     const [ allDirectories, setAllDirectories ] = useState([]);
     const [ queryParameters, setQueryParameters ] = useSearchParams();
@@ -56,7 +56,7 @@ export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoo
     return (
         <Stack className={`${styles.directoryDisplay} p-1 h-75 overflow-auto w-100 d-flex flex-row flex-wrap align-items-start align-content-start`}>
             {isLoading && <h2>Gathering Customer Folders</h2>}
-            {errorOccurred ? <h2>{errorOccurred}</h2> : <DirectoryList styles={styles} selectDirectory={setSelectedDirectory} selectedDirectory={queryParameters.get('selectedDirectory')} directoryFilter={directoryFilter} directories={allDirectories} sortFile={sortFile} />}
+            {errorOccurred ? <h2>{errorOccurred}</h2> : <DirectoryList showQuickTransferButtons={showQuickTransferButtons} styles={styles} selectDirectory={setSelectedDirectory} selectedDirectory={queryParameters.get('selectedDirectory')} directoryFilter={directoryFilter} directories={allDirectories} sortFile={sortFile} />}
         </Stack>
     )
 }

@@ -36,6 +36,7 @@ export class UserSettingsStorage extends accessLocalStorage {
 
     static _defaultSettingsObj = {
         CHANGELOG_ACTIONS: 25,
+        CHANGELOG_QUICK_VIEW: 15,
         YEAR_OFFSET: 5,
         SHOW_QUICK_TRANSFER_BUTTONS: true,
         SHOW_QUICK_UNDO_BUTTONS: true,

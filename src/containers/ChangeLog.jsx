@@ -18,7 +18,7 @@ export function ChangeLog({ clearChangeLogRef, changeLogClass, filterBy, endPoin
 
     return (
         <>
-            <ChangeLogDisplay changeLog={displayChangeLog} alterChangeLog={setChangeLog} endPoint={endPoint} />
+            <ChangeLogDisplay changeLog={displayChangeLog} alterChangeLog={setChangeLog} endPoint={endPoint} showUndoButtons={true} />
         </>
 
     )

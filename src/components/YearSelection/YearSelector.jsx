@@ -3,11 +3,10 @@ import Stack from 'react-bootstrap/esm/Stack';
 import { useSearchParams } from 'react-router';
 import { UseHotKey } from '../../hooks/UseHotKey';
 
-export function YearSelector({isDisabled, styles}) {
+export function YearSelector({isDisabled, styles, yearOffSet}) {
     const [ queryParameters, setQueryParameters ] = useSearchParams();
     const yearInputRef = useRef();
     const currentYear = new Date().getFullYear();
-    const yearOffSet = 5;
 
     UseHotKey({triggerKey: 'Y', action: focusYearInput, variablesCheck: [], dependencies: []});
 

@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { DirectoryOption } from "./DirectoryOption";
 
-export function DirectoryList({ selectDirectory, selectedDirectory, directoryFilter, directories, sortFile, styles }) {
+export function DirectoryList({ selectDirectory, selectedDirectory, directoryFilter, directories, sortFile, styles, showQuickTransferButtons }) {
     let filteredNames = [];
 
     if(directoryFilter != '') {
@@ -43,7 +43,7 @@ export function DirectoryList({ selectDirectory, selectedDirectory, directoryFil
     return (
         <>
             {filteredNames == 0 ? <h2>No Matching Users</h2> : 
-            filteredNames.map((name, index) => <DirectoryOption key={name} index={index} selectDirectory={selectDirectory} name={name} style={selectedDirectory == name ? styles.selectedDirectoryOption : styles.directoryOption} quickSort={quickSort} />)}
+            filteredNames.map((name, index) => <DirectoryOption key={name} index={index} selectDirectory={selectDirectory} name={name} style={selectedDirectory == name ? styles.selectedDirectoryOption : styles.directoryOption} quickSort={quickSort} showQuickTransferButtons={showQuickTransferButtons} />)}
         </>
     )
 }

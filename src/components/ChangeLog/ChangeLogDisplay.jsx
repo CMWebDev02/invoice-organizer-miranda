@@ -2,7 +2,7 @@ import { ChangeInfo } from './ChangeInfo.jsx'
 import { UseUndoFetch } from "../../hooks/UseUndoFetch.jsx";
 import styles from './styles/ChangeLogStyles.module.css';
 
-export function ChangeLogDisplay({ endPoint, changeLog, alterChangeLog }) {
+export function ChangeLogDisplay({ endPoint, changeLog, alterChangeLog, showUndoButtons }) {
     const { isLoading: isUndoingAction, errorOccurred: undoActionError, triggerFetchPostRequest: triggerChangeLogPostRequest } = UseUndoFetch({fetchURLBase: `${endPoint}/undo-action`, alterChangeLog})
 
     function undoChange(undoObj, id, action) {
@@ -21,7 +21,7 @@ export function ChangeLogDisplay({ endPoint, changeLog, alterChangeLog }) {
         <>
             {undoActionError && <h3>{undoActionError}</h3>}
             {changeLog.length == 0 && <h2>No Changes To Display</h2>}
-            {changeLog && changeLog.map(change => <ChangeInfo key={`changeLog-item-${change.id}`} info={change} undoChange={undoChange} isButtonDisabled={isUndoingAction} styles={styles} />)}
+            {changeLog && changeLog.map(change => <ChangeInfo key={`changeLog-item-${change.id}`} info={change} undoChange={undoChange} isButtonDisabled={isUndoingAction} styles={styles} showUndoButtons={showUndoButtons}/>)}
         </>
     )
 } 

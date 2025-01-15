@@ -22,18 +22,18 @@ export function MainContainer(props) {
                             <Stack gap={2} className="h-100">
                                 <Stack direction="horizontal" gap={1} className="h-auto">
                                     <DirectoryFilter styles={styles} filter={[props.directoryFilter, props.alterDirectoryFilter]} isDisabled={props.isUserInteractionDisabled} />
-                                    <YearSelector styles={styles} isDisabled={props.isUserInteractionDisabled} />
+                                    <YearSelector styles={styles} isDisabled={props.isUserInteractionDisabled} yearOffSet={props.userSettings.YEAR_OFFSET} />
                                 </Stack>
 
-                                <DirectoryDisplay directoryFilter={props.directoryFilter} fetchKey={`${props.pageName}-customerFolders`} styles={styles} isUserInteractionDisabled={props.isUserInteractionDisabled}
-                                    updateIsLoadingBoolean={props.updateIsLoadingBoolean} sortFile={props.sortFile} endPoint={`${props.endPointURL}/${props.pageName}`} />
+                                <DirectoryDisplay directoryFilter={props.directoryFilter} fetchKey={`${props.pageName}-customerFolders`} styles={styles}
+                                    updateIsLoadingBoolean={props.updateIsLoadingBoolean} sortFile={props.sortFile} endPoint={`${props.endPointURL}/${props.pageName}`} showQuickTransferButtons={props.userSettings.SHOW_QUICK_TRANSFER_BUTTONS}/>
                             </Stack>
                         </Col>
                     
                         {/* Add the user setting to control how many changeLog actions are displayed in the quick view*/}
                         <Col className={`d-none d-tabletPortrait-flex order-2 order-tabletPortrait-1 order-tabletLandscape-2 p-0 h-100 h-tabletLandscape-25 overflow-auto`} mobilePortrait={12} tabletPortrait={3} tabletLandscape={12}>
                             <Stack className={`${styles.changeLogDisplay}`}>
-                                <ChangeLogDisplay endPoint={`${props.endPointURL}/${props.pageName}`} changeLog={props.changeLog.slice(0)} alterChangeLog={props.alterChangeLog} />
+                                <ChangeLogDisplay endPoint={`${props.endPointURL}/${props.pageName}`} changeLog={props.changeLog.slice(0, props.userSettings.CHANGELOG_QUICK_VIEW)} alterChangeLog={props.alterChangeLog} showUndoButtons={props.userSettings.SHOW_QUICK_UNDO_BUTTONS} />
                             </Stack>
                         </Col>
                     </Row>

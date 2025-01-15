@@ -17,7 +17,7 @@ import { UserSettingsStorage } from "../utilities/localStorage";
 import { UseHotKey } from "../hooks/UseHotKey";
 
 export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
-    const maximumChangeLogActionStore = UserSettingsStorage.getSpecificSetting('CHANGELOG_ACTIONS');
+    const userSettings = UserSettingsStorage.getStorage();
     const [ queryParameters, setQueryParameters ] = useSearchParams();
 
     const [ directoryFilter, setDirectoryFilter ] = useState('');
@@ -46,9 +46,9 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
     useEffect(() => {
       if (changeLog) {
-        changeLogStorage.setStorage(changeLog, maximumChangeLogActionStore)
+        changeLogStorage.setStorage(changeLog, userSettings.CHANGELOG_ACTIONS)
       }
-    }, [maximumChangeLogActionStore, changeLog, changeLogStorage])
+    }, [userSettings, changeLog, changeLogStorage])
 
     
     const handleCloseMenu = () => setShowOffCanvasMenu(false);
@@ -110,7 +110,7 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
 
           <MainContainer directoryFilter={directoryFilter} alterDirectoryFilter={setDirectoryFilter} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled}
             pageName={pageName} endPointURL={endPointURL} updateIsLoadingBoolean={updateIsLoadingBoolean} sortFile={createFileInfo} 
-              changeLog={changeLog} alterChangeLog={setChangeLog}/>
+              changeLog={changeLog} alterChangeLog={setChangeLog} userSettings={userSettings} />
 
 
           <Footer createFileInfo={createFileInfo} userInteraction={isUserInteractionDisabled.isDisabled}
@@ -120,7 +120,6 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
           
           <OffCanvasMenu isDisplayed={showOffCanvasMenu} handleCloseMenu={handleCloseMenu} toggleNewDirectoryModal={toggleNewDirectoryModal} isUserInteractionDisabled={isUserInteractionDisabled.isDisabled} />
 
-          
           <ErrorToastDisplay errorsArray={[{name: 'Sort File Error', message: createFileInfoError}, {name: 'File Transfer Error', message: fileTransferError}, {name: 'New Folder Error', message: newFolderError}]} />
         </Container>
       </>
