@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { UseHotKey } from '../../../hooks/UseHotKey.jsx'
 import Modal from 'react-bootstrap/Modal'
-
+import styles from '../styles/DirectoryDisplayStyles.module.css'
+import Stack from 'react-bootstrap/esm/Stack.js';
 
 export function NewDirectoryModal({ showModal, toggleNewFolderModal, createFolderInfo}) {    
     const [errorMessage, setErrorMessage] = useState('');
@@ -17,7 +18,7 @@ export function NewDirectoryModal({ showModal, toggleNewFolderModal, createFolde
 
     useEffect(() => {
         let clearErrorMessage;
-        if (errorMessage != '') {
+        if (errorMessage !== '') {
             clearErrorMessage = setTimeout(() => {
                 setErrorMessage('');
             }, 2000)
@@ -32,7 +33,7 @@ export function NewDirectoryModal({ showModal, toggleNewFolderModal, createFolde
         setErrorMessage('')
         let NewDirectoryName = directoryNameRef.current.value;
         
-        if (NewDirectoryName != '')  {
+        if (NewDirectoryName !== '')  {
             createFolderInfo(NewDirectoryName.toUpperCase())
             toggleNewFolderModal();
         } else {
@@ -42,18 +43,20 @@ export function NewDirectoryModal({ showModal, toggleNewFolderModal, createFolde
     }
 
     return (
-        <Modal show={showModal} onEntering={focusDirectoryNameInput} >
-            <Modal.Header>
-                <Modal.Title>Create New Customer Folder (Lastname Firstname)</Modal.Title>
+        <Modal show={showModal} onEntering={focusDirectoryNameInput}>
+            <Modal.Header className={`${styles.newDirectoryModalHeader}`}>
+                <Modal.Title>Create New Directory</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className={`${styles.newDirectoryModalBody}`}>
                 {errorMessage && <h3>{errorMessage}</h3>}
-                <label htmlFor='customerFolderInput'>Customer Name (Lastname Firstname):</label>
-                <input id='customerFolderInput' type='text' placeholder='Lastname Firstname' ref={directoryNameRef} />
+                <Stack className={`${styles.userInputContainer}`} direction='horizontal' gap={2}>
+                    <label htmlFor='customerFolderInput' className={`${styles.modalLabel}`}>Directory Name:</label>
+                    <input className={`${styles.modalInput} ${styles.userInput}`} id='customerFolderInput' type='text' placeholder='Lastname Firstname' ref={directoryNameRef} />
+                </Stack>
             </Modal.Body>
-            <Modal.Footer>
-                <button onClick={toggleNewFolderModal} >Close</button>
-                <button onClick={checkName}>Create Folder</button>
+            <Modal.Footer className={`${styles.newDirectoryModalFooter} d-flex justify-content-between`}>
+                <button className='interfaceButton' onClick={toggleNewFolderModal} >Close</button>
+                <button className='interfaceButton' onClick={checkName}>Create Folder</button>
             </Modal.Footer>
         </Modal>
     )

@@ -15,12 +15,18 @@ export function ChangeLogDisplay({ endPoint, changeLog, alterChangeLog, showUndo
         })
     }
 
+    const RenderChangeLog = () => {
+        return changeLog.length === 0 ? 
+            <h2>No Changes To Display</h2> : 
+            changeLog.map(change => <ChangeInfo key={`changeLog-item-${change.id}`} info={change} undoChange={undoChange} 
+                isButtonDisabled={isUndoingAction} showUndoButtons={showUndoButtons}/>)
+    }
+
 
     return (
         <>
             {undoActionError && <h3>{undoActionError}</h3>}
-            {changeLog.length == 0 && <h2>No Changes To Display</h2>}
-            {changeLog && changeLog.map(change => <ChangeInfo key={`changeLog-item-${change.id}`} info={change} undoChange={undoChange} isButtonDisabled={isUndoingAction} showUndoButtons={showUndoButtons}/>)}
+            <RenderChangeLog />
         </>
     )
 } 

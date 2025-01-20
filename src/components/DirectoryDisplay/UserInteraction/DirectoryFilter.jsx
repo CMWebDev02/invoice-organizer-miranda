@@ -22,7 +22,7 @@ export function DirectoryFilter({ filter, isDisabled }) {
     function checkFilterValue(e) {
         let filterInput = e.target.value.toUpperCase()
         //* Offsets by 65 to make the process of filtering for the 26 capital letters of the alphabet more simplistic.
-        if (filterInput.length != 1) {
+        if (filterInput.length !== 1) {
             setFilterValue(e.target.value)
         } else {
             let firstCharacterCode = filterInput.charCodeAt(0) - 65;

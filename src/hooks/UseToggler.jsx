@@ -26,7 +26,7 @@ export function UseToggler({ initialValue }) {
     if it is, update the current value within the array to the new value from the passed in object. */
     function checkForExistingBooleanObject(booleanName, array) {
         for (const object of array) {
-            if (object?.name == booleanName) return true;
+            if (object?.name === booleanName) return true;
         }
 
         return false
@@ -79,7 +79,7 @@ export function UseToggler({ initialValue }) {
             if (isBoolObjectWithinArray) {
                 // If the boolean object is within the array then the object instance in the array is updated.
                 newArray = prevBooleans.map(object => {
-                    if (object.name == booleanObject.name) {
+                    if (object.name === booleanObject.name) {
                         return {...object, value: booleanObject.value};
                     } else {
                         return object;

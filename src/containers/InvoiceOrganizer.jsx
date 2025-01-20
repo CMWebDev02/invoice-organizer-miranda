@@ -79,14 +79,14 @@ export function InvoiceOrganizer({ pageName, endPointURL, changeLogStorage}) {
       //? Checks if the event's target contains a valid name property, if so this name is used, otherwise the state value for the selected directory is used.
       //* This is necessary for the quick transfer feature, this allows the selected directory to remain stored in state while still allowing the user to quickly transfer to another directory if they
       //* click the quick transfer button.
-      let directoryName = e != undefined && e?.target?.name ? e.target.name : queryParameters.get('selectedDirectory');
+      let directoryName = e !== undefined && e?.target?.name ? e.target.name : queryParameters.get('selectedDirectory');
       // Checks that all of the required information is present for making a file transfer, and if something is missing the function returns.
       //! Have this generate an error that prints on screen to alert the user that critical information is missing for the file transfer
-      if (directoryName == '' || queryParameters.get('currentInvoice') == '' || queryParameters.get('year') == '' || queryParameters.get('year').length != 4) {
+      if (directoryName === '' || queryParameters.get('currentInvoice') === '' || queryParameters.get('year') === '' || queryParameters.get('year').length != 4) {
         let errorMessage = '';
-        if (directoryName == '') errorMessage += 'The currently selected directory is invalid!\n';
-        if (queryParameters.get('currentInvoice') == '') errorMessage += 'The current invoice name is invalid!\n';
-        if (queryParameters.get('year') == '' || queryParameters.get('year').length != 4) errorMessage += 'The current year is invalid!\n';
+        if (directoryName === '') errorMessage += 'The currently selected directory is invalid!\n';
+        if (queryParameters.get('currentInvoice') === '') errorMessage += 'The current invoice name is invalid!\n';
+        if (queryParameters.get('year') === '' || queryParameters.get('year').length !== 4) errorMessage += 'The current year is invalid!\n';
         setCreateFileInfoError(errorMessage);
         return;
       }

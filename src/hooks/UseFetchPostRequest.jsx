@@ -19,7 +19,7 @@ export function UseFetchPostRequest({ fetchURLBase, alterChangeLog, associateFet
         //* A check is made to determine if this post request alters data fetched from the server.
         //? If so, the associated query key is invalidated
         //? to trigger said queries to refetch for the updated information
-        if (associateFetchKey != '') mainQueryClient.invalidateQueries(associateFetchKey);
+        if (associateFetchKey !== '') mainQueryClient.invalidateQueries(associateFetchKey);
 
         //? Then the response data from the post request is added to the changelog.
         alterChangeLog(prevChanges => [transferData, ...prevChanges])

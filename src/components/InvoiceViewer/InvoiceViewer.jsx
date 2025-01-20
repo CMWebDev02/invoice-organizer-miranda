@@ -42,7 +42,7 @@ export function InvoiceViewer({ endPoint, updateIsLoadingBoolean, fetchKey, styl
                 prevParameters.set('currentInvoice', '');
                 return prevParameters;
             })
-        } else if (queryParameter.get('currentInvoice') != fetchData.fileName || invoicePath == '') {
+        } else if (queryParameter.get('currentInvoice') !== fetchData.fileName || invoicePath === '') {
             //? Checks if the current fileName property is different or if the invoicePath is currently blank, if either of these are the case, then the invoice needs to be decoded and displayed to the user
             //? and if these are not the case, the invoice is already being shown and does not need to be decoded.
             setQueryParameters(prevParameters => {

@@ -65,3 +65,28 @@
 .directoryOption {
     border: 0.125rem solid var(--main-text-color);
 }
+
+.newDirectoryModalHeader {
+    background-color: var(--secondary-background-color);
+    border: transparent;
+    border-bottom: 1px solid red !important;
+    color: var(--main-text-color);
+}
+
+.newDirectoryModalBody {
+    background-color: var(--main-background-color);
+}
+
+.newDirectoryModalFooter {
+    background-color: var(--secondary-background-color) !important;
+    border: transparent;
+    border-top: 1px solid red !important;
+}
+
+.modalLabel {
+    font-size: clamp(0.75rem, 2.5vw, 1rem);
+}
+
+.modalInput {
+    width: 70%;
+}

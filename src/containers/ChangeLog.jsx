@@ -14,7 +14,7 @@ export function ChangeLog({ clearChangeLogRef, changeLogClass, filterBy, endPoin
     clearChangeLogRef.current = clearChangeLog;
     
     //* This changeLog will be used to display the actions the user wishes to see and will remove elements depending on the selected filter.
-    const displayChangeLog = filterBy == null ? [...changeLog] : changeLog.filter(change => change.action == filterBy);
+    const displayChangeLog = filterBy === null ? [...changeLog] : changeLog.filter(change => change.action === filterBy);
 
     return (
         <>

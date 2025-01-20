@@ -13,7 +13,7 @@ import styles from './styles/SettingsPage.module.css'
 export function SettingsPage() {
     const [ userSettings, setUserSettings ] = useState(UserSettingsStorage.getStorage());
     const displaySettings = Object.entries(userSettings).map(([setting, settingValue]) => {
-        return (typeof settingValue) == 'boolean' ?
+        return (typeof settingValue) === 'boolean' ?
             <ToggleSetting key={setting} currentSetting={userSettings[setting]} updateSetting={changeCurrentSetting} settingName={setting}>{convertToTitle(setting)}</ToggleSetting> :
             <NumberSetting key={setting} currentSetting={userSettings[setting]} updateSetting={changeCurrentSetting} settingName={setting}>{convertToTitle(setting)}</NumberSetting>  
     })
@@ -35,6 +35,7 @@ export function SettingsPage() {
         <Stack gap={2} className={`p-1 w-100 h-100`}>
             <Stack direction="horizontal" className={`${styles.header} p-1`}>
                 <h1>Settings</h1>
+                {/* Have this link to the home page or the last page the user was on */}
                 <Link to='/' className="ms-auto interfaceButton">Return</Link>
             </Stack>
             <Stack className={`${styles.settingsContainer} p-1 w-50 mx-auto`} gap={2}>

@@ -22,7 +22,7 @@ export function YearSelector({isDisabled, yearOffSet}) {
     }
 
     useEffect(() => {
-        if (queryParameters.get('year') == null) {
+        if (queryParameters.get('year') === null) {
             setQueryParameters(prevParameters => {
                 prevParameters.set('year', new Date().getFullYear())
                 return prevParameters;

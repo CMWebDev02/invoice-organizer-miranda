@@ -34,14 +34,14 @@ export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoo
     function setSelectedDirectory(e) {
         let targetID;
 
-        if (e?.target == undefined) {
+        if (e?.target === undefined) {
             targetID = e;
         } else {
             e.stopPropagation()
             
-            if (e.target.tagName == 'SPAN') {
+            if (e.target.tagName === 'SPAN') {
                 targetID = e.target.parentElement.parentElement.id
-            } else if (e.target.tagName == 'P') {
+            } else if (e.target.tagName === 'P') {
                 targetID = e.target.parentElement.id
             } else {
                 targetID = e.target.id
@@ -54,10 +54,17 @@ export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoo
         });
     }
 
+    const RenderDirectoryList = () => {
+        return errorOccurred ?
+            <h2>{errorOccurred}</h2> :
+            <DirectoryList showQuickTransferButtons={showQuickTransferButtons} selectDirectory={setSelectedDirectory} 
+                selectedDirectory={queryParameters.get('selectedDirectory')} directoryFilter={directoryFilter} directories={allDirectories} sortFile={sortFile} />
+    }
+
     return (
         <Stack className={`${styles.directoryDisplay} p-1 h-75 overflow-auto w-100 d-flex flex-row flex-wrap align-items-start align-content-start`}>
             {isLoading && <h2>Gathering Customer Folders</h2>}
-            {errorOccurred ? <h2>{errorOccurred}</h2> : <DirectoryList showQuickTransferButtons={showQuickTransferButtons} styles={styles} selectDirectory={setSelectedDirectory} selectedDirectory={queryParameters.get('selectedDirectory')} directoryFilter={directoryFilter} directories={allDirectories} sortFile={sortFile} />}
+            <RenderDirectoryList />
         </Stack>
     )
 }

@@ -19,7 +19,7 @@ export function UseUndoFetch({ fetchURLBase, alterChangeLog }) {
         //? if the transfer was successfully undone, the original action is removed from the changelog.
         alterChangeLog(prevChanges => {
             let changes = [ transferData, ...prevChanges ];
-            if (transferData.result == "Succeeded") {
+            if (transferData.result === "Succeeded") {
                 changes = changes.filter(change => change.id != transferData.undoneActionId);
             }
 

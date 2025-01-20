@@ -6,10 +6,10 @@ import styles from './styles/DirectoryDisplayStyles.module.css'
 export function DirectoryList({ selectDirectory, selectedDirectory, directoryFilter, directories, sortFile, showQuickTransferButtons }) {
     let filteredNames = [];
 
-    if(directoryFilter != '') {
+    if(directoryFilter !== '') {
         //? The customer array contains arrays that are separated alphabetically, using character codes allows for easy access of the appropriate array.
         const characterIndex = (directoryFilter.toUpperCase()).charCodeAt(0) - 65;
-        if (directories[characterIndex] && directories[characterIndex].length != 0) {
+        if (directories[characterIndex] && directories[characterIndex].length !== 0) {
             filteredNames = directories[characterIndex].filter(name => {
                 //* All strings will be capitalized before being compared to allow for instances in which the user chooses to store folders based on their preferred writing convention,
                 //* either all uppercase, lowercase, or a mixture of the two.
@@ -41,10 +41,17 @@ export function DirectoryList({ selectDirectory, selectedDirectory, directoryFil
         sortFile(e);
     }
 
+    const RenderFilteredNames = () => {
+        return (filteredNames.length === 0) ?
+            <h2>No Matching Users</h2> :
+            filteredNames.map((name, index) => 
+            <DirectoryOption key={name} index={index} selectDirectory={selectDirectory} name={name} 
+                style={selectedDirectory === name ? styles.selectedDirectoryOption : styles.directoryOption} quickSort={quickSort} showQuickTransferButtons={showQuickTransferButtons} />)
+    }
+
     return (
         <>
-            {filteredNames == 0 ? <h2>No Matching Users</h2> : 
-            filteredNames.map((name, index) => <DirectoryOption key={name} index={index} selectDirectory={selectDirectory} name={name} style={selectedDirectory == name ? styles.selectedDirectoryOption : styles.directoryOption} quickSort={quickSort} showQuickTransferButtons={showQuickTransferButtons} />)}
+            <RenderFilteredNames />
         </>
     )
 }
