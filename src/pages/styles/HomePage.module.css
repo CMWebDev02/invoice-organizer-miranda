@@ -1,9 +1,9 @@
 .mainContainer {
-    background-image: url(../../assets/file-icon.svg);
-    background-repeat: no-repeat;
-    background-position: right;
+  background-image: url(../../assets/file-icon.svg);
+  background-repeat: no-repeat;
+  background-position: right;
 }
 
 .linksContainer {
-    background-color: var(--secondary-background-color);
+  background-color: var(--secondary-background-color);
 }

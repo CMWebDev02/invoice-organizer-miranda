@@ -12,7 +12,7 @@ import styles from "./styles/SettingsPage.module.css";
 
 /**
  * @component Renders the settings page which houses the logic to allow the user to altering and updating their settings.
- * @returns {ReactElement}
+ * @returns {React.JSX.Element}
  */
 export function SettingsPage() {
   //? Retrieves any state passed through when routing to this page.
@@ -50,7 +50,7 @@ export function SettingsPage() {
 
   /**
    * @component Maps through the userSettings object and depending on the setting type, renders an appropriate React Element to display on the page.
-   * @returns {Array<ReactElement>}
+   * @returns {Array<React.JSX.Element>}
    */
   const RenderUserSettings = () => {
     return Object.entries(userSettings).map(([setting, settingValue]) => {

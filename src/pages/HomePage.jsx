@@ -5,7 +5,7 @@ import styles from "./styles/HomePage.module.css";
 
 /**
  * @component Renders the home page which contains the various links to the other pages of the project.
- * @returns {ReactElement}
+ * @returns {React.JSX.Element}
  */
 export function HomePage() {
   return (
