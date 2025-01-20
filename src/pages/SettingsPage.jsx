@@ -11,7 +11,7 @@ import { Link, useLocation } from "react-router";
 import styles from "./styles/SettingsPage.module.css";
 
 /**
- * @component Contains the page associated with altering and updating the user's settings
+ * @component Renders the settings page which houses the logic to allow the user to altering and updating their settings.
  * @returns {ReactElement}
  */
 export function SettingsPage() {
