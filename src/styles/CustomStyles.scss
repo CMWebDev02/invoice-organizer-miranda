@@ -4,42 +4,43 @@
 @import "../../node_modules/bootstrap/scss/mixins";
 @import "../../node_modules/bootstrap/scss/utilities";
 
-$theme-colors: (
-  'info': tomato,
-  'danger': rgb(0, 0, 0)
-);
-
-// These breakpoints are based on less than or equal, so each is 1 pixel larger than their wireframe' view size.
 $grid-breakpoints: (
   mobilePortrait: 0,
-  // Experiment with screen sizes and possibly change this to occur after around 400px
-  mobileLandscape: 321px,
-  tabletPortrait: 569px,
-  tabletLandscape: 745px,
-  desktopView: 1134px
+  mobileLandscape: 640px,
+  tabletPortrait: 768px,
+  tabletLandscape: 1024px,
+  desktopView: 1280px,
 );
 
 $offcanvas-horizontal-width: clamp(160px, 30vw, 320px);
 
 // Note that the className is used at first and then the sass variable name.
 $utilities: map-merge(
-  $utilities, (
-    "h": map-merge( 
-      map-get($utilities, "height"),
-      ( responsive: true ),
-    ),
+  $utilities,
+  (
+    "h":
+      map-merge(
+        map-get($utilities, "height"),
+        (
+          responsive: true,
+        )
+      ),
   )
 );
 
 $utilities: map-merge(
-  $utilities, (
-    "w": map-merge( 
-      map-get($utilities, "width"),
-      ( responsive: true ),
-    ),
+  $utilities,
+  (
+    "w":
+      map-merge(
+        map-get($utilities, "width"),
+        (
+          responsive: true,
+        )
+      ),
   )
 );
 
+/* import bootstrap's api and scss to update changes */
 @import "../../node_modules/bootstrap/scss/utilities/api";
-/* import bootstrap to set changes */
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
