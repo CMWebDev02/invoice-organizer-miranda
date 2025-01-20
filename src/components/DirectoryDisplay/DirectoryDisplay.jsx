@@ -3,8 +3,9 @@ import { UseFetchGetRequest } from "../../hooks/UseFetchGetRequest";
 import { DirectoryList } from "./DirectoryList";
 import { useSearchParams } from "react-router";
 import Stack from "react-bootstrap/esm/Stack";
+import styles from './styles/DirectoryDisplayStyles.module.css'
 
-export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoolean, sortFile, fetchKey, styles, showQuickTransferButtons }) {
+export function DirectoryDisplay({ endPoint, directoryFilter, updateIsLoadingBoolean, sortFile, fetchKey, showQuickTransferButtons }) {
     const { isLoading, errorOccurred, fetchData } = UseFetchGetRequest({fetchURL: `${endPoint}/get-directories`, key: fetchKey})
     const [ allDirectories, setAllDirectories ] = useState([]);
     const [ queryParameters, setQueryParameters ] = useSearchParams();

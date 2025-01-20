@@ -1,8 +1,9 @@
 import { useRef } from "react";
 import Stack from "react-bootstrap/esm/Stack";
 import { UseHotKey } from "../../../hooks/UseHotKey";
+import styles from '../styles/DirectoryDisplayStyles.module.css'
 
-export function DirectoryFilter({ filter, isDisabled, styles }) {
+export function DirectoryFilter({ filter, isDisabled }) {
     const [ filterValue, setFilterValue ] = filter;
     const filterRef = useRef()
 
@@ -34,7 +35,7 @@ export function DirectoryFilter({ filter, isDisabled, styles }) {
         <Stack direction="horizontal" gap={1} className={`${styles.userInputContainer} ${styles.directoryFilterContainer}`}>
             <label htmlFor="directoryFilter">Find:</label>
             <input id="directoryFilter" type='text' placeholder='Filter By...' value={filterValue} onChange={checkFilterValue} onKeyDown={checkFocus}
-                disabled={isDisabled} className={styles.userInput} ref={filterRef}/>
+                disabled={isDisabled} className={styles.userInput} ref={filterRef} />
         </Stack>
     )
 }

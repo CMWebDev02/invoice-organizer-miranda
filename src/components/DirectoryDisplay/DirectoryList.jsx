@@ -1,8 +1,9 @@
 
 import { useEffect } from "react";
 import { DirectoryOption } from "./DirectoryOption";
+import styles from './styles/DirectoryDisplayStyles.module.css'
 
-export function DirectoryList({ selectDirectory, selectedDirectory, directoryFilter, directories, sortFile, styles, showQuickTransferButtons }) {
+export function DirectoryList({ selectDirectory, selectedDirectory, directoryFilter, directories, sortFile, showQuickTransferButtons }) {
     let filteredNames = [];
 
     if(directoryFilter != '') {
