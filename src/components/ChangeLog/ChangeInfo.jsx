@@ -1,8 +1,9 @@
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Stack from "react-bootstrap/esm/Stack";
+import styles from './styles/ChangeLogStyles.module.css'
 
-export function ChangeInfo({ info, undoChange, isButtonDisabled, styles, showUndoButtons }) {
+export function ChangeInfo({ info, undoChange, isButtonDisabled, showUndoButtons }) {
     let isSuccessful = info.result == 'Succeeded' ? true : false;
 
     return (

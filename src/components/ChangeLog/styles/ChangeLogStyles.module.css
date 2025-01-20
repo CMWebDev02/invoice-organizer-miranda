@@ -25,3 +25,19 @@
 .successfulEntry {
     text-shadow: 0px 0px 4px green;
 }
+
+
+.selectedFilter {
+    color: var(--outline-color) !important;
+}
+
+.changeLogSelector {
+    background-color: var(--secondary-background-color) !important;
+    border: none !important;
+    color: var(--main-text-color) !important;
+}
+
+.changeLogSelector:focus {
+    outline: 1px solid var(--outline-color) !important;
+    box-shadow: none !important;
+}

@@ -32,9 +32,9 @@ export function ChangeLogPage({ endPointURL }) {
 
     return (
         <Stack gap={2} className={`p-1 w-100 h-100`}>
-            <FilterOptions styles={styles} alterDisplayedChanges={changeFilter} currentFilter={filterBy} className='d-flex d-mobileLandscape-none d-tabletPortrait-flex d-tabletLandscape-none'/>
+            <FilterOptions alterDisplayedChanges={changeFilter} currentFilter={filterBy} className='d-flex d-mobileLandscape-none d-tabletPortrait-flex d-tabletLandscape-none'/>
 
-            <ChangeLogSelector styles={styles} updateSelected={setCurrentChangeLog}/>
+            <ChangeLogSelector updateSelected={setCurrentChangeLog}/>
 
             <div className={`${styles.changeLogContainer} h-75 overflow-auto`}>
                 { currentChangeLog == 'customer-scanned-documents' && <ChangeLog clearChangeLogRef={clearChangeLogRef} changeLogClass={CustomerScannedDocumentsChangeLog} filterBy={filterBy}
@@ -45,7 +45,7 @@ export function ChangeLogPage({ endPointURL }) {
 
             <Stack direction="horizontal" className={`${styles.footer} d-flex justify-content-between p-1 mt-auto`} gap={2}>
                 <button className={`interfaceButton`} onClick={handleClick}>Clear</button>
-                <FilterOptions styles={styles} alterDisplayedChanges={changeFilter} currentFilter={filterBy} className='d-none d-mobileLandscape-flex d-tabletPortrait-none d-tabletLandscape-flex'/>
+                <FilterOptions alterDisplayedChanges={changeFilter} currentFilter={filterBy} className='d-none d-mobileLandscape-flex d-tabletPortrait-none d-tabletLandscape-flex'/>
                 <Link to={'/'} className={`interfaceButton`}>Return</Link>
             </Stack>
         </Stack>
