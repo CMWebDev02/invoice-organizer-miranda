@@ -8,43 +8,85 @@ import { convertToTitle } from "../utilities/stringMutations";
 import { UserSettingsStorage } from "../utilities/localStorage";
 import { Link, useLocation } from "react-router";
 
-import styles from './styles/SettingsPage.module.css'
+import styles from "./styles/SettingsPage.module.css";
 
+/**
+ * @component Contains the page associated with altering and updating the user's settings
+ * @returns {ReactElement}
+ */
 export function SettingsPage() {
-    const userLocation = useLocation();
-    const locationState = userLocation.state 
-    const returnLink = locationState !== null ? `/${locationState.lastLocation}` : '/'
+  //? Retrieves any state passed through when routing to this page.
+  const userLocation = useLocation();
+  const locationState = userLocation.state;
+  //? Checks if any the passed in state is not null, if not, the lastLocation property is set as the returnLink, else the user is redirected back to the home page.
+  const returnLink =
+    locationState !== null ? `/${locationState.lastLocation}` : "/";
 
-    const [ userSettings, setUserSettings ] = useState(UserSettingsStorage.getStorage());
-    const displaySettings = Object.entries(userSettings).map(([setting, settingValue]) => {
-        return (typeof settingValue) === 'boolean' ?
-            <ToggleSetting key={setting} currentSetting={userSettings[setting]} updateSetting={changeCurrentSetting} settingName={setting}>{convertToTitle(setting)}</ToggleSetting> :
-            <NumberSetting key={setting} currentSetting={userSettings[setting]} updateSetting={changeCurrentSetting} settingName={setting}>{convertToTitle(setting)}</NumberSetting>  
-    })
+  const [userSettings, setUserSettings] = useState(
+    UserSettingsStorage.getStorage()
+  );
 
-    useEffect(() => {
-        if (userSettings) UserSettingsStorage.setStorage(userSettings);
-    }, [userSettings])
+  /**
+   * Any time the userSettings object updates, the change is updated in localStorage as well.
+   */
+  useEffect(() => {
+    if (userSettings) UserSettingsStorage.setStorage(userSettings);
+  }, [userSettings]);
 
-    function changeCurrentSetting(settingName, newValue) {
-        setUserSettings(prevUserSettings => {
-            return {
-                ...prevUserSettings,
-                [settingName]: newValue
-            }
-        })
-    }
+  /**
+   * @function
+   * @param {string} settingName - Name of the setting, or the key, that will be used to update its associated value.
+   * @param {number | boolean} newValue - The new value of the setting that will be updated.
+   * @returns {void}
+   */
+  function changeCurrentSetting(settingName, newValue) {
+    setUserSettings((prevUserSettings) => {
+      return {
+        ...prevUserSettings,
+        [settingName]: newValue,
+      };
+    });
+  }
 
-    return (
-        <Stack gap={2} className={`p-1 w-100 h-100`}>
-            <Stack direction="horizontal" className={`${styles.header} p-1`}>
-                <h1>Settings</h1>
-                {/* Have this link to the home page or the last page the user was on */}
-                <Link to={returnLink} className="ms-auto interfaceButton">Return</Link>
-            </Stack>
-            <Stack className={`${styles.settingsContainer} p-1 w-50 mx-auto`} gap={2}>
-                {displaySettings}
-            </Stack>
-        </Stack>
-    )
+  /**
+   * @component Maps through the userSettings object and depending on the setting type, renders an appropriate React Element to display on the page.
+   * @returns {Array<ReactElement>}
+   */
+  const RenderUserSettings = () => {
+    return Object.entries(userSettings).map(([setting, settingValue]) => {
+      return typeof settingValue === "boolean" ? (
+        <ToggleSetting
+          key={setting}
+          currentSetting={userSettings[setting]}
+          updateSetting={changeCurrentSetting}
+          settingName={setting}
+        >
+          {convertToTitle(setting)}
+        </ToggleSetting>
+      ) : (
+        <NumberSetting
+          key={setting}
+          currentSetting={userSettings[setting]}
+          updateSetting={changeCurrentSetting}
+          settingName={setting}
+        >
+          {convertToTitle(setting)}
+        </NumberSetting>
+      );
+    });
+  };
+
+  return (
+    <Stack gap={2} className={`p-1 w-100 h-100`}>
+      <Stack direction="horizontal" className={`${styles.header} p-1`}>
+        <h1>Settings</h1>
+        <Link to={returnLink} className="ms-auto interfaceButton">
+          Return
+        </Link>
+      </Stack>
+      <Stack className={`${styles.settingsContainer} p-1 w-50 mx-auto`} gap={2}>
+        <RenderUserSettings />
+      </Stack>
+    </Stack>
+  );
 }
