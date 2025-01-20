@@ -6,11 +6,15 @@ import Stack from "react-bootstrap/esm/Stack";
 import { convertToTitle } from "../utilities/stringMutations";
 
 import { UserSettingsStorage } from "../utilities/localStorage";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 import styles from './styles/SettingsPage.module.css'
 
 export function SettingsPage() {
+    const userLocation = useLocation();
+    const locationState = userLocation.state 
+    const returnLink = locationState !== null ? `/${locationState.lastLocation}` : '/'
+
     const [ userSettings, setUserSettings ] = useState(UserSettingsStorage.getStorage());
     const displaySettings = Object.entries(userSettings).map(([setting, settingValue]) => {
         return (typeof settingValue) === 'boolean' ?
@@ -36,7 +40,7 @@ export function SettingsPage() {
             <Stack direction="horizontal" className={`${styles.header} p-1`}>
                 <h1>Settings</h1>
                 {/* Have this link to the home page or the last page the user was on */}
-                <Link to='/' className="ms-auto interfaceButton">Return</Link>
+                <Link to={returnLink} className="ms-auto interfaceButton">Return</Link>
             </Stack>
             <Stack className={`${styles.settingsContainer} p-1 w-50 mx-auto`} gap={2}>
                 {displaySettings}

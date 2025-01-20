@@ -10,8 +10,8 @@ export function HomePage() {
             <Stack className={`${styles.linksContainer} h-100 h-mobileLandscape-75 h-tabletPortrait-50 w-100 w-mobileLandscape-50 p-3`} gap={2}>
                 <Stack className="w-100" gap={3}>
                     <h1>Organizers</h1>
-                    <Link to={'customerScannedDocuments'} className="interfaceButton">Customer Scanned Documents</Link>
-                    <Link to={'accountsPayable'} className="interfaceButton">Accounts Payable</Link>
+                    <Link to={'customer-scanned-documents'} className="interfaceButton">Customer Scanned Documents</Link>
+                    <Link to={'accounts-payables'} className="interfaceButton">Accounts Payables</Link>
                 </Stack>
             
                 <Stack className="w-100" gap={3}>

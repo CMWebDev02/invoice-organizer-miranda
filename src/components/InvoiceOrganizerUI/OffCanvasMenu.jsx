@@ -7,6 +7,7 @@ import { Link } from 'react-router'
 import styles from './styles/OffCanvasMenuStyles.module.css'
 
 export function OffCanvasMenu(props) {
+    const currentLocation = {lastLocation: props.currentPage}
 
     return (
         <Offcanvas show={props.isDisplayed} onHide={props.handleCloseMenu}  placement='end' className={`${styles.offCanvasMenu} gap-2`}>
@@ -18,8 +19,8 @@ export function OffCanvasMenu(props) {
                     <Row className={styles.offCanvasBodyContainer}>
                             <Stack gap={2} className='p-0'>
                                 <button className={`${styles.buttonElement} interfaceButton d-tabletPortrait-none`} onClick={props.toggleNewDirectoryModal} disabled={props.isUserInteractionDisabled}>Create Folder</button>
-                                <Link to={'/changelog'} className={`${styles.buttonElement} interfaceButton d-desktopView-none`}>ChangeLog</Link>
-                                <Link to={'/settings'} className={`${styles.buttonElement} interfaceButton`}>Settings</Link>
+                                <Link to={'/changelog'} className={`${styles.buttonElement} interfaceButton d-desktopView-none`} state={currentLocation}>ChangeLog</Link>
+                                <Link to={'/settings'} className={`${styles.buttonElement} interfaceButton`} state={currentLocation}>Settings</Link>
                                 <Link to={'/'} className={`${styles.buttonElement} interfaceButton`}>Home</Link>
                             </Stack>
                     </Row>

@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useRef, useState } from "react";
 
 import { CustomerScannedDocumentsChangeLog, AccountsPayablesChangeLog } from "../utilities/localStorage";
@@ -13,6 +13,9 @@ import Stack from "react-bootstrap/esm/Stack";
 export function ChangeLogPage({ endPointURL }) {
     const [ currentChangeLog, setCurrentChangeLog ] = useState('customer-scanned-documents')
     const [ filterBy, setFilterBy ] = useState(null);
+    const userLocation = useLocation();
+    const locationState = userLocation.state 
+    const returnLink = locationState !== null ? `/${locationState.lastLocation}` : '/'
 
     const clearChangeLogRef = useRef(null); 
 
@@ -56,7 +59,7 @@ export function ChangeLogPage({ endPointURL }) {
             <Stack direction="horizontal" className={`${styles.footer} d-flex justify-content-between p-1 mt-auto`} gap={2}>
                 <button className={`interfaceButton`} onClick={handleClick}>Clear</button>
                 <FilterOptions alterDisplayedChanges={changeFilter} currentFilter={filterBy} className='d-none d-mobileLandscape-flex d-tabletPortrait-none d-tabletLandscape-flex'/>
-                <Link to={'/'} className={`interfaceButton`}>Return</Link>
+                <Link to={returnLink} className={`interfaceButton`}>Return</Link>
             </Stack>
         </Stack>
     )

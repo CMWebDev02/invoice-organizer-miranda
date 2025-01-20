@@ -18,8 +18,8 @@ export function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<HomePage />} />
-            <Route path='/customerScannedDocuments' element={<CustomerScanDocsPage endPointURL={endPointURL} />} />
-            <Route path='/accountsPayable' element={<AccountsPayablesPage endPointURL={endPointURL} />} />
+            <Route path='/customer-scanned-documents' element={<CustomerScanDocsPage endPointURL={endPointURL} />} />
+            <Route path='/accounts-payables' element={<AccountsPayablesPage endPointURL={endPointURL} />} />
             <Route path='/changeLog' element={<ChangeLogPage endPointURL={endPointURL} />} />
             <Route path='/settings' element={<SettingsPage />} />
           </Routes>
