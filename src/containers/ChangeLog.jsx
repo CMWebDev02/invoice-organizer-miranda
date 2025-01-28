@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChangeLogDisplay } from "../components/ChangeLog/ChangeLogDisplay";
 
+/**
+ * @component 
+ * @param {type} variable - description .
+ * @returns
+ */
 export function ChangeLog({ clearChangeLogRef, changeLogClass, filterBy, endPoint }) {
     //* This changeLog is the main one, it will store all of the data without being affected by the filter, it will only remove actions when their undo process executed successfully.
     const [ changeLog, setChangeLog ] = useState(changeLogClass.getStorage());

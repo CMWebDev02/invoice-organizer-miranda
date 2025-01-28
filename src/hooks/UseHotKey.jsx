@@ -8,25 +8,30 @@ import { act, useEffect } from "react";
  * @prams {array} dependencies - Array of variables that will be used as the dependencies for the triggerKey to be initialized.
  * @returns {void}
  */
-export function UseHotKey({triggerKey, action, variablesCheck, dependencies}) {
-    // Creates the keyboard shortcut to handle the quick file sort.
-    useEffect(() => {
-        for (const variable of variablesCheck) {
-            if (variable) {
-                return;
-            }
-        }
+export function UseHotKey({
+  triggerKey,
+  action,
+  variablesCheck,
+  dependencies,
+}) {
+  // Creates the keyboard shortcut to handle the quick file sort.
+  useEffect(() => {
+    for (const variable of variablesCheck) {
+      if (variable) {
+        return;
+      }
+    }
 
-        function activateShortCut(e) {
-            if (e.key === triggerKey && e.ctrlKey& e.shiftKey) {
-                action();
-            }
-        }
+    function activateShortCut(e) {
+      if (e.key === triggerKey && e.ctrlKey & e.shiftKey) {
+        action();
+      }
+    }
 
-        addEventListener('keydown', activateShortCut);
+    addEventListener("keydown", activateShortCut);
 
-        return () => {
-            removeEventListener('keydown', activateShortCut);
-        }
-    }, [...dependencies, action, triggerKey, variablesCheck])
+    return () => {
+      removeEventListener("keydown", activateShortCut);
+    };
+  }, [...dependencies, action, triggerKey, variablesCheck]);
 }
