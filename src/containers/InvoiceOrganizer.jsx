@@ -17,7 +17,7 @@ import { UserSettingsStorage } from "../utilities/localStorage";
 import { UseHotKey } from "../hooks/UseHotKey";
 
 /**
- * @component
+ * @component Container housing all logic and components related to file sorting and directory creations.
  * @param {string} pageName - Name of the current organizer.
  * @param {string} endpointURL - Base endpoint url of the server.
  * @param {class} changeLogStorage - Change log storage associated with the current organizer.

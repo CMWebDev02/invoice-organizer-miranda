@@ -8,6 +8,17 @@ import { faArrowDownShortWide } from "@fortawesome/free-solid-svg-icons";
 
 import styles from './styles/NavBarStyles.module.css'
 
+/**
+ * @component Navbar component for the organizer pages.
+ * @param {string} currentPage - Denoted the page the user is accessing the menu from.
+ * @param {boolean} isChanging - Denotes if a new changelog entry occurred.
+ * @param {Object} lastChange - Contains information for the latest changelog entry.
+ * @param {boolean} isUserInteractionDisabled - Denotes if the user is allowed to interact with certain buttons.
+ * @param {Function} toggleNewDirectoryModal - Toggles the new directory creator modal.
+ * @param {Function} createFileInfo - Triggers a file sort get request.
+ * @param {Function} handleShowMenu - Displays the offCanvasMenu.
+ * @returns {React.JSX.Element}
+ */
 export function NavBar(props) {
     const displayName = convertFromSpinalTap(props.pageName);
 
