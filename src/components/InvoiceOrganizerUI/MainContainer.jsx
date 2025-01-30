@@ -23,8 +23,7 @@ import styles from "./styles/MainContainerStyles.module.css";
  * @param {string} endpointURL - Base endpoint url of the server.
  * @param {Class} changeLog - Class associated with the managing the changelog for the current page.
  * @param {Function} alterChangeLog - Updates the changelog array stored in state.
- *
- * @returns
+ * @returns {React.JSX.Element}
  */
 export function MainContainer(props) {
   return (
