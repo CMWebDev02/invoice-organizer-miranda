@@ -6,9 +6,10 @@ import Stack from "react-bootstrap/esm/Stack";
  * @param {string} type - Denotes the type of input element.
  * @param {RefObject} inputRef - Provides a reference to store access to the input element.
  * @param {string} labelName - Label indicator for the input and used to provide an id value to the input.
+ * @param {boolean} isDisabled - Denotes if the input should be disabled.
  * @returns
  */
-export function LoginInput({ type, inputRef, labelName }) {
+export function LoginInput({ type, inputRef, labelName, isDisabled }) {
   const placeHolderText = `Enter ${labelName.toLowerCase()}...`;
   return (
     <Stack direction="horizontal">
@@ -18,6 +19,7 @@ export function LoginInput({ type, inputRef, labelName }) {
         ref={inputRef}
         placeholder={placeHolderText}
         id={`input-${labelName}`}
+        disabled={isDisabled}
       />
     </Stack>
   );
