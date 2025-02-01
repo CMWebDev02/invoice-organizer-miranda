@@ -10,7 +10,9 @@ export function Login() {
     const userNameRef = useRef(null);
     const userKeyRef = useRef(null);
 
-    function handleLogIn() {
+    function handleLogIn(e) {
+        e.preventDefault();
+
         
     }
 

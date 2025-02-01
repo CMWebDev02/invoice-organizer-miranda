@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { useState } from 'react';
+import { CookiesProvider } from 'react-cookie'
 
 import { ChangeLogPage } from './pages/ChangeLogPage';
 import { HomePage } from './pages/HomePage';
@@ -22,20 +23,22 @@ export function App() {
     const [ isUserLoggedIn, setIsUserLoggedIn ] = useState(false);
 
     return (
-      <UserLoggedInContext.Provider value={isUserLoggedIn}>
-        <QueryClientProvider client={baseQueryClient}>
-          <BrowserRouter>
-            <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/register' element={<Register />} />
-              <Route path='/customer-scanned-documents' element={<CustomerScanDocsPage endPointURL={endPointURL} />} />
-              <Route path='/accounts-payables' element={<AccountsPayablesPage endPointURL={endPointURL} />} />
-              <Route path='/changeLog' element={<ChangeLogPage endPointURL={endPointURL} />} />
-              <Route path='/settings' element={<SettingsPage />} />
-            </Routes>
-          </BrowserRouter>
-        </QueryClientProvider>
-      </UserLoggedInContext.Provider>
+      <CookiesProvider>
+        <UserLoggedInContext.Provider value={isUserLoggedIn}>
+          <QueryClientProvider client={baseQueryClient}>
+            <BrowserRouter>
+              <Routes>
+                <Route path='/' element={<HomePage />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/register' element={<Register />} />
+                <Route path='/customer-scanned-documents' element={<CustomerScanDocsPage endPointURL={endPointURL} />} />
+                <Route path='/accounts-payables' element={<AccountsPayablesPage endPointURL={endPointURL} />} />
+                <Route path='/changeLog' element={<ChangeLogPage endPointURL={endPointURL} />} />
+                <Route path='/settings' element={<SettingsPage />} />
+              </Routes>
+            </BrowserRouter>
+          </QueryClientProvider>
+        </UserLoggedInContext.Provider>
+      </CookiesProvider>
     )
 }
