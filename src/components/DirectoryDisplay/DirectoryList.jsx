@@ -72,7 +72,14 @@ export function DirectoryList({
     // Prevents any object other than the main element from triggering this function as well.
     e.stopPropagation();
 
-    sortFile(e);
+    if (e.target.tagname === "path") {
+      sortFile(e.target.parentElement.parentElement);
+    } else if (e.target.tagname === "svg") {
+      sortFile(e.target.parentElement);
+    } else {
+      sortFile(e);
+    }
+
   }
 
   /**
