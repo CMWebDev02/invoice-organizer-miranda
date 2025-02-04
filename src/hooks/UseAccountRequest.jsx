@@ -19,17 +19,19 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    * @function Initializes the request headers and determines the appropriate request function to trigger.
    * @param {string} accountName - The name of the user's account.
    * @param {string} accountKey - The password for the user's account.
-   * @returns {void}
+   * @returns {Object} The response data from the mutation call is returned.
    */
-  function initializePostRequest(accountName, accountKey) {
-    console.log(accountKey)
+  function initializePostRequest({accountName, accountKey}) {
+  // Checks if the user is registering or signing.
+  // For both, the response returned by the backend is returned to the mutation
+  // and passed to the onSuccess function call to store the returned jwt key in cookies.
     if (isNewUser) {
-      registerAccount({
+      return registerAccount({
         userName: accountName,
         userKey: accountKey,
       });
     } else {
-      loginAccount({
+      return loginAccount({
         enteredUserName: accountName,
         enteredUserKey: accountKey,
       });
@@ -41,12 +43,12 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    * @returns {Object}
    */
   async function loginAccount(body) {
-    const responseData = await axios({
+    const response = await axios({
       method: "post",
       url: `${endPoint}/login`,
-      data: JSON.stringify(body)
+      data: body
     });
-    return await responseData.json();
+    return response.data;
   }
 
   /**
@@ -54,12 +56,12 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    * @returns {Object}
    */
   async function registerAccount(body) {
-    const responseData = await axios({
+    const response = await axios({
       method: "post",
       url: `${endPoint}/register`,
-      data: JSON.stringify(body)
+      data: body
     });
-    return await responseData.json();
+    return response.data;
   }
 
   /**
@@ -69,7 +71,7 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    */
   async function storeResponseData(data) {
     if (data?.success) {
-      setCookies("account", data.jwt);
+      setCookies('account', `${data.jwt}`);
     }
   }
 

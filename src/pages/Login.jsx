@@ -24,10 +24,10 @@ export function Login({ endPointURL }) {
    */
   function handleLogIn(e) {
     e.preventDefault();
+    
 
     if (userKeyRef.current.value !== "" && userNameRef.current.value !== "") {
-      console.log(userNameRef.current.value, userKeyRef.current.value)
-      triggerLogin(userNameRef.current.value, userKeyRef.current.value);
+      triggerLogin({accountName: userNameRef.current.value, accountKey: userKeyRef.current.value});
     }
   }
 
