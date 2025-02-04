@@ -22,15 +22,17 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    * @returns {void}
    */
   function initializePostRequest(accountName, accountKey) {
-    const requestHeaders = {
-      accountName,
-      accountKey,
-    };
-
+    console.log(accountKey)
     if (isNewUser) {
-      registerAccount(requestHeaders);
+      registerAccount({
+        userName: accountName,
+        userKey: accountKey,
+      });
     } else {
-      loginAccount(requestHeaders);
+      loginAccount({
+        enteredUserName: accountName,
+        enteredUserKey: accountKey,
+      });
     }
   }
 
@@ -38,11 +40,11 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    * @function Triggers a post request to the login endpoint on the server.
    * @returns {Object}
    */
-  async function loginAccount(headers) {
+  async function loginAccount(body) {
     const responseData = await axios({
-      method: "get",
+      method: "post",
       url: `${endPoint}/login`,
-      headers: headers,
+      data: JSON.stringify(body)
     });
     return await responseData.json();
   }
@@ -51,11 +53,11 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    * @function Triggers a post request to the register endpoint on the server.
    * @returns {Object}
    */
-  async function registerAccount(headers) {
+  async function registerAccount(body) {
     const responseData = await axios({
-      method: "get",
+      method: "post",
       url: `${endPoint}/register`,
-      headers: headers,
+      data: JSON.stringify(body)
     });
     return await responseData.json();
   }
@@ -66,7 +68,7 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    * @returns {void}
    */
   async function storeResponseData(data) {
-    if (data.success) {
+    if (data?.success) {
       setCookies("account", data.jwt);
     }
   }

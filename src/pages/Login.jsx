@@ -26,6 +26,7 @@ export function Login({ endPointURL }) {
     e.preventDefault();
 
     if (userKeyRef.current.value !== "" && userNameRef.current.value !== "") {
+      console.log(userNameRef.current.value, userKeyRef.current.value)
       triggerLogin(userNameRef.current.value, userKeyRef.current.value);
     }
   }
