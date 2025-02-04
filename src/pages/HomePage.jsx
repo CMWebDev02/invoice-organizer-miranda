@@ -1,13 +1,25 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Stack from "react-bootstrap/esm/Stack";
 
 import styles from "./styles/HomePage.module.css";
+import { useCookies } from "react-cookie";
 
 /**
- * @component Renders the home page which contains the various links to the other pages of the project.
+ * @component Renders the home page which contains the various links to the other pages of the project and the method to invalidate a user session.
  * @returns {React.JSX.Element}
  */
 export function HomePage() {
+  const [cookies, setCookies, removeCookie] = useCookies(["account"]);
+  const navigate = useNavigate();
+
+  /**
+   * @function Invalidates the stored user session by removing the associated cookie.
+   * @returns {void}
+   */
+  function handleSignOut() {
+    removeCookie("account");
+    navigate("/login");
+  }
 
   return (
     <div className={`${styles.mainContainer} p-3 h-100`}>
@@ -23,16 +35,26 @@ export function HomePage() {
           <Link to={"accounts-payables"} className="interfaceButton">
             Accounts Payables
           </Link>
-        </Stack>
-
-        <Stack className="w-100" gap={3}>
-          <h1>User Storage</h1>
-          <Link  to={"/changeLog"} className="interfaceButton">
+          <Link to={"/changeLog"} className="interfaceButton">
             Change Log
           </Link>
-          <Link to={"/settings"} className="interfaceButton">
-            Settings
-          </Link>
+        </Stack>
+
+        <hr />
+
+        <Stack className="w-100" gap={3}>
+          <h1>Account Settings</h1>
+          <Stack className="w-100" gap={2}>
+            <Link to={"/settings"} className="interfaceButton">
+              Settings
+            </Link>
+            <Link to={"/register"} className="interfaceButton">
+              Create New Account
+            </Link>
+            <button className="interfaceButton" onClick={handleSignOut}>
+              Sign Out
+            </button>
+          </Stack>
         </Stack>
       </Stack>
     </div>

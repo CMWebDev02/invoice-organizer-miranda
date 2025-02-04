@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router";
  * @returns {React.JSX.Element}
  */
 export function SessionValidator({children}) {
-    const [ cookies, setCookies ] = useCookies("account");
+    const [ cookies ] = useCookies("account");
     const navigate = useNavigate();
     const location = useLocation();
 

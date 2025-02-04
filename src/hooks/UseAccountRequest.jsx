@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router";
 
 /**
  * @component Custom hook for making a login or register user post request to the backend.
@@ -10,6 +11,7 @@ import { useMutation } from "react-query";
  */
 export function UseAccountRequest({ endPoint, isNewUser }) {
   const [cookies, setCookies] = useCookies(["account"]);
+  const navigate = useNavigate();
   const { isLoading, error, mutateAsync } = useMutation({
     mutationFn: initializePostRequest,
     onSuccess: storeResponseData,
@@ -21,10 +23,10 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    * @param {string} accountKey - The password for the user's account.
    * @returns {Object} The response data from the mutation call is returned.
    */
-  function initializePostRequest({accountName, accountKey}) {
-  // Checks if the user is registering or signing.
-  // For both, the response returned by the backend is returned to the mutation
-  // and passed to the onSuccess function call to store the returned jwt key in cookies.
+  function initializePostRequest({ accountName, accountKey }) {
+    // Checks if the user is registering or signing.
+    // For both, the response returned by the backend is returned to the mutation
+    // and passed to the onSuccess function call to store the returned jwt key in cookies.
     if (isNewUser) {
       return registerAccount({
         userName: accountName,
@@ -46,7 +48,7 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
     const response = await axios({
       method: "post",
       url: `${endPoint}/login`,
-      data: body
+      data: body,
     });
     return response.data;
   }
@@ -59,7 +61,7 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
     const response = await axios({
       method: "post",
       url: `${endPoint}/register`,
-      data: body
+      data: body,
     });
     return response.data;
   }
@@ -71,7 +73,10 @@ export function UseAccountRequest({ endPoint, isNewUser }) {
    */
   async function storeResponseData(data) {
     if (data?.success) {
-      setCookies('account', `${data.jwt}`);
+      setCookies("account", `${data.jwt}`);
+
+      // Redirects the user back to the home page if the cookie is successfully saved.
+      navigate("/");
     }
   }
 

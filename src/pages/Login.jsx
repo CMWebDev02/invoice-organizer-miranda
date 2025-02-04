@@ -24,17 +24,19 @@ export function Login({ endPointURL }) {
    */
   function handleLogIn(e) {
     e.preventDefault();
-    
 
     if (userKeyRef.current.value !== "" && userNameRef.current.value !== "") {
-      triggerLogin({accountName: userNameRef.current.value, accountKey: userKeyRef.current.value});
+      triggerLogin({
+        accountName: userNameRef.current.value,
+        accountKey: userKeyRef.current.value,
+      });
     }
   }
 
   return (
     <Stack>
       <h1>Login</h1>
-    {error && <h2>{error.message}</h2>}
+      {error && <h2>{error.message}</h2>}
       <form onSubmit={handleLogIn}>
         <LoginInput
           type={"text"}
