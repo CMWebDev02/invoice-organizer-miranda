@@ -2,6 +2,7 @@ import { useRef } from "react";
 import Stack from "react-bootstrap/esm/Stack";
 import { LoginInput } from "../components/UserLogin/LoginInput";
 import { UseAccountRequest } from "../hooks/UseAccountRequest";
+import { Link } from "react-router";
 
 /**
  * @component Renders the login page and handles the logic for storing the user session information received from the backend.
@@ -50,8 +51,10 @@ export function Login({ endPointURL }) {
           labelName={`Password`}
           isDisabled={isLoading}
         />
-        <input type="submit" value={"Sign In"} />
+        <input type="submit" value={"Sign In"} className="interfaceButton" />
       </form>
+
+      <Link to='/register' className="interfaceButton">Create New Account</Link>
     </Stack>
   );
 }
