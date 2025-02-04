@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useLocation, useNavigate } from "react-router";
 
 /**
  * @component Wraps the main application and provides the project access to cookies, the UserLoggedInContext, and 
@@ -8,12 +9,13 @@ import { useCookies } from "react-cookie";
  * @returns {React.JSX.Element}
  */
 export function SessionValidator({children}) {
-    const [ isUserLoggedIn, setIsUserLoggedIn ] = useState(false);
     const [ cookies, setCookies ] = useCookies("account");
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        setIsUserLoggedIn(cookies?.account ? true : false);
-    }, [cookies, setIsUserLoggedIn])
+        if (!cookies?.account && location.pathname !== "/login" && location.pathname !== "/register") navigate('/login')
+    }, [cookies, navigate, location])
 
     return (
         <>

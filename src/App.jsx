@@ -11,6 +11,7 @@ import { CustomerScanDocsPage } from "./pages/CustomerScanDocsPage";
 import { AccountsPayablesPage } from "./pages/AccountPayablesPage";
 
 import "./styles/GlobalStyles.css";
+import { CookiesProvider } from "react-cookie";
 
 const baseQueryClient = new QueryClient();
 const endPointURL = "http://localhost:3000";
