@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { appendQueriesParameters } from "../utilities/stringMutations";
+import { useCookies } from "react-cookie";
 
 /**
  * @component Initializes a custom hooked used to make POST request to the backend.
@@ -14,8 +15,12 @@ export function UseFetchPostRequest({
   alterChangeLog,
   associateFetchKey,
 }) {
+  // Access the page's stored cookies
+  const [cookies] = useCookies("account");
+
   // Initializes a variable to gain access to the main query client for the project.
   const mainQueryClient = useQueryClient();
+
   //? Initializes the main mutation or post request and pulls the necessary variables from said request.
   //* The necessary variables are the mutateAsync function to trigger the post request, the error object to denote if any errors have occurred, and the isLoading boolean to show if the request is still loading.
   const {
@@ -33,8 +38,16 @@ export function UseFetchPostRequest({
    * @returns {void}
    */
   async function makePostRequest(queries) {
+    const requestHeaders = {
+      authorization: `${cookies.account}`,
+    };
+
     let fetchURL = appendQueriesParameters(fetchURLBase, queries);
-    let response = await axios.post(fetchURL);
+    let response = await axios({
+      method: "post",
+      url: fetchURL,
+      headers: requestHeaders,
+    });
     return response.data;
   }
 
