@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { CookiesProvider, useCookies } from "react-cookie";
-import { UserLoggedInContext } from "./userContext";
+import { useCookies } from "react-cookie";
 
 /**
  * @component Wraps the main application and provides the project access to cookies, the UserLoggedInContext, and 
@@ -13,16 +12,12 @@ export function SessionValidator({children}) {
     const [ cookies, setCookies ] = useCookies("account");
 
     useEffect(() => {
-        if (cookies) {
-
-        }
-    }, [cookies])
+        setIsUserLoggedIn(cookies?.account ? true : false);
+    }, [cookies, setIsUserLoggedIn])
 
     return (
-        <CookiesProvider>
-            <UserLoggedInContext.Provider value={isUserLoggedIn}>
+        <>
             {children}
-            </UserLoggedInContext.Provider>
-        </CookiesProvider>
+        </>
     )
 }
