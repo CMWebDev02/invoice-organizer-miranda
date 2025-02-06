@@ -1,0 +1,14 @@
+.userInput {
+    background-color: var(--main-background-color);
+    color: var(--main-text-color);
+    border: none;
+}
+
+.userInput::placeholder {
+    color: var(--main-text-color);
+}
+
+.userInput:focus {
+    outline: 0.125rem solid var(--outline-color);
+    color: var(--secondary-text-color)
+}

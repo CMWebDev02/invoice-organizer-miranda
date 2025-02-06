@@ -1,8 +1,9 @@
 import { useRef } from "react";
-import Stack from "react-bootstrap/esm/Stack";
 import { LoginInput } from "../components/UserLogin/LoginInput";
 import { UseAccountRequest } from "../hooks/UseAccountRequest";
 import { Link } from "react-router";
+
+import styles from "./styles/LoginPageStyles.module.css";
 
 /**
  * @component Renders the login page and handles the logic for storing the user session information received from the backend.
@@ -35,10 +36,15 @@ export function Login({ endPointURL }) {
   }
 
   return (
-    <Stack>
-      <h1>Login</h1>
-      {error && <h2>{error.message}</h2>}
-      <form onSubmit={handleLogIn}>
+    <div
+      className={`d-flex justify-content-center align-content-center flex-wrap w-100 h-100 p-3`}
+    >
+      <form
+        onSubmit={handleLogIn}
+        className={`${styles.loginContainer} h-75 h-tabletPortrait-50 w-100 w-mobileLandscape-75 w-tabletPortrait-50 p-3`}
+      >
+        <h1>Login</h1>
+        {error && <h2>{error.message}</h2>}
         <LoginInput
           type={"text"}
           inputRef={userNameRef}
@@ -52,9 +58,10 @@ export function Login({ endPointURL }) {
           isDisabled={isLoading}
         />
         <input type="submit" value={"Sign In"} className="interfaceButton" />
+        <Link to="/register" className="interfaceButton">
+          Create New Account
+        </Link>
       </form>
-
-      <Link to='/register' className="interfaceButton">Create New Account</Link>
-    </Stack>
+    </div>
   );
 }

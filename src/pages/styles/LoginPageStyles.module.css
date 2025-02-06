@@ -1,0 +1,6 @@
+.loginContainer {
+    background-color: var(--secondary-background-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}

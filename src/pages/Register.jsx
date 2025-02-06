@@ -1,7 +1,9 @@
 import { useRef } from "react";
 import { UseAccountRequest } from "../hooks/UseAccountRequest";
-import Stack from "react-bootstrap/esm/Stack";
 import { LoginInput } from "../components/UserLogin/LoginInput";
+import { Link } from "react-router";
+
+import styles from "./styles/RegisterPageStyles.module.css";
 
 /**
  * @component Renders the register page and handles the logic for generating a new user account and validating a new user session.
@@ -34,10 +36,15 @@ export function Register({ endPointURL }) {
   }
 
   return (
-    <Stack>
-      <h1>Register</h1>
-      {error && <h2>{error.message}</h2>}
-      <form onSubmit={handleAccountCreation}>
+    <div
+      className={`d-flex justify-content-center align-content-center flex-wrap w-100 h-100 p-3`}
+    >
+      <form
+        onSubmit={handleAccountCreation}
+        className={`${styles.registerContainer} h-75 h-tabletPortrait-50 w-100 w-mobileLandscape-75 w-tabletPortrait-50 p-3`}
+      >
+        <h1>Register</h1>
+        {error && <h2>{error.message}</h2>}
         <LoginInput
           type={"text"}
           inputRef={userNameRef}
@@ -50,8 +57,15 @@ export function Register({ endPointURL }) {
           labelName={`Password`}
           isDisabled={isLoading}
         />
-        <input type="submit" value={"Create Account"} />
+        <input
+          type="submit"
+          value={"Create Account"}
+          className="interfaceButton"
+        />
+        <Link to="/login" className="interfaceButton w-100">
+          Use Existing Account
+        </Link>
       </form>
-    </Stack>
+    </div>
   );
 }
