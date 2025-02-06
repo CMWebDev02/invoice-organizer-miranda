@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
-import { NumberSetting } from "../components/UserSettings/NumberSetting";
-import { ToggleSetting } from "../components/UserSettings/ToggleSetting";
 import Stack from "react-bootstrap/esm/Stack";
-
-import { convertToTitle } from "../utilities/stringMutations";
 
 import { UserSettingsStorage } from "../utilities/localStorage";
 import { Link, useLocation } from "react-router";
 
 import styles from "./styles/SettingsPage.module.css";
+import { UserSettingsList } from "../components/UserSettings/UserSettingsList";
 
 /**
  * @component Renders the settings page which houses the logic to allow the user to altering and updating their settings.
@@ -48,34 +45,6 @@ export function SettingsPage() {
     });
   }
 
-  /**
-   * @component Maps through the userSettings object and depending on the setting type, renders an appropriate React Element to display on the page.
-   * @returns {Array<React.JSX.Element>}
-   */
-  const RenderUserSettings = () => {
-    return Object.entries(userSettings).map(([setting, settingValue]) => {
-      return typeof settingValue === "boolean" ? (
-        <ToggleSetting
-          key={setting}
-          currentSetting={userSettings[setting]}
-          updateSetting={changeCurrentSetting}
-          settingName={setting}
-        >
-          {convertToTitle(setting)}
-        </ToggleSetting>
-      ) : (
-        <NumberSetting
-          key={setting}
-          currentSetting={userSettings[setting]}
-          updateSetting={changeCurrentSetting}
-          settingName={setting}
-        >
-          {convertToTitle(setting)}
-        </NumberSetting>
-      );
-    });
-  };
-
   return (
     <Stack gap={2} className={`p-1 w-100 h-100`}>
       <Stack direction="horizontal" className={`${styles.header} p-1`}>
@@ -85,7 +54,7 @@ export function SettingsPage() {
         </Link>
       </Stack>
       <Stack className={`${styles.settingsContainer} p-1 w-50 mx-auto`} gap={2}>
-        <RenderUserSettings />
+        <UserSettingsList userSettings={userSettings} changeCurrentSetting={changeCurrentSetting} />
       </Stack>
     </Stack>
   );
