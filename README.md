@@ -2,7 +2,7 @@
 Front end web project that provides a way to sort and mange invoice files that are stored in a file system of a server.
 
 ** Utilize my invoice-sort-api in tandem with this project **
-The api acts as a backend to the user's filesystem to allow relocating and sorting files into their appropriate directories.
+The api acts as a backend to the filesystem to allow relocating and sorting files into their appropriate directories.
 
 
 ## Organizers
